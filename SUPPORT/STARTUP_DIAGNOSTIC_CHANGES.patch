@@ -1,0 +1,349 @@
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+index bd4fbf3..4508dea 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+@@ -1,2 +1,2 @@
+ """Native O3 Alpha 5; Core/KM remains the shared knowledge authority."""
+-__version__ = "5.0.0-alpha5"
++__version__ = "5.0.0-alpha5.diagnostic1"
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/app.py b/package/O3/O3_PRODUCT/APP/o3_gui/app.py
+index dd3b79a..bcfa738 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/app.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/app.py
+@@ -334,6 +334,9 @@ class O3Window(QMainWindow):
+         self.update_notices();self.update_commands()
+ 
+     def on_failed(self,op,error):
++        if op=='initialize' and error=='Workspace initialization did not finish within 45 seconds.':
++            diagnostic=getattr(self.worker,'startup_diagnostics',None)
++            if diagnostic is not None:diagnostic.finish('timeout')
+         self.last_error=(op,error);self.scan_busy=False;self.status.setText(op.replace('_',' ').capitalize()+' failed · '+error);self.status.show();self.update_sources()
+         if op=='scan':self.source_failure=error;self.update_notices();self.submit.emit('overview',{})  # Re-read KM's recorded failed-scan coverage.
+         if op=='initialize':self.startup_timer.stop();self.main.setEnabled(True);self.startup_finished.emit(False)
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py b/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
+index a785708..9d5b630 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
+@@ -107,8 +107,10 @@ def display_row(record: dict) -> dict:
+ 
+ class KMSession:
+     """Created and used on the engine worker only. Every mutation is KM-owned."""
+-    def __init__(self, state: Path, *, actor: str | None = None):
++    def __init__(self, state: Path, *, actor: str | None = None, startup_diagnostics=None):
+         self.state = Path(state)
++        self.startup_diagnostics = startup_diagnostics
++        if startup_diagnostics: startup_diagnostics.phase('account_identity')
+         self.actor = actor or local_actor()
+         self.engine = None
+         self.km = None
+@@ -123,16 +125,23 @@ class KMSession:
+         self._owned()
+         if self.engine is not None:
+             raise SessionError('STATE_ALREADY_OPEN', 'Session already owns a writer')
++        if self.startup_diagnostics: self.startup_diagnostics.phase('state_preflight')
+         check = probe_state(self.state)
+         self.mode = check['mode']
+         if self.mode.endswith('required'):
+             return {'maintenance_required': True, 'mode': self.mode, 'schema': check['schema']}
+         if self.mode == 'new':
++            if self.startup_diagnostics: self.startup_diagnostics.phase('new_workspace_initialization')
+             initialize_workspace_v4(self.state, exclusive_writer_stopped=True)
+             check = probe_state(self.state)
++        if self.startup_diagnostics: self.startup_diagnostics.phase('engine_construction')
+         engine = Engine(self.state, Settings(**check['settings']))
+         try:
++            if self.startup_diagnostics: self.startup_diagnostics.phase('catalog_and_saved_definition_validation')
+             service = KMService(engine, actor=self.actor, allow_alpha4_catalog=True)
++            if self.startup_diagnostics:
++                service._startup_error = self.startup_diagnostics.failure
++                self.startup_diagnostics.phase('starter_conversion_and_checkpoint')
+             legacy = read_config(self.state).get("alpha3", {}).get("mail_views", [])
+             converted = service.call({"contract": VERSION, "operation": "view.starters.ensure",
+                 "expected_workspace_revision": service.revision(),
+@@ -143,7 +152,11 @@ class KMSession:
+             engine.close()
+             raise
+         self.engine, self.km, self.mode = engine, service, 'ready'
+-        return self.summary()
++        if self.startup_diagnostics: self.startup_diagnostics.phase('startup_summary')
++        try:
++            return self.summary()
++        finally:
++            if hasattr(service, '_startup_error'): del service._startup_error
+ 
+     def close(self):
+         self._owned()
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+new file mode 100644
+index 0000000..ce61a39
+--- /dev/null
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+@@ -0,0 +1,98 @@
++"""Bounded startup evidence without exception text, local paths or source data."""
++from datetime import datetime, timezone
++import json
++import os
++from pathlib import Path
++import tempfile
++import threading
++import time
++
++FILENAME = 'O3_ENGINE_STARTUP_DIAGNOSTIC.json'
++APP = Path(__file__).resolve().parents[1]
++CODES = frozenset(('ACTOR_UNAVAILABLE STATE_PATH_UNSAFE STATE_SCHEMA_UNSUPPORTED '
++    'STATE_IDENTITY_MISSING STATE_INTEGRITY_FAILED STATE_ALREADY_OPEN STATE_LOCKED '
++    'STATE_NOT_READY SCHEMA_INCOMPATIBLE LEGACY_CONFIG_CHANGED INTEGRITY_FAILED '
++    'BACKUP_REQUIRED BACKUP_VERIFICATION_FAILED MIGRATION_BLOCKED INVALID_VALUE '
++    'INVALID_TYPE KM_FAILURE REVISION_CONFLICT').split())
++
++
++def safe_exception(exc):
++    # Never retain a traceback object, frame locals, raw messages or filenames
++    # from OSError. They can contain addresses, operational records or usernames.
++    typ = type(exc)
++    known = typ.__module__ in ('builtins', 'sqlite3', 'json.decoder') or typ.__module__.startswith(('o3_gui.', 'o3_km.', 'o3_core.'))
++    result = {'exception_type': typ.__name__ if known else 'OtherException', 'frames': []}
++    code = getattr(exc, 'code', None)
++    if not isinstance(code, str) or code not in CODES:
++        candidate = str(exc).split(':', 1)[0]
++        code = candidate if candidate in CODES else None
++    if code: result['error_code'] = code
++    for key in ('errno', 'winerror', 'sqlite_errorcode'):
++        value = getattr(exc, key, None)
++        if type(value) is int: result[key] = value
++    tb = exc.__traceback__
++    while tb is not None:
++        file = Path(tb.tb_frame.f_code.co_filename)
++        try:
++            relative = file.resolve().relative_to(APP).as_posix()
++        except (ValueError, OSError):
++            relative = None
++        if relative:
++            result['frames'].append({'file': relative, 'line': tb.tb_lineno})
++        tb = tb.tb_next
++    result['frames'] = result['frames'][-16:]
++    return result
++
++
++class StartupDiagnostics:
++    def __init__(self, state):
++        state = Path(state)
++        self.path = (state.parent/'logs' if state.name == 'state' and (state.parent/'workspace-owner.json').is_file() else state.parent/(state.name+'-startup-logs')) / FILENAME
++        self.lock = threading.RLock()
++        self.started = time.monotonic()
++        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.diagnostic1',
++            'started_utc': datetime.now(timezone.utc).isoformat(), 'status': 'running',
++            'stage': 'session_construction', 'events': [], 'errors': [],
++            'privacy': 'No exception messages, absolute paths, account names, credentials, source records or frame locals.'}
++        self.phase('session_construction')
++
++    def phase(self, stage):
++        with self.lock:
++            self.data['stage'] = stage
++            self.data['events'].append({'stage': stage, 'elapsed_seconds': round(time.monotonic()-self.started, 3)})
++            self.data['events'] = self.data['events'][-16:]
++            self._save()
++
++    def failure(self, exc):
++        with self.lock:
++            try: detail = safe_exception(exc)
++            except Exception: detail = {'exception_type': 'DiagnosticEncodingFailed', 'frames': []}
++            entry = {'stage': self.data['stage'], **detail}
++            self.data['errors'].append(entry)
++            self.data['errors'] = self.data['errors'][-4:]
++            self._save()
++
++    def finish(self, status):
++        with self.lock:
++            if self.data.get('status') != 'timeout': self.data['status'] = status
++            if status == 'ready' and self.data['status'] == 'timeout': self.data['completed_after_timeout'] = True
++            self._save()
++
++    def _save(self):
++        pending = None
++        try:
++            self.data['elapsed_seconds'] = round(time.monotonic()-self.started, 3)
++            if self.path.is_symlink() or any(p.is_symlink() for p in self.path.parents): return
++            self.path.parent.mkdir(parents=True, exist_ok=True)
++            with tempfile.NamedTemporaryFile('w', encoding='utf-8', dir=self.path.parent,
++                    prefix='.o3-startup-', suffix='.tmp', delete=False) as stream:
++                pending = Path(stream.name)
++                json.dump(self.data, stream, indent=2)
++            os.replace(pending, self.path)
++        except Exception:
++            # Diagnostics must never change startup success/failure or its gates.
++            pass
++        finally:
++            if pending is not None:
++                try: pending.unlink(missing_ok=True)
++                except OSError: pass
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/worker.py b/package/O3/O3_PRODUCT/APP/o3_gui/worker.py
+index 5e14097..62a7f6e 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/worker.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/worker.py
+@@ -4,6 +4,7 @@ from pathlib import Path
+ from PySide6.QtCore import QObject, Signal, Slot
+ from o3_gui.km_session import KMSession
+ from o3_km import verify_backup
++from o3_gui.startup_diagnostics import StartupDiagnostics
+ 
+ 
+ class EngineWorker(QObject):
+@@ -17,6 +18,7 @@ class EngineWorker(QObject):
+         super().__init__()
+         self.state = Path(state)
+         self.session = None
++        self.startup_diagnostics = None
+ 
+     @property
+     def engine(self):
+@@ -26,11 +28,16 @@ class EngineWorker(QObject):
+     def initialize(self):
+         try:
+             # Created here, never on the Qt main thread.
+-            self.session = KMSession(self.state)
++            self.startup_diagnostics = StartupDiagnostics(self.state)
++            self.session = KMSession(self.state, startup_diagnostics=self.startup_diagnostics)
+             data = self.session.open()
++            self.startup_diagnostics.finish('maintenance_required' if data.get('maintenance_required') else 'ready')
+             if data.get('maintenance_required'): self.maintenance_required.emit(data)
+             else: self.ready.emit(data)
+         except Exception as exc:
++            if self.startup_diagnostics is not None:
++                self.startup_diagnostics.failure(exc)
++                self.startup_diagnostics.finish('failed')
+             self.failed.emit('initialize', str(exc))
+ 
+     @Slot(str, object)
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/service.py b/package/O3/O3_PRODUCT/APP/o3_km/service.py
+index a2f85f4..40be43b 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/service.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/service.py
+@@ -1679,6 +1679,12 @@ class KMService(WorkspaceTypesMixin,QueryMixin):
+         except (KMInvalid,ValueError,KeyError,RuntimeError) as exc:
+             return {'ok':False,'issues':[{'code':getattr(exc,'code','INTEGRITY_FAILED'),'message':str(exc)}]}
+ 
++    def _report_startup_error(self, exc):
++        callback=getattr(self,'_startup_error',None)
++        if callback is not None:
++            try:callback(exc)
++            except Exception:pass
++
+     def call(self,request):
+         """Keep multi-query read results and their envelope in one SQLite snapshot.
+ 
+@@ -1696,7 +1702,8 @@ class KMService(WorkspaceTypesMixin,QueryMixin):
+                 self.db.execute('BEGIN')
+                 owned=True
+             return self._call(request)
+-        except sqlite3.Error:
++        except sqlite3.Error as exc:
++            self._report_startup_error(exc)
+             return {'contract':self.contract_version(),'ok':False,'error':{'code':'KM_FAILURE',
+                     'message':'KM read failed; consult protected diagnostics'}}
+         finally:
+@@ -1735,6 +1742,7 @@ class KMService(WorkspaceTypesMixin,QueryMixin):
+             return {**base,'ok':True,'result':result,
+                     'workspace_revision':self.revision(),'core_epoch':self.epoch()}
+         except (KMInvalid,ValueError,KeyError,TypeError,IndexError,RuntimeError,sqlite3.Error) as exc:
++            self._report_startup_error(exc)
+             if isinstance(exc,KMInvalid):
+                 code,message=exc.code,str(exc)[:256]
+             elif isinstance(exc,RuntimeError) and str(exc).split(':',1)[0] in (
+diff --git a/tests/startup_diagnostics.py b/tests/startup_diagnostics.py
+new file mode 100644
+index 0000000..1fd7a81
+--- /dev/null
++++ b/tests/startup_diagnostics.py
+@@ -0,0 +1,60 @@
++"""Actual engine worker failures: bounded redacted evidence, unchanged semantics."""
++from pathlib import Path
++import json, tempfile, time
++from unittest.mock import patch
++from PySide6.QtCore import QCoreApplication
++from o3_gui.worker import EngineWorker
++from o3_gui.startup_diagnostics import StartupDiagnostics, FILENAME
++from o3_gui.km_session import KMSession
++from o3_km.service import KMService
++from o3_km.evaluation import KMInvalid
++
++app=QCoreApplication([])
++report={'scope':'Synthetic Linux Qt worker, real Core/KM; injected startup failures','checks':{}}
++def read(worker):return json.loads(worker.startup_diagnostics.path.read_text())
++def worker_at(state):
++ w=EngineWorker(state);failed=[];ready=[];w.failed.connect(lambda op,error:failed.append((op,error)));w.ready.connect(ready.append)
++ return w,failed,ready
++with tempfile.TemporaryDirectory(prefix='o3-startup-diag-') as td:
++ base=Path(td)
++ # Standalone and native fresh state must remain valid with logging enabled.
++ for native in (False,True):
++  root=base/('native' if native else 'standalone');state=root/'state';state.mkdir(parents=True)
++  if native:
++   (root/'workspace-owner.json').write_text('{}');(root/'logs').mkdir()
++  w,failed,ready=worker_at(state);w.initialize()
++  assert ready and not failed,(native,failed)
++  d=read(w);assert d['status']=='ready' and not d['errors']
++  assert not (state/'logs').exists()
++  w.close_engine();report['checks']['fresh_native' if native else 'fresh_standalone']=True
++ # Capture the error before KM turns it into a generic response.
++ state=base/'translated'/'state';state.mkdir(parents=True)
++ original=KMService._dispatch
++ def dispatch(service,op,*args):
++  if op=='view.starters.ensure':raise RuntimeError('BACKUP_REQUIRED: private-account private-email@example.invalid C:\\private\\record.json')
++  return original(service,op,*args)
++ w,failed,ready=worker_at(state)
++ with patch.object(KMService,'_dispatch',dispatch):w.initialize()
++ assert failed and not ready
++ d=read(w);assert d['status']=='failed'
++ assert any(e.get('error_code')=='BACKUP_REQUIRED' for e in d['errors'])
++ assert any(f['file']=='o3_km/service.py' for e in d['errors'] for f in e['frames'])
++ assert d['errors'][0]['stage']=='starter_conversion_and_checkpoint'
++ serialized=json.dumps(d)
++ assert 'private-account' not in serialized and 'private-email' not in serialized and str(base) not in serialized
++ w.close_engine();report['checks']['original_km_exception_before_translation_and_no_sensitive_strings']=True
++ # Native identity/permission failures keep their actual numeric OS code.
++ state=base/'identity'/'state';state.mkdir(parents=True);w,failed,ready=worker_at(state)
++ with patch('o3_gui.km_session.local_actor',side_effect=PermissionError(13,'private message',str(base/'private-record'))):w.initialize()
++ d=read(w);assert failed and d['errors'][0]['errno']==13 and d['stage']=='account_identity'
++ assert 'private' not in json.dumps(d);w.close_engine();report['checks']['account_identity_failure_with_errno']=True
++ # A report distinguishes timeout from immediate exceptions and keeps its stage.
++ diag=StartupDiagnostics(base/'timeout'/'state');diag.phase('starter_conversion_and_checkpoint');diag.finish('timeout');diag.phase('startup_summary');diag.finish('ready')
++ d=json.loads(diag.path.read_text());assert d['status']=='timeout' and d['completed_after_timeout']
++ report['checks']['timeout_retained_even_if_worker_later_completes']=True
++ # An unwritable diagnostics destination must not change engine readiness.
++ state=base/'log_failure'/'state';state.mkdir(parents=True);w,failed,ready=worker_at(state)
++ with patch('o3_gui.startup_diagnostics.os.replace',side_effect=PermissionError(13,'denied')):w.initialize()
++ assert ready and not failed;w.close_engine();report['checks']['diagnostic_io_failure_does_not_block_engine']=True
++out=Path(__file__).resolve().parents[1]/'evidence/startup_diagnostic';out.mkdir(exist_ok=True)
++report['passed']=True;(out/'checks.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
+diff --git a/tools/package_release.py b/tools/package_release.py
+index 47d4ac1..12db3b0 100644
+--- a/tools/package_release.py
++++ b/tools/package_release.py
+@@ -3,7 +3,7 @@ from pathlib import Path
+ import argparse,hashlib,json,subprocess,sys,zipfile
+ sys.dont_write_bytecode=True
+ ROOT=Path(__file__).resolve().parents[1];PACKAGE=ROOT/'package';PRODUCT=PACKAGE/'O3/O3_PRODUCT'
+-VERSION='5.0.0-alpha5';PROTOCOL='0.9.1-km12-p3-prism2'
++VERSION='5.0.0-alpha5.diagnostic1';PROTOCOL='0.9.1-km12-p3-prism2'
+ def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+ def inventory(root,exclude=()):
+  result={}
+@@ -27,7 +27,7 @@ def build(zip_output=True):
+  info.update(application_build_id=VERSION,application_source='Alpha 5 source checkpoint',application_source_sha256=app_digest,
+    application_source_digest_algorithm='SHA256(sorted APP relative path + NUL + file SHA256 + newline)',
+    source_revision=revision,base_release_sha256=baseline['archive_sha256'],knowledge_schema=4,
+-   status='Alpha 5 release; native Windows/NIPR target qualification outstanding',
++   status='Alpha 5 startup diagnostic build; startup failure cause not yet established',
+    workspace_continuity='Schema4/native roots and startup protected; verified full checkpoint before atomic catalog conversion',
+    changes=['Shared reply evidence and editable mail views in the central framework.',
+             'Nested include/exclude view rules with exact preview and typed global sorting.',
+@@ -50,7 +50,7 @@ def build(zip_output=True):
+   'protected_files_passed':len(baseline['protected']),'product_manifest_entries':len(manifest['files']),
+   'product_manifest_sha256':sha(PRODUCT/'PACKAGE_MANIFEST.json'),'ai_manifest_sha256':sha(ai/'AI_RUNTIME_MANIFEST.json')}
+  if zip_output:
+-  output=ROOT/'deliverables/O3_Alpha_5.zip';output.parent.mkdir(exist_ok=True)
++  output=ROOT/'deliverables/O3_Alpha_5_Startup_Diagnostic.zip';output.parent.mkdir(exist_ok=True)
+   with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
+    for name in inventory(PACKAGE):archive.write(PACKAGE/name,name)
+   with zipfile.ZipFile(output) as archive:

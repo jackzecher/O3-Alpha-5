@@ -1,0 +1,14 @@
+{
+  "scope": "Real released Alpha 4 synthetic calendar; no managed-Windows timing claim",
+  "checks": {
+    "no_duplicate_migration_content_hash_during_conversion": true,
+    "every_referenced_blob_read_by_core_once": true,
+    "changed_extracted_bytes_still_rejected": true,
+    "record_versions_conflicting_expected_hash_rejected": true,
+    "source_observations_conflicting_expected_hash_rejected": true,
+    "failed_core_audit_blocks_checkpoint": true,
+    "long_sql_checks_cancel_and_handler_is_removed": true,
+    "diagnostic_callback_failure_does_not_change_result": true
+  },
+  "passed": true
+}

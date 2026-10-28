@@ -1,0 +1,597 @@
+@prefix o3: <urn:o3:ontology:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+o3:affiliatedWith a owl:ObjectProperty ;
+    rdfs:label "Affiliated With" ;
+    rdfs:comment "Verified Person-to-Organization affiliation via explicit companyName." ;
+    o3:allowedSource o3:Person ;
+    o3:allowedTarget o3:Organization ;
+    o3:prototypePredicate "affiliated_with" .
+
+o3:allowedLiteral a owl:AnnotationProperty .
+
+o3:allowedSource a owl:AnnotationProperty .
+
+o3:allowedTarget a owl:AnnotationProperty .
+
+o3:associatedWith a owl:ObjectProperty ;
+    rdfs:label "Associated With" ;
+    rdfs:comment "Explicit typed LOE reference in source text or structured heading." ;
+    o3:allowedSource o3:Document,
+        o3:Email,
+        o3:Event ;
+    o3:allowedTarget o3:LineOfEffort ;
+    o3:prototypePredicate "associated_with" .
+
+o3:attachedTo a owl:ObjectProperty ;
+    rdfs:label "Attached To" ;
+    rdfs:comment "Document attachment linked to the uniquely resolved source Email." ;
+    o3:allowedSource o3:Document ;
+    o3:allowedTarget o3:Email ;
+    o3:prototypePredicate "attached_to" .
+
+o3:authoredBy a owl:ObjectProperty ;
+    rdfs:label "Authored By" ;
+    rdfs:comment "Document author explicit email uniquely matched to Person." ;
+    o3:allowedSource o3:Document ;
+    o3:allowedTarget o3:Person ;
+    o3:prototypePredicate "authored_by" .
+
+o3:calendarScope a owl:DatatypeProperty ;
+    rdfs:label "calendarScope" ;
+    rdfs:comment "Calendar namespace for stable Event identity; filename-derived scope is provisional." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:conversationId a owl:DatatypeProperty ;
+    rdfs:label "conversationId" ;
+    rdfs:comment "Provider conversation grouping identifier, not a standalone record." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:copiedTo a owl:ObjectProperty ;
+    rdfs:label "Copied To" ;
+    rdfs:comment "Email Cc recipient matched to a unique Person." ;
+    o3:allowedSource o3:Email ;
+    o3:allowedTarget o3:Person ;
+    o3:prototypePredicate "copied_to" .
+
+o3:directoryId a owl:DatatypeProperty ;
+    rdfs:label "directoryId" ;
+    rdfs:comment "Authoritative profile directory identifier." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:directoryScope a owl:DatatypeProperty ;
+    rdfs:label "directoryScope" ;
+    rdfs:comment "Directory/tenant identity namespace." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentDisplayTitle a owl:DatatypeProperty ;
+    rdfs:label "documentDisplayTitle" ;
+    rdfs:comment "Display title, supplied title or filename." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentExtractionStatus a owl:DatatypeProperty ;
+    rdfs:label "documentExtractionStatus" ;
+    rdfs:comment "complete, partial, or failed." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:allowedLiteral "complete",
+        "failed",
+        "partial" ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentFileType a owl:DatatypeProperty ;
+    rdfs:label "documentFileType" ;
+    rdfs:comment "Normalized source extension/type." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentFilename a owl:DatatypeProperty ;
+    rdfs:label "documentFilename" ;
+    rdfs:comment "Original filename, display-normalized." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentMimeType a owl:DatatypeProperty ;
+    rdfs:label "documentMimeType" ;
+    rdfs:comment "Normalized source MIME token." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:documentOriginType a owl:DatatypeProperty ;
+    rdfs:label "documentOriginType" ;
+    rdfs:comment "file or email_attachment." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:allowedLiteral "email_attachment",
+        "file" ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentScope a owl:DatatypeProperty ;
+    rdfs:label "documentScope" ;
+    rdfs:comment "Document source-identity namespace." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:documentSourceId a owl:DatatypeProperty ;
+    rdfs:label "documentSourceId" ;
+    rdfs:comment "Converter-supplied stable standalone document source ID." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:documentTitle a owl:DatatypeProperty ;
+    rdfs:label "documentTitle" ;
+    rdfs:comment "Document metadata title." ;
+    rdfs:domain o3:Document ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailBodyText a owl:DatatypeProperty ;
+    rdfs:label "emailBodyText" ;
+    rdfs:comment "Plain-text projection extracted from HTML; source HTML remains in archive." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailDirection a owl:DatatypeProperty ;
+    rdfs:label "emailDirection" ;
+    rdfs:comment "Incoming or Outgoing when source folder and path evidence agree." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:allowedLiteral "Incoming",
+        "Outgoing" ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailImportance a owl:DatatypeProperty ;
+    rdfs:label "emailImportance" ;
+    rdfs:comment "Normalized source Outlook importance (Low, Normal, High when recognized)." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailReceivedUtc a owl:DatatypeProperty ;
+    rdfs:label "emailReceivedUtc" ;
+    rdfs:comment "Normalized received time with explicit UTC qualification." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:dateTime ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailSentUtc a owl:DatatypeProperty ;
+    rdfs:label "emailSentUtc" ;
+    rdfs:comment "Normalized sent time with explicit UTC qualification." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:dateTime ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailSourceFolder a owl:DatatypeProperty ;
+    rdfs:label "emailSourceFolder" ;
+    rdfs:comment "Recognized source folder label, distinct from direction." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:emailSubject a owl:DatatypeProperty ;
+    rdfs:label "emailSubject" ;
+    rdfs:comment "Source email subject." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventAllDay a owl:DatatypeProperty ;
+    rdfs:label "eventAllDay" ;
+    rdfs:comment "Date-only DTSTART flag." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:boolean ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventDescription a owl:DatatypeProperty ;
+    rdfs:label "eventDescription" ;
+    rdfs:comment "Unescaped ICS DESCRIPTION." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventDurationSeconds a owl:DatatypeProperty ;
+    rdfs:label "eventDurationSeconds" ;
+    rdfs:comment "Deterministically derived duration." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:nonNegativeInteger ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventEndUtc a owl:DatatypeProperty ;
+    rdfs:label "eventEndUtc" ;
+    rdfs:comment "End in UTC only when determinable." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:dateTime ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventLocation a owl:DatatypeProperty ;
+    rdfs:label "eventLocation" ;
+    rdfs:comment "Unescaped ICS LOCATION." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventSequence a owl:DatatypeProperty ;
+    rdfs:label "eventSequence" ;
+    rdfs:comment "ICS SEQUENCE projected as an integer." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:nonNegativeInteger ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventStartUtc a owl:DatatypeProperty ;
+    rdfs:label "eventStartUtc" ;
+    rdfs:comment "Start in UTC only when timezone is unambiguous." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:dateTime ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventStatus a owl:DatatypeProperty ;
+    rdfs:label "eventStatus" ;
+    rdfs:comment "Source event STATUS when provided." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventSummary a owl:DatatypeProperty ;
+    rdfs:label "eventSummary" ;
+    rdfs:comment "Unescaped ICS SUMMARY." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:eventUid a owl:DatatypeProperty ;
+    rdfs:label "eventUid" ;
+    rdfs:comment "ICS VEVENT UID." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:exceptionOf a owl:ObjectProperty ;
+    rdfs:label "Exception Of" ;
+    rdfs:comment "ICS recurrence exception linked to its series master." ;
+    o3:allowedSource o3:Event ;
+    o3:allowedTarget o3:Event ;
+    o3:prototypePredicate "exception_of" .
+
+o3:identityBasis a owl:DatatypeProperty ;
+    rdfs:label "identityBasis" ;
+    rdfs:comment "How the robot constructed the record identity; provisional for some types." ;
+    rdfs:domain o3:Record ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:internetMessageId a owl:DatatypeProperty ;
+    rdfs:label "internetMessageId" ;
+    rdfs:comment "RFC Internet Message-ID, if provided." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:invites a owl:ObjectProperty ;
+    rdfs:label "Invites" ;
+    rdfs:comment "ICS ATTENDEE matched to a Person; does not assert attendance." ;
+    o3:allowedSource o3:Event ;
+    o3:allowedTarget o3:Person ;
+    o3:prototypePredicate "invites" .
+
+o3:loeKind a owl:DatatypeProperty ;
+    rdfs:label "loeKind" ;
+    rdfs:comment "loe, project, program, initiative, workstream." ;
+    rdfs:domain o3:LineOfEffort ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:allowedLiteral "initiative",
+        "loe",
+        "program",
+        "project",
+        "workstream" ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:loeName a owl:DatatypeProperty ;
+    rdfs:label "loeName" ;
+    rdfs:comment "Explicitly labeled LOE display name." ;
+    rdfs:domain o3:LineOfEffort ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:loeNamespace a owl:DatatypeProperty ;
+    rdfs:label "loeNamespace" ;
+    rdfs:comment "Namespace containing typed LOE references." ;
+    rdfs:domain o3:LineOfEffort ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:loeReferenceCode a owl:DatatypeProperty ;
+    rdfs:label "loeReferenceCode" ;
+    rdfs:comment "Explicit coded reference, when available." ;
+    rdfs:domain o3:LineOfEffort ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:mailboxId a owl:DatatypeProperty ;
+    rdfs:label "mailboxId" ;
+    rdfs:comment "Scoped mailbox identifier provided in email source." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:maxCount a owl:AnnotationProperty .
+
+o3:memberOf a owl:ObjectProperty ;
+    rdfs:label "Member Of" ;
+    rdfs:comment "Verified Person membership in a scoped department." ;
+    o3:allowedSource o3:Person ;
+    o3:allowedTarget o3:Organization ;
+    o3:prototypePredicate "member_of" .
+
+o3:messageId a owl:DatatypeProperty ;
+    rdfs:label "messageId" ;
+    rdfs:comment "Provider email message identifier; may change when a message moves." ;
+    rdfs:domain o3:Email ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:minCount a owl:AnnotationProperty .
+
+o3:organizationKind a owl:DatatypeProperty ;
+    rdfs:label "organizationKind" ;
+    rdfs:comment "organization or department (prototype-supported kinds)." ;
+    rdfs:domain o3:Organization ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:allowedLiteral "department",
+        "organization" ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:organizationName a owl:DatatypeProperty ;
+    rdfs:label "organizationName" ;
+    rdfs:comment "Normalized label supported by Person evidence." ;
+    rdfs:domain o3:Organization ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:organizationScope a owl:DatatypeProperty ;
+    rdfs:label "organizationScope" ;
+    rdfs:comment "Scope used to resolve source labels." ;
+    rdfs:domain o3:Organization ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:organizedBy a owl:ObjectProperty ;
+    rdfs:label "Organized By" ;
+    rdfs:comment "ICS ORGANIZER uniquely matched to a Person." ;
+    o3:allowedSource o3:Event ;
+    o3:allowedTarget o3:Person ;
+    o3:prototypePredicate "organized_by" .
+
+o3:partOf a owl:ObjectProperty ;
+    rdfs:label "Part Of" ;
+    rdfs:comment "Department Organization explicitly scoped to parent Organization." ;
+    o3:allowedSource o3:Organization ;
+    o3:allowedTarget o3:Organization ;
+    o3:prototypePredicate "part_of" .
+
+o3:personBusinessPhone a owl:DatatypeProperty ;
+    rdfs:label "personBusinessPhone" ;
+    rdfs:comment "Source businessPhones normalized for display." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:minCount 0 .
+
+o3:personDisplayLabel a owl:DatatypeProperty ;
+    rdfs:label "personDisplayLabel" ;
+    rdfs:comment "Name or address display projection." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:personEmailAddress a owl:DatatypeProperty ;
+    rdfs:label "personEmailAddress" ;
+    rdfs:comment "Resolved profile addresses; not identity by themselves." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:minCount 0 .
+
+o3:personJobTitle a owl:DatatypeProperty ;
+    rdfs:label "personJobTitle" ;
+    rdfs:comment "Source profile jobTitle." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:personOfficeLocation a owl:DatatypeProperty ;
+    rdfs:label "personOfficeLocation" ;
+    rdfs:comment "Source officeLocation." ;
+    rdfs:domain o3:Person ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:prototypePredicate a owl:AnnotationProperty .
+
+o3:prototypeRule a owl:AnnotationProperty .
+
+o3:recurrenceKey a owl:DatatypeProperty ;
+    rdfs:label "recurrenceKey" ;
+    rdfs:comment "Master or original RECURRENCE-ID occurrence key." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:maxCount 1 ;
+    o3:minCount 1 .
+
+o3:recurrenceRole a owl:DatatypeProperty ;
+    rdfs:label "recurrenceRole" ;
+    rdfs:comment "Single, Series, or Exception." ;
+    rdfs:domain o3:Event ;
+    rdfs:isDefinedBy o3:ModelV1 ;
+    rdfs:range xsd:string ;
+    o3:allowedLiteral "Exception",
+        "Series",
+        "Single" ;
+    o3:maxCount 1 ;
+    o3:minCount 0 .
+
+o3:relatedTo a owl:ObjectProperty ;
+    rdfs:label "Related To" ;
+    rdfs:comment "ICS RELATED-TO matched to an Event in the same calendar scope." ;
+    o3:allowedSource o3:Event ;
+    o3:allowedTarget o3:Event ;
+    o3:prototypePredicate "related_to" .
+
+o3:repliesTo a owl:ObjectProperty ;
+    rdfs:label "Replies To" ;
+    rdfs:comment "Explicit in_reply_to matched to one indexed Email in mailbox scope." ;
+    o3:allowedSource o3:Email ;
+    o3:allowedTarget o3:Email ;
+    o3:prototypePredicate "replies_to" .
+
+o3:sentBy a owl:ObjectProperty ;
+    rdfs:label "Sent By" ;
+    rdfs:comment "Email sender matched to a unique Person." ;
+    o3:allowedSource o3:Email ;
+    o3:allowedTarget o3:Person ;
+    o3:prototypePredicate "sent_by" .
+
+o3:sentTo a owl:ObjectProperty ;
+    rdfs:label "Sent To" ;
+    rdfs:comment "Email To recipient matched to a unique Person." ;
+    o3:allowedSource o3:Email ;
+    o3:allowedTarget o3:Person ;
+    o3:prototypePredicate "sent_to" .
+
+o3:LineOfEffort a owl:Class ;
+    rdfs:label "Line of Effort (LOE)" ;
+    rdfs:subClassOf o3:Record .
+
+o3:Organization a owl:Class ;
+    rdfs:label "Organization" ;
+    rdfs:subClassOf o3:Record .
+
+o3:Record a owl:Class ;
+    rdfs:label "O3 Record" .
+
+o3:Document a owl:Class ;
+    rdfs:label "Document" ;
+    rdfs:subClassOf o3:Record .
+
+o3:Person a owl:Class ;
+    rdfs:label "Person" ;
+    rdfs:subClassOf o3:Record .
+
+o3:Email a owl:Class ;
+    rdfs:label "Email" ;
+    rdfs:subClassOf o3:Record .
+
+o3:Event a owl:Class ;
+    rdfs:label "Event" ;
+    rdfs:subClassOf o3:Record .
+
+o3:ModelV1 a owl:Ontology ;
+    rdfs:label "O3 Core Ontology v0.1, prototype-backed draft" ;
+    rdfs:comment "Scope: six primary record types, minimum evidenced properties, 14 implemented deterministic relation predicates. Source corpora remain archived; no speculative relationships, AI, or pySHACL dependency." .
+

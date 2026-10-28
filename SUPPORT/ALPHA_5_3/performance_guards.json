@@ -1,0 +1,13 @@
+{
+  "scope": "Synthetic integrity and full-content regression",
+  "checks": {
+    "one_complete_integrity_pass_per_validation": true,
+    "failed_quick_check_rejected": true,
+    "dangling_workspace_reference_rejected": true,
+    "full_output_and_excluded_body_preserved": true,
+    "body_only_saved_and_current_search_preserved": true,
+    "reader_and_sources_preserved": true,
+    "reply_index_retains_no_bodies": true
+  },
+  "passed": true
+}

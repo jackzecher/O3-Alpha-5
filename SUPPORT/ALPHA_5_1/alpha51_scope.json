@@ -1,0 +1,10 @@
+{
+  "application_files_changed": [
+    "O3/O3_PRODUCT/APP/o3_gui/__init__.py",
+    "O3/O3_PRODUCT/APP/o3_gui/km_session.py",
+    "O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py",
+    "O3/O3_PRODUCT/APP/o3_km/migration.py"
+  ],
+  "protected_files_unchanged": 9,
+  "application_timer_unchanged": true
+}

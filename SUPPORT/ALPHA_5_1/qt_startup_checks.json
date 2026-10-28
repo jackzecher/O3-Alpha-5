@@ -1,0 +1,15 @@
+{
+  "scope": "Actual Linux offscreen Qt, genuine Alpha 4 synthetic calendar state",
+  "ready_seconds": 0.856,
+  "timer_ms": 45000,
+  "ready_signals": [
+    true
+  ],
+  "event_count": 1500,
+  "diagnostic_status": "ready",
+  "checkpoint_substages_recorded": true,
+  "clean_shutdown": true,
+  "lock_released": true,
+  "saved_draft_preserved": true,
+  "passed": true
+}

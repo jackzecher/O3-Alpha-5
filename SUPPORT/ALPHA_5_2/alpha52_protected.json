@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "baseline_archive_sha256": "7dddd0c35f56ceaec8a5cb1a9a4bb24d5686be8e31564624710ef3d73ae72bea",
+  "checks": [
+    {
+      "path": "O3/O3.exe",
+      "expected": "c5e47097f81599642cb60546621f0134bbd204600160a37d696177396cf62db1",
+      "actual": "c5e47097f81599642cb60546621f0134bbd204600160a37d696177396cf62db1",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_BOOTSTRAP/BOOTSTRAP_MANIFEST.json",
+      "expected": "4b4907ea584381f043e6d749b0842d707ec9dbe7ce6b57bfe107818efda5b5e7",
+      "actual": "4b4907ea584381f043e6d749b0842d707ec9dbe7ce6b57bfe107818efda5b5e7",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_BOOTSTRAP/bootstrap.py",
+      "expected": "2383c9a952a7f1d619b25a30bb5d816607688041aeec9b91a5507c7e2f85df7e",
+      "actual": "2383c9a952a7f1d619b25a30bb5d816607688041aeec9b91a5507c7e2f85df7e",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_BOOTSTRAP/probe.py",
+      "expected": "62a629771e2bb7a3cf1493c6e6d4eae9b56a74f635cd431b0a1b7b5f7df3979d",
+      "actual": "62a629771e2bb7a3cf1493c6e6d4eae9b56a74f635cd431b0a1b7b5f7df3979d",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_BOOTSTRAP/preview.py",
+      "expected": "51247bf3c9256bafb9e3c47bdd179b0da659e1a60346da2d8f1db60bf5e4caa8",
+      "actual": "51247bf3c9256bafb9e3c47bdd179b0da659e1a60346da2d8f1db60bf5e4caa8",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_PRODUCT/_O3_START.py",
+      "expected": "f6f837702f945e1feac7ca726520ae68f8aee9debcef6b99beffa1c653e424b4",
+      "actual": "f6f837702f945e1feac7ca726520ae68f8aee9debcef6b99beffa1c653e424b4",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_PRODUCT/_O3_WORKSPACE_APP.py",
+      "expected": "fba9303e46a970822cb1944f35f536e1eee0335674f1a98c50aaeba5879fa9fb",
+      "actual": "fba9303e46a970822cb1944f35f536e1eee0335674f1a98c50aaeba5879fa9fb",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_PRODUCT/_O3_WORKSPACE_STATE.py",
+      "expected": "7357db53296c1ca3e538b379e1a16a0140e04ac42a4761f4381f4614a7ac8610",
+      "actual": "7357db53296c1ca3e538b379e1a16a0140e04ac42a4761f4381f4614a7ac8610",
+      "passed": true
+    },
+    {
+      "path": "O3/O3_PRODUCT/RUNTIME_PROFILE.json",
+      "expected": "2de023b68fe80818375d11052d59ffb28c98814357ed26c5f5c51cc7f75bf8dd",
+      "actual": "2de023b68fe80818375d11052d59ffb28c98814357ed26c5f5c51cc7f75bf8dd",
+      "passed": true
+    },
+    {
+      "path": "PACKAGE_MANIFEST.build_id",
+      "expected": "0.9.1-km12-p3-prism2",
+      "actual": "0.9.1-km12-p3-prism2",
+      "passed": true
+    },
+    {
+      "path": "native_product_verifier",
+      "passed": true
+    },
+    {
+      "path": "native_bootstrap_verifier",
+      "passed": true
+    }
+  ]
+}

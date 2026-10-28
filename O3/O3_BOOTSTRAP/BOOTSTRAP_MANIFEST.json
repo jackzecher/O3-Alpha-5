@@ -1,0 +1,18 @@
+{
+  "application_build_id": "0.9.1-km12-p3-prism2",
+  "bootstrap_policy": "NIPR_EXISTING_FOCUS_NATIVE_NO_INSTALL;HOME_USER_PYTHON_LOCAL_PERMANENT_INSTALL;PREVIEW_SYNTHETIC_ONLY",
+  "bootstrap_version": "1.0.1",
+  "classification": "O3_UNIVERSAL_ALPHA_NONPRODUCTION",
+  "files": {
+    "O3_BOOTSTRAP/bootstrap.py": "2383c9a952a7f1d619b25a30bb5d816607688041aeec9b91a5507c7e2f85df7e",
+    "O3_BOOTSTRAP/preview.py": "51247bf3c9256bafb9e3c47bdd179b0da659e1a60346da2d8f1db60bf5e4caa8",
+    "O3_BOOTSTRAP/probe.py": "62a629771e2bb7a3cf1493c6e6d4eae9b56a74f635cd431b0a1b7b5f7df3979d"
+  },
+  "format_version": 1,
+  "nipr_predecessor_sha256": "f5c7f2769a8d46455dddfa4a0a305e9ba1f4d276fc0d76fd612bf6f93bee264a",
+  "no_bundled_runtime": true,
+  "production_authorization": "NOT_GRANTED",
+  "shared_application_origin": "O3_nonNIPR_Alpha_1_Editorial_Compact_Stacked_Emails.zip",
+  "shared_application_source_sha256": "29798c0f724027a3d42a88ef2898f6c90a6c336fc4d7e5ef6fdf5355ee6c02d6",
+  "source_authority_sha256": "56c9d68a7e1fd25a2303fcd1a578d05a2b2a7b04cc1312136bcc844455d6c644"
+}

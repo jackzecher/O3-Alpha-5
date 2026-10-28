@@ -1,0 +1,30 @@
+         962879 function calls (962848 primitive calls) in 1.937 seconds
+
+   Ordered by: cumulative time
+   List reduced from 161 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.937    1.937 scale_runtime_profile.py:44(<lambda>)
+        1    0.000    0.000    1.937    1.937 km_session.py:197(query)
+        1    0.000    0.000    1.937    1.937 km_session.py:191(call)
+        1    0.000    0.000    1.937    1.937 service.py:1688(call)
+        1    0.000    0.000    1.937    1.937 service.py:1712(_call)
+        1    0.000    0.000    1.937    1.937 service.py:1464(_dispatch)
+        1    0.000    0.000    1.937    1.937 mail_tasks.py:79(query)
+        1    0.003    0.003    1.936    1.936 queries.py:560(_configured_view)
+        1    0.002    0.002    1.933    1.933 queries.py:638(_configured_view_page)
+        1    0.001    0.001    1.027    1.027 heapq.py:463(nsmallest)
+     2001    0.268    0.000    1.020    0.001 queries.py:719(candidates)
+      100    0.001    0.000    0.854    0.009 queries.py:158(_decorate)
+      100    0.000    0.000    0.844    0.008 evaluation.py:110(reply_evidence)
+        3    0.000    0.000    0.843    0.281 reply_evidence.py:169(context)
+      200    0.000    0.000    0.842    0.004 evaluation.py:89(replies)
+        1    0.239    0.239    0.842    0.842 reply_evidence.py:54(__init__)
+    25224    0.018    0.000    0.826    0.000 __init__.py:299(loads)
+    25224    0.033    0.000    0.802    0.000 decoder.py:333(decode)
+    25224    0.744    0.000    0.744    0.000 decoder.py:344(raw_decode)
+    12000    0.019    0.000    0.531    0.000 queries.py:683(scalar)
+    24000    0.016    0.000    0.496    0.000 evaluation.py:121(field_value)
+     6000    0.004    0.000    0.493    0.000 {method 'extend' of 'list' objects}
+
+

@@ -1,0 +1,30 @@
+         32 function calls in 0.000 seconds
+
+   Ordered by: cumulative time
+   List reduced from 25 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 scale_runtime_profile.py:49(<lambda>)
+        1    0.000    0.000    0.000    0.000 km_session.py:416(content)
+        1    0.000    0.000    0.000    0.000 record_content.py:298(record_content)
+        1    0.000    0.000    0.000    0.000 record_content.py:314(_record_content)
+        1    0.000    0.000    0.000    0.000 __init__.py:299(loads)
+        1    0.000    0.000    0.000    0.000 decoder.py:333(decode)
+        1    0.000    0.000    0.000    0.000 store.py:288(row)
+        1    0.000    0.000    0.000    0.000 decoder.py:344(raw_decode)
+        1    0.000    0.000    0.000    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 {method 'fetchone' of 'sqlite3.Cursor' objects}
+        1    0.000    0.000    0.000    0.000 record_content.py:280(_page_segments)
+        1    0.000    0.000    0.000    0.000 km_session.py:125(_owned)
+        2    0.000    0.000    0.000    0.000 {method 'match' of 're.Pattern' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.max}
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.len}
+        2    0.000    0.000    0.000    0.000 {method 'end' of 're.Match' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method time.perf_counter}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.min}
+        1    0.000    0.000    0.000    0.000 {method 'join' of 'str' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.000    0.000    0.000    0.000 {method 'startswith' of 'str' objects}
+
+

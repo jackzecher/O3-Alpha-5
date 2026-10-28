@@ -1,0 +1,26 @@
+O3 Alpha 3 AI synthetic Qt preview — Third-party notices
+
+1. PySide6 Essentials 6.9.2 and shiboken6 6.9.2
+   Copyright: The Qt Company Ltd. and relevant contributors.
+   Distributed as unmodified official Linux wheels, retained with their
+   original .dist-info metadata. The package metadata identifies
+   LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only licensing options.
+   Full LGPL-3.0 and GPL-3.0 license texts are included under
+   AI_RUNTIME/licenses/ (choice of licensing is as described above).
+   Qt project: https://www.qt.io/ and https://doc.qt.io/qtforpython/
+   Sources, additional terms and third-party notices are available from
+   the Qt Project and its published PySide6 sources; the binaries remain
+   replaceable through the separate AI_RUNTIME/wheels directory.
+
+2. RDFLib 7.6.0
+   In pure_python_deps.zip. Licensing notices and metadata from the
+   installed distribution are included where provided.
+   https://github.com/RDFLib/rdflib
+
+3. pyparsing 3.3.3
+   In pure_python_deps.zip, including its LICENSE file.
+   https://github.com/pyparsing/pyparsing
+
+No font files are redistributed. The program is a nonproduction
+synthetic-only GUI development preview and is not approved for NIPR
+operational use or redistribution as an enterprise runtime.

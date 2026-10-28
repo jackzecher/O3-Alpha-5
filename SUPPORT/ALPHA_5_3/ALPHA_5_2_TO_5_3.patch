@@ -1,0 +1,89 @@
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+index 79e2f7a..f2ce142 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+@@ -1,2 +1,2 @@
+ """Native O3 Alpha 5; Core/KM remains the shared knowledge authority."""
+-__version__ = "5.2.0-alpha5.2"
++__version__ = "5.3.0-alpha5.3"
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+index 8d3ce32..baf66c3 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+@@ -53,7 +53,7 @@ class StartupDiagnostics:
+         self.worker_thread = threading.get_ident()
+         self.last_progress_save = 0.0
+         self.started = time.monotonic()
+-        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.2',
++        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.3',
+             'started_utc': datetime.now(timezone.utc).isoformat(), 'status': 'running',
+             'stage': 'session_construction', 'events': [], 'errors': [],
+             'privacy': 'No exception messages, absolute paths, account names, credentials, source records or frame locals.'}
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/queries.py b/package/O3/O3_PRODUCT/APP/o3_km/queries.py
+index 0307828..f506cd7 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/queries.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/queries.py
+@@ -662,6 +662,11 @@ class QueryMixin:
+         if not isinstance(current_search,str) or len(current_search)>500 or any(ord(c)<32 for c in current_search):
+             raise KMInvalid('INVALID_VALUE','Invalid view search')
+         current_search=current_search.strip().casefold()
++        # Supported Email rule/sort/group fields do not consume body_text.
++        # Search still examines the complete stored JSON. Full records are
++        # fetched after paging, so readers and selected/excluded output retain
++        # their original contents. Avoid decoding every body just to order mail.
++        omit_body=kind=='Email' and not saved_search and not current_search and 'body_text' not in fields
+         if kind is not None and not workspace and expression is None and not group and not compound and not include and not saved_search and not current_search and len(sorts)==1 and sorts[0]['field'] in ('updated_at','record_id'):
+             field=sorts[0]['field'];direction='DESC' if sorts[0]['direction']=='desc' else 'ASC'
+             total=self.db.execute('SELECT COUNT(*) FROM records WHERE record_type=? AND active=1',(kind,)).fetchone()[0]
+@@ -718,7 +723,9 @@ class QueryMixin:
+ 
+         def candidates():
+             nonlocal unknown,stale,matched,excluded,groups_truncated
+-            sql=('SELECT * FROM ws_records WHERE type_id=?' if workspace else 'SELECT * FROM records WHERE record_type=?' if kind else 'SELECT * FROM records WHERE 1=1')+('' if include else ' AND active=1')+' ORDER BY record_id'
++            columns=('record_id,record_type,scope,identity_basis,identity_key,fingerprint,source_sha,active,properties_json,'
++                     "json_remove(added_json,'$.body_text') AS added_json,updated_at") if omit_body else '*'
++            sql=('SELECT * FROM ws_records WHERE type_id=?' if workspace else 'SELECT '+columns+' FROM records WHERE record_type=?' if kind else 'SELECT * FROM records WHERE 1=1')+('' if include else ' AND active=1')+' ORDER BY record_id'
+             for stored in self.db.execute(sql,(kind,) if kind else ()):
+                 if workspace:
+                     from .workspace_types import _record_row
+@@ -739,7 +746,8 @@ class QueryMixin:
+                     excluded+=1
+                     if len(excluded_examples)<10:
+                         reason=evaluator._unknown[1] if answer is None and evaluator._unknown else 'Does not match the saved conditions.'
+-                        excluded_examples.append({'record':({'record_id':row['record_id'],'record_type':kind,'properties':_json(row['properties_json'])} if workspace else self._decorate(row)),'reason':reason,'state':'unknown' if answer is None else 'excluded'})
++                        excluded_row=self.engine.store.row(row['record_id']) if omit_body else row
++                        excluded_examples.append({'record':({'record_id':row['record_id'],'record_type':kind,'properties':_json(row['properties_json'])} if workspace else self._decorate(excluded_row)),'reason':reason,'state':'unknown' if answer is None else 'excluded'})
+                     continue
+                 matched+=1
+                 match={'state':'matched' if answer is True else 'unknown',
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/reply_evidence.py b/package/O3/O3_PRODUCT/APP/o3_km/reply_evidence.py
+index d1318f7..6d96fa2 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/reply_evidence.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/reply_evidence.py
+@@ -67,7 +67,7 @@ class ReplyEvidence:
+         # Read only evidence fields; large body text never enters this index.
+         names = ('mailbox_id', 'conversation_id', 'in_reply_to', 'from', 'to', 'cc',
+                  'sent_at_utc', 'received_at_utc')
+-        for raw in service.db.execute("SELECT record_id,properties_json,added_json FROM records WHERE record_type='Email' AND active=1 ORDER BY record_id"):
++        for raw in service.db.execute("SELECT record_id,properties_json,json_remove(added_json,'$.body_text') AS added_json FROM records WHERE record_type='Email' AND active=1 ORDER BY record_id"):
+             props = json.loads(raw['properties_json'])
+             props = {key: props[key] for key in names if key in props}
+             added = json.loads(raw['added_json'])
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/workspace_types.py b/package/O3/O3_PRODUCT/APP/o3_km/workspace_types.py
+index 819a465..c247e61 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/workspace_types.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/workspace_types.py
+@@ -86,10 +86,9 @@ def validate_v4(db, *, allow_alpha4=False):
+         sql=db.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name=?",(table,)).fetchone()[0]
+         if "'WorkspaceOrganization'" in sql:
+             raise RuntimeError('SCHEMA_INCOMPATIBLE: old fixed '+clause+' constraint')
+-    if db.execute('PRAGMA foreign_key_check').fetchone():
+-        raise RuntimeError('INTEGRITY_FAILED: invalid Workspace foreign key')
+-    if db.execute('PRAGMA quick_check').fetchone()[0]!='ok':
+-        raise RuntimeError('INTEGRITY_FAILED: SQLite quick check')
++    # validate_workspace_schema above already runs both whole-database checks.
++    # The extension checks are read-only; repeating those scans here doubles
++    # the integrity work on every preflight and every service construction.
+ 
+ 
+ def extend_schema(db):

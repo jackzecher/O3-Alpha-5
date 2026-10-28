@@ -1,0 +1,228 @@
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+index 4508dea..73dc650 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+@@ -1,2 +1,2 @@
+ """Native O3 Alpha 5; Core/KM remains the shared knowledge authority."""
+-__version__ = "5.0.0-alpha5.diagnostic1"
++__version__ = "5.1.0-alpha5.1"
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py b/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
+index 9d5b630..13c6f71 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
+@@ -141,6 +141,7 @@ class KMSession:
+             service = KMService(engine, actor=self.actor, allow_alpha4_catalog=True)
+             if self.startup_diagnostics:
+                 service._startup_error = self.startup_diagnostics.failure
++                service._startup_phase = self.startup_diagnostics.phase
+                 self.startup_diagnostics.phase('starter_conversion_and_checkpoint')
+             legacy = read_config(self.state).get("alpha3", {}).get("mail_views", [])
+             converted = service.call({"contract": VERSION, "operation": "view.starters.ensure",
+@@ -157,6 +158,7 @@ class KMSession:
+             return self.summary()
+         finally:
+             if hasattr(service, '_startup_error'): del service._startup_error
++            if hasattr(service, '_startup_phase'): del service._startup_phase
+ 
+     def close(self):
+         self._owned()
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+index ce61a39..8144b98 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+@@ -50,7 +50,7 @@ class StartupDiagnostics:
+         self.path = (state.parent/'logs' if state.name == 'state' and (state.parent/'workspace-owner.json').is_file() else state.parent/(state.name+'-startup-logs')) / FILENAME
+         self.lock = threading.RLock()
+         self.started = time.monotonic()
+-        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.diagnostic1',
++        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.1',
+             'started_utc': datetime.now(timezone.utc).isoformat(), 'status': 'running',
+             'stage': 'session_construction', 'events': [], 'errors': [],
+             'privacy': 'No exception messages, absolute paths, account names, credentials, source records or frame locals.'}
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/migration.py b/package/O3/O3_PRODUCT/APP/o3_km/migration.py
+index a598bb1..f9ae987 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/migration.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/migration.py
+@@ -120,10 +120,12 @@ def _source_roots(db):
+                 kind=='Person' and parent.name=='Profiles' and parent.parent.name=='Contacts' or
+                 kind=='Event' and parent.name=='Calendars' or
+                 kind=='Document' and parent.name=='Documents'):
+-                roots.add(parent.parent.parent.resolve() if kind in ('Email','Person')
+-                          else parent.parent.resolve())
++                roots.add(parent.parent.parent if kind in ('Email','Person')
++                          else parent.parent)
+                 break
+-    return roots
++    # Captures commonly share one source root. Resolve it once, particularly on
++    # managed/network drives, while retaining the same canonical overlap checks.
++    return {root.resolve() for root in roots}
+ 
+ def _no_overlap(destination,roots):
+     for root in roots:
+@@ -196,19 +198,24 @@ def validate_schema3(db, *, allow_alpha4=False):
+ 
+ def _validate_archive(state,db):
+     if (state/'archive').is_symlink():raise RuntimeError('INTEGRITY_FAILED: archive directory link')
+-    for table in ('record_versions','source_observations'):
+-        for rel,sha in db.execute('SELECT archive_relpath,source_sha FROM '+table):
+-            try:_zip_name(rel)
+-            except RuntimeError:raise RuntimeError('INTEGRITY_FAILED: unsafe archive path') from None
+-            if not rel.startswith('archive/'):
+-                raise RuntimeError('INTEGRITY_FAILED: unsafe archive path')
+-            candidate=state/rel
+-            if any((state.joinpath(*PurePosixPath(rel).parts[:i])).is_symlink()
+-                   for i in range(1,len(PurePosixPath(rel).parts)+1)):
+-                raise RuntimeError('INTEGRITY_FAILED: archive symlink')
+-            path=candidate.resolve()
+-            if not path.is_relative_to((state/'archive').resolve()) or not path.is_file() or _file_hash(path)!=sha:
+-                raise RuntimeError('INTEGRITY_FAILED: source archive verification')
++    archive_root=(state/'archive').resolve()
++    # One ICS capture may support thousands of event records. Verify each
++    # distinct (path, expected hash) once per audit, not the entire capture once
++    # per event in both tables. Conflicting hashes remain separate and fail.
++    references=db.execute('''SELECT archive_relpath,source_sha FROM record_versions
++                            UNION SELECT archive_relpath,source_sha FROM source_observations''')
++    for rel,sha in references:
++        try:_zip_name(rel)
++        except RuntimeError:raise RuntimeError('INTEGRITY_FAILED: unsafe archive path') from None
++        if not rel.startswith('archive/'):
++            raise RuntimeError('INTEGRITY_FAILED: unsafe archive path')
++        candidate=state/rel
++        if any((state.joinpath(*PurePosixPath(rel).parts[:i])).is_symlink()
++               for i in range(1,len(PurePosixPath(rel).parts)+1)):
++            raise RuntimeError('INTEGRITY_FAILED: archive symlink')
++        path=candidate.resolve()
++        if not path.is_relative_to(archive_root) or not path.is_file() or _file_hash(path)!=sha:
++            raise RuntimeError('INTEGRITY_FAILED: source archive verification')
+ 
+ def _verify_core_provenance_readonly(state: Path, db: sqlite3.Connection):
+     """Reuse the original Core audit against an existing read-only snapshot.
+@@ -740,6 +747,11 @@ def prepare_alpha5_conversion(service):
+     The native ownership marker lives one directory above state and is included.
+     """
+     from .workspace_types import validate_v4
++    def phase(name):
++        callback=getattr(service,'_startup_phase',None)
++        if callback is not None:
++            try:callback(name)
++            except Exception:pass  # Diagnostic I/O must not change conversion.
+     db=service.db
+     if db.in_transaction:
+         raise RuntimeError('STATE_LOCKED: checkpoint must precede the conversion transaction')
+@@ -751,9 +763,12 @@ def prepare_alpha5_conversion(service):
+         raise RuntimeError('SCHEMA_INCOMPATIBLE: unsupported Alpha 5 conversion input')
+     validate_v4(db,allow_alpha4=True)
+     state=Path(service.engine.store.root).resolve()
++    phase('checkpoint_source_archive_verification')
+     _validate_archive(state,db)
++    phase('checkpoint_provenance_verification')
+     _verify_core_provenance_readonly(state,db)
+     root,state_rel,owner_id=_checkpoint_layout(state)
++    phase('checkpoint_source_boundaries')
+     roots=_source_roots(db)
+     bound=_meta(db,'km_bound_source_root_v1')
+     if bound:roots.add(Path(bound).resolve())
+@@ -777,11 +792,13 @@ def prepare_alpha5_conversion(service):
+               'catalog':old,'schema_version':4,'sha256':{}}
+     try:
+         with tempfile.TemporaryDirectory(prefix='o3-alpha5-snapshot-') as tmp:
++            phase('checkpoint_database_snapshot')
+             snapshot=Path(tmp)/'o3.sqlite'
+             with closing(sqlite3.connect(snapshot)) as out:
+                 db.backup(out)
+                 validate_v4(out,allow_alpha4=True)
+             entries={db_name:snapshot}
++            phase('checkpoint_inventory')
+             for file in root.rglob('*'):
+                 if file.is_symlink():raise RuntimeError('BACKUP_REQUIRED: linked Workspace entry')
+                 if not file.is_file():continue
+@@ -792,6 +809,7 @@ def prepare_alpha5_conversion(service):
+                 if name=='checkpoint-manifest.json':
+                     raise RuntimeError('BACKUP_REQUIRED: reserved checkpoint filename')
+                 entries[name]=file
++            phase('checkpoint_write')
+             with zipfile.ZipFile(pending,'x',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
+                 for name,file in sorted(entries.items()):
+                     digest=hashlib.sha256()
+@@ -800,9 +818,11 @@ def prepare_alpha5_conversion(service):
+                             digest.update(chunk);output.write(chunk)
+                     manifest['sha256'][name]=digest.hexdigest()
+                 archive.writestr('checkpoint-manifest.json',_json(manifest))
++            phase('checkpoint_verify')
+             verify_alpha5_checkpoint(pending)
+             os.replace(pending,destination)
+     finally:pending.unlink(missing_ok=True)
++    phase('starter_definition_conversion')
+     return {'required':True,'path':str(destination),'sha256':_file_hash(destination),
+             'verified':True,'format':manifest['format'],'catalog':old,
+             'workspace_revision':manifest['workspace_revision'],
+diff --git a/tools/package_release.py b/tools/package_release.py
+index 12db3b0..b1b69e0 100644
+--- a/tools/package_release.py
++++ b/tools/package_release.py
+@@ -1,9 +1,9 @@
+-"""Build a complete Alpha 5 release; protected native payload is immutable."""
++"""Build a complete Alpha 5.1 release; protected native payload is immutable."""
+ from pathlib import Path
+-import argparse,hashlib,json,subprocess,sys,zipfile
++import argparse,hashlib,json,os,subprocess,sys,zipfile
+ sys.dont_write_bytecode=True
+ ROOT=Path(__file__).resolve().parents[1];PACKAGE=ROOT/'package';PRODUCT=PACKAGE/'O3/O3_PRODUCT'
+-VERSION='5.0.0-alpha5.diagnostic1';PROTOCOL='0.9.1-km12-p3-prism2'
++VERSION='5.1.0-alpha5.1';PROTOCOL='0.9.1-km12-p3-prism2'
+ def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+ def inventory(root,exclude=()):
+  result={}
+@@ -24,16 +24,16 @@ def build(zip_output=True):
+  application_files=inventory(PRODUCT/'APP')
+  app_digest=hashlib.sha256(''.join(name+'\0'+value+'\n' for name,value in application_files.items()).encode()).hexdigest()
+  info=json.loads((PRODUCT/'BUILD_INFO.json').read_text())
+- info.update(application_build_id=VERSION,application_source='Alpha 5 source checkpoint',application_source_sha256=app_digest,
++ info.update(application_build_id=VERSION,application_source='Alpha 5.1 startup repair checkpoint',application_source_sha256=app_digest,
+    application_source_digest_algorithm='SHA256(sorted APP relative path + NUL + file SHA256 + newline)',
+    source_revision=revision,base_release_sha256=baseline['archive_sha256'],knowledge_schema=4,
+-   status='Alpha 5 startup diagnostic build; startup failure cause not yet established',
++   status='Alpha 5.1 checkpoint performance repair; native Windows/NIPR validation pending',
+    workspace_continuity='Schema4/native roots and startup protected; verified full checkpoint before atomic catalog conversion',
+-   changes=['Shared reply evidence and editable mail views in the central framework.',
+-            'Nested include/exclude view rules with exact preview and typed global sorting.',
+-            'Native card rows, inline reading, typed actions, project associations and audited undo.',
+-            'Recovery validation, performance and actual Qt interaction checks.',
+-            'Complete native Windows payload and offline synthetic AI launch retained.'])
++   changes=['Verify each distinct archive path and expected hash once per validation pass.',
++            'Resolve shared source roots once per boundary check.',
++            'Retain privacy-safe checkpoint-stage diagnostics.',
++            'Alpha 5 interactions, evidence semantics, workspace data and recovery preserved.',
++            'Protected native launch files, startup limits and offline AI runtime unchanged.'])
+  save(PRODUCT/'BUILD_INFO.json',info)
+  manifest=json.loads((PRODUCT/'PACKAGE_MANIFEST.json').read_text())
+  manifest.update(application_build_id=VERSION,feature_version=VERSION,build_id=PROTOCOL,
+@@ -50,11 +50,23 @@ def build(zip_output=True):
+   'protected_files_passed':len(baseline['protected']),'product_manifest_entries':len(manifest['files']),
+   'product_manifest_sha256':sha(PRODUCT/'PACKAGE_MANIFEST.json'),'ai_manifest_sha256':sha(ai/'AI_RUNTIME_MANIFEST.json')}
+  if zip_output:
+-  output=ROOT/'deliverables/O3_Alpha_5_Startup_Diagnostic.zip';output.parent.mkdir(exist_ok=True)
+-  with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
+-   for name in inventory(PACKAGE):archive.write(PACKAGE/name,name)
+-  with zipfile.ZipFile(output) as archive:
+-   if archive.testzip():raise RuntimeError('Release archive CRC failure')
++  output=ROOT/'deliverables/O3_Alpha_5_1.zip';output.parent.mkdir(exist_ok=True)
++  pending=output.with_suffix('.zip.pending')
++  payload=inventory(PACKAGE)
++  try:
++   with zipfile.ZipFile(pending,'w',zipfile.ZIP_DEFLATED,compresslevel=6,allowZip64=False) as archive:
++    for name in payload:archive.write(PACKAGE/name,name)
++   with pending.open('rb') as stream:os.fsync(stream.fileno())
++   with zipfile.ZipFile(pending) as archive:
++    if set(archive.namelist())!=set(payload) or len(archive.infolist())!=len(payload):
++     raise RuntimeError('Release archive inventory failure')
++    if archive.testzip():raise RuntimeError('Release archive CRC failure')
++    for name,expected in payload.items():
++     if hashlib.sha256(archive.read(name)).hexdigest()!=expected:
++      raise RuntimeError('Release archive content mismatch: '+name)
++   if inventory(PACKAGE)!=payload:raise RuntimeError('Release files changed during packaging')
++   os.replace(pending,output)
++  finally:pending.unlink(missing_ok=True)
+   report.update(zip=str(output),zip_bytes=output.stat().st_size,zip_sha256=sha(output))
+  save(ROOT/'evidence/release_package.json',report);print(json.dumps(report,indent=2));return report
+ if __name__=='__main__':

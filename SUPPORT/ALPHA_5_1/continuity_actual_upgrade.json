@@ -1,0 +1,22 @@
+{
+  "scope": "Genuine old and new code in distinct processes; synthetic data",
+  "phases": {
+    "seed": {
+      "created_with_actual_alpha4": true,
+      "record_count": 24
+    },
+    "upgrade": {
+      "old_view_name_rules_sort_preserved": true,
+      "original_audit_prefix_preserved": true,
+      "old_disposition_converted_to_authoritative_property": true,
+      "original_undo_token_still_valid": true,
+      "conversion_restart_idempotent": true,
+      "core_sources_owner_settings_unchanged": true,
+      "checkpoint_verified_and_restored": true
+    },
+    "reopen": {
+      "actual_alpha4_reopens_matching_restored_state": true
+    }
+  },
+  "passed": true
+}

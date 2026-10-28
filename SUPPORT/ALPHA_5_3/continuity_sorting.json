@@ -1,0 +1,28 @@
+{
+  "scope": "Real source fixture, public records.query, five-row pages",
+  "checks": {
+    "record_type": {
+      "asc_and_desc_global": true,
+      "no_page_loss_or_duplication": true,
+      "records": 26
+    },
+    "record_id": {
+      "asc_and_desc_global": true,
+      "no_page_loss_or_duplication": true,
+      "records": 26
+    },
+    "updated_at": {
+      "asc_and_desc_global": true,
+      "no_page_loss_or_duplication": true,
+      "records": 26
+    }
+  },
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  },
+  "passed": true
+}

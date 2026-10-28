@@ -1,0 +1,74 @@
+{
+  "scope": "synthetic Linux Qt execution; NOT Windows/NIPR qualification",
+  "application_build_id": "5.2.0-alpha5.2",
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  },
+  "captures": [
+    {
+      "view": "mail",
+      "file": "O3_Alpha5_mail.png",
+      "sha256": "c123a6e345ec299dd4db0a0983f866de3d127f100ce8a1e6e7e353b14fc39c9d",
+      "width": 1060,
+      "height": 800
+    },
+    {
+      "view": "workspace",
+      "file": "O3_Alpha5_workspace.png",
+      "sha256": "197fbef7b088e5c69826357167127161e72e510b62c0f35d54186c5877ae61e8",
+      "width": 1060,
+      "height": 800
+    },
+    {
+      "view": "records",
+      "file": "O3_Alpha5_records.png",
+      "sha256": "798ec11846aa77d08e61520f110c01d40332af34fe8cb1bc91a71eac728b357b",
+      "width": 1060,
+      "height": 800
+    },
+    {
+      "view": "reader",
+      "file": "O3_Alpha5_reader.png",
+      "sha256": "d166d6801fbd5647c426239a678f990f4f8df1029da4361248000df306d49d3f",
+      "width": 1060,
+      "height": 800
+    },
+    {
+      "view": "connections",
+      "file": "O3_Alpha5_connections.png",
+      "sha256": "04b0cb9c8a714eb031ed30991b4bab75af35df219a186106757bd953c20b0cb4",
+      "width": 1060,
+      "height": 800
+    },
+    {
+      "view": "settings",
+      "file": "O3_Alpha5_settings.png",
+      "sha256": "7c80aed3ce0d3e173e82765df7dd5ddec7c5345cae4e4262e506487fdadd9e0d",
+      "width": 1080,
+      "height": 850
+    },
+    {
+      "view": "sources",
+      "file": "O3_Alpha5_sources.png",
+      "sha256": "c000715c6ec1399860c7a4cd29c390894a51cef9da4a7e4db136aa6688d4ee75",
+      "width": 790,
+      "height": 610
+    }
+  ],
+  "fixture_only": true,
+  "temporary_workspace": true,
+  "network_required": false,
+  "engine_ready": true,
+  "qt_platform": "offscreen",
+  "correspondence_rows": 15,
+  "spatial_nodes": 6,
+  "spatial_edges": 6,
+  "result": "PASS_SYNTHETIC_QT",
+  "shutdown_clean": true,
+  "sqlite_integrity": "ok",
+  "errors": []
+}

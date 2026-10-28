@@ -1,0 +1,49 @@
+{
+  "application_build_id": "5.3.0-alpha5.3",
+  "source_revision": "eacb2a9859e6addf9a9c2091f38825c59d8ddf98",
+  "application_source_sha256": "e4e9bfd958f9b3594255625bfe3e8b6f98870a1e099cfaeca477741b19a9f529",
+  "status": "PERFORMANCE_REPAIR_LINUX_VERIFIED_WINDOWS_NIPR_PENDING",
+  "repairs": [
+    "Eliminate duplicate whole-database integrity scans inside validate_v4.",
+    "Do not decode or retain unused full message bodies in ReplyEvidence.",
+    "Avoid full-body candidate decoding for configured mail lists without body search."
+  ],
+  "checks": {
+    "same_10000_real_ingested_records_compared_with_Alpha4_and_Alpha52": "PASS_LINUX_SYNTHETIC",
+    "exact_public_query_outputs_17_cases": "PASS",
+    "body_only_search_and_full_content": "PASS",
+    "integrity_failure_and_dangling_foreign_key_rejected": "PASS",
+    "reply_classifications_sorting_and_saved_rules": "PASS",
+    "checkpoint_tamper_rollback_and_atomic_conversion": "PASS",
+    "actual_large_fixture_Qt_navigation_and_shutdown": "PASS_LINUX",
+    "keyboard_theme_125_percent_text_restart_and_saved_customization": "PASS_LINUX",
+    "actual_packaged_AI_runtime_Qt_capture": "PASS_LINUX",
+    "original_wrapper_fresh_and_existing_state": "PASS_LINUX_ADAPTED_IN_MEMORY",
+    "nine_frozen_native_files_match_original_baseline": "PASS",
+    "both_native_integrity_verifiers": "PASS",
+    "actual_Windows_NIPR_O3_exe_acceptance": "NOT_RUN"
+  },
+  "retained_reply_body_characters": {
+    "alpha52": 211554000,
+    "alpha53": 0
+  },
+  "actual_Qt_single_sample_seconds": {
+    "alpha52": {
+      "startup": 1.271432,
+      "all_mail": 2.738103
+    },
+    "alpha53": {
+      "startup": 0.643584,
+      "all_mail": 0.949544
+    }
+  },
+  "limitations": [
+    "Linux timings do not predict managed-Windows timings.",
+    "Not every view is faster; all raw comparisons are included.",
+    "Ordinary startup still performs full integrity checks.",
+    "Full-body text search still examines full message content.",
+    "One-time Alpha4 conversion still requires a verified checkpoint."
+  ],
+  "support": "SUPPORT/ALPHA_5_3",
+  "source_bundle": "SUPPORT/ALPHA_5_3/O3_Alpha_5_3_Source.bundle"
+}

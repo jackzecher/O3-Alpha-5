@@ -1,0 +1,94 @@
+{
+  "scope": "Exact public KM outputs on a shared synthetic state",
+  "results": {
+    "all": {
+      "sha256": "904527da18ceaa977a8abb0afd9d744b1c87f35774372e369eae74dc31f6ecc0",
+      "total_count": 2000,
+      "rows": 30
+    },
+    "all_page2": {
+      "sha256": "8a0b45ec636575cdafed9c7fb55a35d8ac79de874bc41b370d314d8aa6974b0e",
+      "total_count": 2000,
+      "rows": 30
+    },
+    "unanswered": {
+      "sha256": "2fc9ae066e9dc18caa562acd4414df154c9b0f2d99732dfb1f3e2e759b99357e",
+      "total_count": 2000,
+      "rows": 30
+    },
+    "unanswered_page2": {
+      "sha256": "6cc376ab821c9587785dedf690bbb49a2ec2410e9940c6d764d6127c208073e8",
+      "total_count": 2000,
+      "rows": 30
+    },
+    "waiting": {
+      "sha256": "3e50fdc4632ee7e27d55b99d8c262c6901c978f36e263b165c486b54930d0f00",
+      "total_count": 2000,
+      "rows": 30
+    },
+    "waiting_page2": {
+      "sha256": "3019c6a4f4103703068dae448010cf56e1babe9471af136dc86332e44020eb4b",
+      "total_count": 2000,
+      "rows": 30
+    },
+    "subject_asc": {
+      "sha256": "7d2347fbf9c2ef126e777756f4f4a6f9ae55a3cfa18c8d603030bca7aaf4af3b",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "subject_desc": {
+      "sha256": "ca40b645d0f5c28beb1fc7bb38b5a67ab562e8016e873a80ddc4f8b036883896",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "source_time_asc": {
+      "sha256": "bff3035cac6fcbc7249951a6d3c86e2296dd78ca693847cb58c0bf967f149228",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "source_time_desc": {
+      "sha256": "ab0dfa92245f72d1b8e7fc3b2330a594b005688a7f42b6140e29dc70ff287512",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "reply_status_asc": {
+      "sha256": "b99a387b35657888440bf8523baa21e58691de3474605fe81abbf5a7a43278ef",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "reply_status_desc": {
+      "sha256": "8904449bd60bd35b066f52ac9593763d8ccba34309a340f9ed82226f5052b67e",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "sender_identity_asc": {
+      "sha256": "b558b798a4298959fb93e8c7ab9c5cc5074321be03f8cdf47175a87750c69511",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "sender_identity_desc": {
+      "sha256": "5f52aa50da463200795999257b818d5841bda095a9d76b807b4f4a57e9b887e7",
+      "total_count": 6000,
+      "rows": 30
+    },
+    "grouped_filter": {
+      "sha256": "847ac77bdc1d1704f5be5a72f2c023161f109e2226df0fc6c072c64aeac424eb",
+      "total_count": 920,
+      "rows": 50
+    },
+    "body_search": {
+      "sha256": "a2414d4344caa401cdc49fb19dfef1029b72589038f22a0eb6cf6c805eb81478",
+      "total_count": 0,
+      "rows": 0
+    },
+    "saved_body_search": {
+      "sha256": "215adfce75cd6f8c21fb4485ec3f78775c5f2cbf25a29d6a57ec1f82377f1748",
+      "total_count": 920,
+      "rows": 50
+    }
+  },
+  "reply_index": {
+    "records": 6000,
+    "retained_body_characters": 0
+  }
+}

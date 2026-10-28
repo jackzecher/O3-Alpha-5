@@ -1,0 +1,30 @@
+         709281 function calls in 1.071 seconds
+
+   Ordered by: cumulative time
+   List reduced from 98 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.072    1.072 scale_runtime_profile.py:45(<lambda>)
+        1    0.000    0.000    1.072    1.072 km_session.py:156(query)
+        1    0.000    0.000    1.072    1.072 km_session.py:150(call)
+        1    0.000    0.000    1.072    1.072 service.py:1618(call)
+        1    0.000    0.000    1.072    1.072 service.py:1641(_call)
+        1    0.017    0.017    1.072    1.072 service.py:1409(_dispatch)
+        1    0.002    0.002    1.055    1.055 mail_tasks.py:272(query)
+        1    0.029    0.029    0.877    0.877 mail_tasks.py:131(__init__)
+        1    0.215    0.215    0.804    0.804 mail_tasks.py:70(_records)
+    12007    0.008    0.000    0.438    0.000 __init__.py:299(loads)
+    12007    0.013    0.000    0.426    0.000 decoder.py:333(decode)
+    12007    0.400    0.000    0.400    0.000 decoder.py:344(raw_decode)
+     3021    0.156    0.000    0.156    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+        1    0.019    0.019    0.128    0.128 mail_tasks.py:234(rows)
+     6000    0.015    0.000    0.063    0.000 mail_tasks.py:197(classify)
+    22000    0.009    0.000    0.053    0.000 mail_tasks.py:47(_address)
+    10000    0.009    0.000    0.044    0.000 mail_tasks.py:186(actor)
+        1    0.015    0.015    0.043    0.043 mail_tasks.py:83(identity)
+   109017    0.037    0.000    0.037    0.000 {method 'get' of 'dict' objects}
+    22000    0.017    0.000    0.035    0.000 catalog.py:170(email_address)
+     8000    0.010    0.000    0.025    0.000 mail_tasks.py:53(_recipients)
+     9000    0.008    0.000    0.021    0.000 mail_tasks.py:229(time)
+
+

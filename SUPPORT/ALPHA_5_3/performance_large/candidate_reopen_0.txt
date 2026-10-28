@@ -1,0 +1,30 @@
+         99283 function calls (99223 primitive calls) in 0.720 seconds
+
+   Ordered by: cumulative time
+   List reduced from 375 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.720    0.720 km_session.py:129(open)
+      211    0.665    0.003    0.665    0.003 {method 'execute' of 'sqlite3.Connection' objects}
+        2    0.000    0.000    0.582    0.291 workspace_types.py:73(validate_v4)
+        2    0.000    0.000    0.582    0.291 migration.py:173(validate_workspace_schema)
+        1    0.000    0.000    0.347    0.347 service.py:52(__init__)
+        1    0.000    0.000    0.281    0.281 km_session.py:55(probe_state)
+        1    0.000    0.000    0.051    0.051 km_session.py:203(summary)
+        1    0.001    0.001    0.049    0.049 logic.py:189(summarize)
+        1    0.008    0.008    0.047    0.047 store.py:390(active_relations)
+        1    0.000    0.000    0.039    0.039 engine.py:83(__init__)
+        1    0.000    0.000    0.038    0.038 ontology.py:79(__init__)
+        1    0.000    0.000    0.032    0.032 graph.py:1527(parse)
+        1    0.000    0.000    0.032    0.032 notation3.py:2014(parse)
+        1    0.000    0.000    0.031    0.031 notation3.py:491(loadStream)
+        1    0.000    0.000    0.031    0.031 notation3.py:494(loadBuf)
+        1    0.000    0.000    0.031    0.031 notation3.py:501(feed)
+       81    0.000    0.000    0.031    0.000 notation3.py:529(directiveOrStatement)
+       77    0.000    0.000    0.030    0.000 notation3.py:785(statement)
+       77    0.001    0.000    0.029    0.000 notation3.py:1121(property_list)
+     1017    0.000    0.000    0.012    0.000 notation3.py:889(item)
+      515    0.000    0.000    0.012    0.000 notation3.py:780(makeStatement)
+     1017    0.000    0.000    0.012    0.000 notation3.py:895(path)
+
+

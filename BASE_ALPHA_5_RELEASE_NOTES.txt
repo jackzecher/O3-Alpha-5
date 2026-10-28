@@ -1,0 +1,83 @@
+O3 ALPHA 5 — 5.0.0-alpha5
+
+Complete release: O3_Alpha_5.zip
+Source and evidence: O3_Alpha_5_Source_and_Verification.zip
+
+WHAT CHANGED
+
+The existing Core/KM framework now owns the common view rules and reply evidence.
+Unanswered, Waiting for replies and All mail are editable starter definitions.
+Custom views can use the same typed reply evidence alongside other conditions.
+There is no separate mail-rule engine or parallel tag store.
+
+Configure provides nested Include/Exclude groups, typed controls, explicit
+unknown handling and exact preview. Right-click a message and choose Don't show
+items like this here to refine an unsaved sender/subject exclusion in that same
+editor. Saved exclusions apply to matching current and future captures in this
+view before conversation grouping; other views and source files are preserved.
+
+Shared card rows support configurable columns, header sort/reverse sort over the
+whole query, column drag/reorder/resize, readable grouped results and inline
+expansion that pushes later rows down. Back restores your place. Long content
+can continue loading without silent truncation.
+
+Manual property cells and chips use typed editors. Right-click, F2, multiselect,
+project drag-and-drop and Undo reach the same audited commands. User-authored
+project references appear in project workspaces and Connections. Source and
+computed properties retain their explanation and read-only status.
+
+The native Qt interface has aligned card rows, restrained light/dark palettes,
+consistent controls, responsive layouts and readable 125% text. Project views
+retain their spatial context. The screenshots in the evidence archive are actual
+Qt execution with fictional records.
+
+OPEN THE RELEASE
+
+1. Close the previous O3 instance. Keep its complete package.
+2. Extract ALL of O3_Alpha_5.zip to a new local folder on your Windows system drive.
+3. Open O3/O3.exe and select the appropriate native environment.
+4. Continue using your existing workspace. Read READ_ME_FIRST.txt and the packaged
+   O3/O3_PRODUCT/USER_GUIDE.txt for the full usage and recovery instructions.
+
+The nine protected launcher/runtime files are byte-identical to Alpha 4.
+The bootstrap protocol ID and native schema 4 remain unchanged. No native
+runtime installation or dependency update was introduced. The Windows runtime
+must already meet the original environment requirements; it is not bundled.
+
+On first opening the supported Alpha 4 catalog, Alpha 5 verifies a full workspace
+checkpoint before atomically converting saved mail preferences. Interruption,
+retry, ownership, old audit/undo, and restored Alpha 4 reopening were exercised.
+Keep that checkpoint. Returning to Alpha 4 requires restoring it while the writer
+is stopped; merely swapping application folders over converted state is unsafe.
+See source/docs/RECOVERY.md in the source archive.
+
+AI / DEVELOPER EXECUTION
+
+The complete offline AI_RUNTIME remains in the release. On supported Linux:
+  python3 -I -S AI_RUNTIME/run.py --check-only
+  python3 -I -S AI_RUNTIME/run.py --capture-all ./O3_preview
+
+It runs the actual application in a temporary fictional workspace. It does not
+open your operational workspace. AI_RUNTIME/README_AI.txt documents requirements.
+The source archive includes the checkout, tests, evidence and a recoverable Git
+bundle. Large dependency archives are supplied only in the complete release;
+source/README.md explains where to copy them for development. No remote GitHub
+repository was updated by this delivery.
+
+VERIFICATION AND LIMITS
+
+Central logic, nested-rule editor, contextual exclusion through future captures,
+sort/layout persistence, actual Qt property/batch/drop/undo/navigation workflows,
+group restoration, upgrade/rollback and protected integrity checks passed.
+The final packaged offline Qt runner launched, captured seven real views and
+shut down cleanly. ALPHA_5_VERIFICATION.json binds the performed checks to this
+release; source/evidence/ contains the detailed reports and raw measurements.
+
+The 10,000-source benchmark reduced Unanswered SQL statements from 3022 to 39.
+Several query timings improved, but initial-page and second-page sort timings
+were slower in the final run. Some large-page and startup event-loop intervals
+remain above the 100 ms target. The final comparison records those limits.
+
+Native Windows/NIPR execution and physical desktop interaction still require
+target-host validation. Synthetic Linux passes establish neither organizational
+deployment acceptance nor empirical superiority to commercial products.

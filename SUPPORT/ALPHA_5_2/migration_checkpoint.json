@@ -1,0 +1,26 @@
+{
+  "scope": "Synthetic owned workspace only",
+  "checks": {
+    "strict_old_catalog_rejected": "SCHEMA_INCOMPATIBLE: catalog fingerprint mismatch",
+    "snapshot_inside_transaction_rejected": "STATE_LOCKED: checkpoint must precede the conversion transaction",
+    "checkpoint_leaves_database_unchanged": true,
+    "complete_owned_checkpoint": {
+      "files": 4,
+      "catalog": "832699e397f61a44cd0f6d287fb54541813cf4a7a2ed8fd7db8c4b0324fa3b75"
+    },
+    "unknown_catalog_rejected": "SCHEMA_INCOMPATIBLE: catalog fingerprint mismatch",
+    "unknown_conversion_rejected": "SCHEMA_INCOMPATIBLE: unsupported Alpha 5 conversion input",
+    "live_restore_rejected": "STATE_LOCKED: rollback requires confirmed stopped writer",
+    "inherited_schema_corruption_rejected": "SCHEMA_INCOMPATIBLE: unexpected ws_values columns",
+    "rollback_preserves_marker_settings_drafts_definitions_and_audit": true,
+    "changed_checkpoint_bytes_rejected": "BACKUP_VERIFICATION_FAILED: checkpoint checksum",
+    "other_owner_restore_rejected": "MIGRATION_BLOCKED: checkpoint belongs to another Workspace owner"
+  },
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  }
+}

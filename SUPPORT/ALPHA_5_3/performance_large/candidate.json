@@ -1,0 +1,120 @@
+{
+  "label": "candidate",
+  "scope": "Linux synthetic large-content comparison; no target-host claim",
+  "runs": [
+    {
+      "name": "initial_open",
+      "seconds": 5.2145,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "reopen_0",
+      "seconds": 0.7196,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "summary_0",
+      "seconds": 0.0375,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "all_mail_0",
+      "seconds": 0.8571,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "unanswered_0",
+      "seconds": 0.783,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "waiting_0",
+      "seconds": 0.3744,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "all_mail_repeat_0",
+      "seconds": 0.5392,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "content_0",
+      "seconds": 0.0002,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "records_page_0",
+      "seconds": 0.3009,
+      "total_count": 6000,
+      "rows": 100
+    },
+    {
+      "name": "mail_page_two_0",
+      "seconds": 0.2833,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "reopen_1",
+      "seconds": 0.6464,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "summary_1",
+      "seconds": 0.0364,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "all_mail_1",
+      "seconds": 0.8004,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "unanswered_1",
+      "seconds": 0.8066,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "waiting_1",
+      "seconds": 0.4039,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "all_mail_repeat_1",
+      "seconds": 0.4801,
+      "total_count": 2000,
+      "rows": 100
+    },
+    {
+      "name": "content_1",
+      "seconds": 0.0002,
+      "total_count": null,
+      "rows": 0
+    },
+    {
+      "name": "records_page_1",
+      "seconds": 0.2436,
+      "total_count": 6000,
+      "rows": 100
+    },
+    {
+      "name": "mail_page_two_1",
+      "seconds": 0.2713,
+      "total_count": 2000,
+      "rows": 100
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+Recoverable application source: commit eacb2a9859e6addf9a9c2091f38825c59d8ddf98
+
+Clone O3_Alpha_5_3_Source.bundle to recover the source and its history.
+Copy AI_RUNTIME/wheels and AI_RUNTIME/pure_python_deps.zip from this complete
+release into the cloned package/AI_RUNTIME directory for offline tests.
+The source checkpoint predates generated final manifests and captures. APP
+code matches the release. Final manifests and evidence accompany this ZIP.
+See ALPHA_5_3_PERFORMANCE.md for fixture commands and measured limitations.

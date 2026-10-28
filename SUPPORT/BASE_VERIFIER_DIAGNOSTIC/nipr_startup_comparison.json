@@ -1,0 +1,31 @@
+{
+  "baseline_sha256": "795cb00cc22c41fbdc632e4012d592b5deb7444536fcdc6d27d9bda2b43bbeb6",
+  "exact_baseline_comparison": {
+    "O3.exe": true,
+    "O3_BOOTSTRAP/BOOTSTRAP_MANIFEST.json": true,
+    "O3_BOOTSTRAP/bootstrap.py": true,
+    "O3_BOOTSTRAP/probe.py": true,
+    "O3_BOOTSTRAP/preview.py": true,
+    "O3_PRODUCT/_O3_START.py": true,
+    "O3_PRODUCT/_O3_WORKSPACE_APP.py": true,
+    "O3_PRODUCT/_O3_WORKSPACE_STATE.py": true,
+    "O3_PRODUCT/RUNTIME_PROFILE.json": true
+  },
+  "inspected_contracts": [
+    "NIPR focus-native existing runtime selection",
+    "Python 3.12.15 x64 and dependency pins",
+    "isolated invocation and dependency origins",
+    "process-local DLL and Qt plugin configuration",
+    "owned environment-specific workspace and lock",
+    "manifest-bound package and protocol IDs",
+    "real native window before readiness",
+    "45-second application initialization timeout",
+    "90-second supervisor timeout",
+    "15-second stop grace",
+    "maintenance protocol without a ready assertion",
+    "no NIPR installer or host setting mutation"
+  ],
+  "known_regression": "Alpha 5 inserted view.starters.ensure and its full conversion checkpoint into KMSession.open; Alpha 2 and Alpha 4 do not perform that checkpoint inside open.",
+  "unresolved": "The affected-host checkpoint_verify stall is not localized within extraction, database checks, provenance checks or cleanup. Timeout alone does not distinguish slow work from a blocked operation.",
+  "lifecycle_experiment": "Quarantined in commit 129b1c1; no part included in this diagnostic build."
+}

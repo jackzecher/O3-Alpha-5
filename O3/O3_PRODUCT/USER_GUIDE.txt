@@ -1,0 +1,133 @@
+O3 ALPHA 5.3 - 5.3.0-alpha5.3
+
+OPEN O3
+Extract the complete release to a new local folder on the Windows system drive.
+Keep O3.exe, O3_BOOTSTRAP and O3_PRODUCT together inside O3. Open O3/O3.exe,
+then choose native application mode and the appropriate environment. Continue
+using the protected launcher; AI_RUNTIME is separate development support.
+A Windows Python runtime is not bundled in this archive.
+
+MANAGED NIPR
+Use the existing focus-native Conda environment: Windows x64, Python 3.12.15,
+PySide6/Qt/shiboken6 6.9.2, RDFLib 7.6.0 and pyparsing 3.3.3.
+The original isolated launch, process-local DLL/plugin paths, dependency-origin
+checks, ownership checks and supervised readiness/shutdown are unchanged.
+There is no NIPR installation, download, elevation or Conda mutation.
+The non-NIPR setup path stays separate. Internal bootstrap/protocol build ID
+0.9.1-km12-p3-prism2 intentionally differs from the application version.
+Keep O3_STARTUP_DIAGNOSTIC.txt and workspace session logs if startup fails.
+
+START WITH MAIL
+Choose your authorized O3Data export folder and Check for updates. Supported
+inputs remain Mail/Inbox and Mail/Sent JSON, Contacts/Profiles JSON, Calendars
+ICS and converted Documents JSON. O3 reads saved files; it does not connect to
+a live mailbox. Confirm your own addresses through Your email addresses.
+
+Unanswered, Waiting for replies and All mail are editable starter views. Reply
+status is a reusable rule input, with supporting evidence and explicit unknown
+states. No reply found means no reply in the available local evidence. It does
+not establish an obligation or the current state of your live mailbox.
+
+REMOVE RECURRING NOISE FROM A VIEW
+Right-click a message and choose Don't show items like this here. This opens
+the same Configure panel with an UNSAVED exclusion suggestion. Refine Sender,
+Subject, or an All group containing both. Preview shows matching/excluded examples.
+Save applies to this view's current and future captures. It does not delete
+mail, change other views or mark anything answered. Exclusions run before
+conversation grouping, so an unrelated message in the same thread can remain.
+Remove that exclusion and save to include those messages again.
+
+CONFIGURE RULES AND COLUMNS
+Configure opens the shared editor. Include/Exclude support nested All/Any/Not,
+typed fields, user properties, references and reusable reply evidence. Preview
+uses the same central query as the saved view. Unknown handling is explicit.
+Save changes the current view; Save a copy creates another. Cancel keeps saved
+rules intact. Restore starter defaults loads a draft for preview before saving.
+The columns panel adds, hides and reorders details and controls row density.
+
+Click a supported column heading to sort; click again to reverse. Ordering is
+applied to the whole query before paging, with stable ties and missing values
+last. Drag headers to reorder; drag their edges to resize. Header context menus
+also manage visible columns. Saved views retain their query order and layout.
+Specialized calendar, relationship and bounded project previews retain their
+own meaning; the project preview's Configure changes its columns only.
+
+READ WITHOUT LOSING YOUR PLACE
+Click a card row or press Enter to expand it downward. Click another row or
+use the up-chevron/Escape to collapse. Selecting text, using a control, dragging,
+or opening a context menu does not toggle the row. Open in full retains the
+separate full reader when wanted. Long saved content offers Continue reading
+until all available text is shown; extraction gaps remain explicit.
+Back/Forward restores the selected item, inline disclosure and scroll anchor.
+Search stays within the current view; Everything provides workspace-wide search.
+
+PROPERTIES, TAGS AND CONNECTIONS
+Manual values are editable; source and computed values expose their explanation.
+Click an editable property cell/chip for a compact typed editor, or use Edit
+properties from a row context menu/F2. Ctrl/Shift selection supports exact batch
+changes. Manage properties adds a Boolean tag, choice, date, text or reference
+through the existing property framework. It does not create a second tag store.
+
+Drag selected records onto a project in the sidebar, or use Add to project.
+Both create the same user-authored reference property. Project workspaces and
+Connections show that association separately from source-derived evidence.
+Undo last property change reverses an eligible saved action with audit checks.
+Grouped mail property actions apply to the displayed message in each selected
+conversation. The menu/editor states that scope. No reply needed / Stop waiting
+apply to the definitely eligible messages identified by the current reply view;
+new messages can bring a conversation back. Unknown messages are not silently
+marked handled. No reply is sent by any of these actions.
+
+Draft reply remains local text with explicit Save draft and Copy text. Appearance,
+readability, spatial connections, saved places, authored records, source evidence,
+and recovery remain available. Failed saves retain their drafts and show the
+problem; competing revisions require reviewing the current saved state.
+
+UPGRADE AND RECOVERY
+Alpha 5.3 removes duplicate whole-database checks within each schema validation.
+The full integrity and foreign-key checks still run. Mail-list evaluation and
+the reply index avoid copying bodies that they do not use; full reader content,
+body search, saved rules and original source captures remain available.
+An already converted Alpha 5 workspace requires no new catalog conversion.
+
+Alpha 5.2 recognizes the supported old catalog before opening its writer and
+uses the existing protected upgrade lifecycle. The update dialog reports the
+current verification stage and available file counts. Close O3 requests a safe
+stop; an incomplete checkpoint is removed and the old catalog remains usable
+until conversion commits. A stopped update can be retried on the next launch.
+The upgrade has a five-minute cooperative recovery limit, separate from the
+unchanged 45-second ordinary initialization watchdog. Cancellation is checked
+between file/chunk operations and during SQLite work; an individual blocked
+operating-system I/O call cannot be interrupted by that check.
+
+The redundant archive hash pass is removed where the full Core provenance
+audit immediately follows. ZIP content hashes, archive path/symlink validation,
+actual source-content hashes and provenance/history verification all remain.
+No recovery check is accepted from a cached success flag.
+
+Existing native workspace roots and ownership markers stay unchanged. Alpha 5
+recognizes the exact supported Alpha 4 catalog, validates schema 4, creates a
+verified full-workspace checkpoint, then atomically converts mail definitions
+and prior dispositions. Interruption leaves the prior transaction intact and
+retry is idempotent. Unknown/damaged schemas are rejected. The generated ZIP is
+in O3_Recovery beside the owned workspace (or beside standalone synthetic state).
+It includes the workspace tree and ownership marker, except live locks and SQLite
+sidecars; its SQLite copy is consistent. Ordinary Settings > Recovery backups
+and restores continue to work.
+
+For a return to Alpha 4, use the verified pre-upgrade checkpoint and the matching
+Alpha 4 package. Close all O3 processes first. Do not merely replace Alpha 5 with
+Alpha 4 over a converted workspace, and do not copy a live database. The source
+and verification package includes docs/RECOVERY.md and the supported offline
+restore_alpha5_checkpoint helper. That helper validates the checkpoint and retains
+the replaced directory for rollback. Source captures are never rewritten.
+
+AI EXECUTION AND VALIDATION
+AI_RUNTIME/run.py launches this actual application against disposable fictional
+records on supported Linux, offline, with integrity-checked dependencies. See
+AI_RUNTIME/README_AI.txt. It does not use your real workspace and is not the NIPR
+entry point. Actual Qt screenshots and test evidence accompany this release.
+
+Protected launch files are byte-identical to Alpha 4 and the protected Alpha 2
+baseline. Linux Qt, wrapper-adapter, recovery, rule and performance checks do not
+establish native Windows/NIPR execution or organizational deployment acceptance.

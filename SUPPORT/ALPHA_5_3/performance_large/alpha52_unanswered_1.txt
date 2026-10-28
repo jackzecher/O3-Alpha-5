@@ -1,0 +1,30 @@
+         1080316 function calls (1026267 primitive calls) in 1.408 seconds
+
+   Ordered by: cumulative time
+   List reduced from 168 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.408    1.408 scale_runtime_profile.py:45(<lambda>)
+        1    0.000    0.000    1.408    1.408 km_session.py:197(query)
+        1    0.000    0.000    1.408    1.408 km_session.py:191(call)
+        1    0.000    0.000    1.408    1.408 service.py:1688(call)
+        1    0.000    0.000    1.408    1.408 service.py:1712(_call)
+        1    0.000    0.000    1.408    1.408 service.py:1464(_dispatch)
+        1    0.000    0.000    1.408    1.408 mail_tasks.py:79(query)
+        1    0.004    0.004    1.408    1.408 queries.py:560(_configured_view)
+        1    0.001    0.001    1.404    1.404 queries.py:638(_configured_view_page)
+        1    0.001    0.001    1.385    1.385 heapq.py:463(nsmallest)
+     2001    0.298    0.000    1.378    0.001 queries.py:719(candidates)
+60000/6000    0.101    0.000    0.810    0.000 evaluation.py:268(expression)
+    60000    0.020    0.000    0.448    0.000 evaluation.py:45(data)
+    12002    0.008    0.000    0.428    0.000 evaluation.py:14(_load)
+    12242    0.011    0.000    0.427    0.000 __init__.py:299(loads)
+    12242    0.019    0.000    0.413    0.000 decoder.py:333(decode)
+    12242    0.380    0.000    0.380    0.000 decoder.py:344(raw_decode)
+       38    0.177    0.005    0.177    0.005 {method 'execute' of 'sqlite3.Connection' objects}
+    18200    0.022    0.000    0.075    0.000 reply_evidence.py:15(address)
+    12200    0.014    0.000    0.066    0.000 reply_evidence.py:114(actor)
+     6100    0.021    0.000    0.066    0.000 evaluation.py:113(sender_identity)
+     6000    0.010    0.000    0.064    0.000 queries.py:683(scalar)
+
+

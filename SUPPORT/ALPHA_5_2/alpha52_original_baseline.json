@@ -1,0 +1,16 @@
+{
+  "original_alpha2_sha256": "795cb00cc22c41fbdc632e4012d592b5deb7444536fcdc6d27d9bda2b43bbeb6",
+  "exact_protected_comparison": {
+    "O3.exe": true,
+    "O3_BOOTSTRAP/BOOTSTRAP_MANIFEST.json": true,
+    "O3_BOOTSTRAP/bootstrap.py": true,
+    "O3_BOOTSTRAP/probe.py": true,
+    "O3_BOOTSTRAP/preview.py": true,
+    "O3_PRODUCT/_O3_START.py": true,
+    "O3_PRODUCT/_O3_WORKSPACE_APP.py": true,
+    "O3_PRODUCT/_O3_WORKSPACE_STATE.py": true,
+    "O3_PRODUCT/RUNTIME_PROFILE.json": true
+  },
+  "passed": true,
+  "scope": "Byte identity, not target execution"
+}

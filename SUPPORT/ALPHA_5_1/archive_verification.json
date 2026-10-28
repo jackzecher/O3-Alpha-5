@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "shared_calendar_evidence_hashed_once_per_validation": true,
+    "conflicting_claim_in_either_table_rejected": true,
+    "changed_and_missing_bytes_rejected_on_later_verification": true,
+    "unsafe_observation_only_paths_rejected": true,
+    "linked_archive_file_rejected": true,
+    "version_only_missing_reference_rejected": true,
+    "canonical_source_boundaries_preserved": true
+  },
+  "passed": true
+}

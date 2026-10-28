@@ -1,0 +1,69 @@
+{
+  "cases": {
+    "complete_no_reply": {
+      "status": "no_reply_found",
+      "reason_code": "no_reply_found",
+      "computed_state": "evaluated",
+      "computed_value": true,
+      "views_match": true,
+      "supporting_edges": 0
+    },
+    "direct_reply": {
+      "status": "replied",
+      "reason_code": "reply_found",
+      "computed_state": "evaluated",
+      "computed_value": false,
+      "views_match": true,
+      "supporting_edges": 1
+    },
+    "missing_sent": {
+      "status": "unknown",
+      "reason_code": "sent_unavailable",
+      "computed_state": "not_evaluable",
+      "computed_value": null,
+      "views_match": true,
+      "supporting_edges": 0
+    },
+    "unconfirmed_identity": {
+      "status": "unknown",
+      "reason_code": "identity_ambiguous",
+      "computed_state": "not_evaluable",
+      "computed_value": null,
+      "views_match": true,
+      "supporting_edges": 0
+    },
+    "multiple_mailboxes": {
+      "status": "unknown",
+      "reason_code": "mailbox_coverage_unknown",
+      "computed_state": "not_evaluable",
+      "computed_value": null,
+      "views_match": true,
+      "supporting_edges": 0
+    },
+    "missing_thread_evidence": {
+      "status": "unknown",
+      "reason_code": "thread_gap",
+      "computed_state": "not_evaluable",
+      "computed_value": null,
+      "views_match": true,
+      "supporting_edges": 0
+    },
+    "sender_folder_conflict": {
+      "status": "unknown",
+      "reason_code": "direction_conflict",
+      "computed_state": "not_evaluable",
+      "computed_value": null,
+      "views_match": true,
+      "supporting_edges": 0
+    }
+  },
+  "scope": "Independent real-source synthetic reply matrix",
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  },
+  "passed": true
+}

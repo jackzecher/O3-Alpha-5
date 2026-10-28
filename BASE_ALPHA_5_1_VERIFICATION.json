@@ -1,0 +1,126 @@
+{
+  "release": "O3 Alpha 5.1",
+  "application_build_id": "5.1.0-alpha5.1",
+  "source_revision": "960192f3b6d16fbd2c4371b54f6a44dcf71da345",
+  "reported_failure": {
+    "status": "timeout",
+    "stage": "starter_conversion_and_checkpoint",
+    "seconds": 44.984,
+    "errors": []
+  },
+  "diagnosis": "The report identifies the stage only. Repeated full-capture hashing was reproduced with a genuine Alpha 4 synthetic calendar; target-host confirmation remains required.",
+  "repair": "Distinct archive path/hash pairs validated once per pass; canonical source roots resolved once; checkpoint substage diagnostics retained.",
+  "scope": {
+    "application_files_changed": [
+      "O3/O3_PRODUCT/APP/o3_gui/__init__.py",
+      "O3/O3_PRODUCT/APP/o3_gui/km_session.py",
+      "O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py",
+      "O3/O3_PRODUCT/APP/o3_km/migration.py"
+    ],
+    "protected_files_unchanged": 9,
+    "application_timer_unchanged": true
+  },
+  "performance": {
+    "fixture": {
+      "events": 1500,
+      "capture_bytes": 9506353,
+      "seeded_with": "/workspace/scratch/ca7e2fa92be4/alpha4_restore/package"
+    },
+    "before": {
+      "open_seconds": 41.425,
+      "exceeds_45_second_limit": false,
+      "archive_hash_calls": 6001,
+      "archive_hash_bytes": 57039624201,
+      "phases": [
+        {
+          "phase": "_validate_archive",
+          "seconds": 20.372
+        },
+        {
+          "phase": "_verify_core_provenance_readonly",
+          "seconds": 0.084
+        },
+        {
+          "phase": "_source_roots",
+          "seconds": 0.0
+        },
+        {
+          "phase": "_validate_archive",
+          "seconds": 20.257
+        },
+        {
+          "phase": "_verify_core_provenance_readonly",
+          "seconds": 0.101
+        },
+        {
+          "phase": "verify_alpha5_checkpoint",
+          "seconds": 20.475
+        }
+      ],
+      "checkpoint_verified": true,
+      "saved_config_unchanged": true
+    },
+    "after": {
+      "open_seconds": 0.739,
+      "exceeds_45_second_limit": false,
+      "archive_hash_calls": 3,
+      "archive_hash_bytes": 20518906,
+      "phases": [
+        {
+          "phase": "_validate_archive",
+          "seconds": 0.01
+        },
+        {
+          "phase": "_verify_core_provenance_readonly",
+          "seconds": 0.095
+        },
+        {
+          "phase": "_source_roots",
+          "seconds": 0.0
+        },
+        {
+          "phase": "_validate_archive",
+          "seconds": 0.008
+        },
+        {
+          "phase": "_verify_core_provenance_readonly",
+          "seconds": 0.076
+        },
+        {
+          "phase": "verify_alpha5_checkpoint",
+          "seconds": 0.184
+        }
+      ],
+      "checkpoint_verified": true,
+      "saved_config_unchanged": true
+    },
+    "real_qt": {
+      "scope": "Actual Linux offscreen Qt, genuine Alpha 4 synthetic calendar state",
+      "ready_seconds": 0.856,
+      "timer_ms": 45000,
+      "ready_signals": [
+        true
+      ],
+      "event_count": 1500,
+      "diagnostic_status": "ready",
+      "checkpoint_substages_recorded": true,
+      "clean_shutdown": true,
+      "lock_released": true,
+      "saved_draft_preserved": true,
+      "passed": true
+    }
+  },
+  "checks": {
+    "corruption_and_conflicting_hash_rejection": true,
+    "full_recovery_checkpoint": true,
+    "interrupted_conversion_rollback_retry": true,
+    "actual_alpha4_upgrade_and_rollback": true,
+    "saved_views_drafts_preferences_and_original_undo": true,
+    "nine_protected_files_byte_identical": true,
+    "unchanged_native_product_and_bootstrap_verifiers": true,
+    "strict_manifest_wrapper_readiness_shutdown_lock_release": true,
+    "offline_ai_runner_actual_qt": true
+  },
+  "application_tree_sha256": "ed9f723f583712428519bf038ff952a6a630a80a22b504f1b2cd58b82fff87ff",
+  "qualification_limit": "Synthetic Linux verification only; Windows/NIPR startup must be confirmed on the affected host."
+}

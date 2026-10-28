@@ -1,0 +1,24 @@
+{
+  "scope": "Synthetic source ingestion; public central service operations",
+  "checks": {
+    "message_exclusion_precedes_conversation_grouping": true,
+    "exact_draft_preview_read_only_and_matches_saved_view": true,
+    "stale_revision_preserves_saved_definition": true,
+    "reusable_reply_status_ancestry_and_unknown": true,
+    "new_matching_capture_and_restart_respect_view_local_exclusion": true,
+    "all_mail_retains_original_and_future_excluded_records": true,
+    "source_files_unchanged": true
+  },
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  },
+  "final_counts": {
+    "starter_messages": 2,
+    "all_mail_messages": 7
+  },
+  "passed": true
+}

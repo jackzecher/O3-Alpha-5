@@ -1,0 +1,13 @@
+{
+  "scope": "Actual Linux offscreen Qt; controlled delays; not Windows/NIPR acceptance",
+  "checks": {
+    "close_cancels_worker_and_preserves_old_workspace": true,
+    "cancel_can_retry_successfully": true,
+    "upgrade_limit_returns_recoverable_failure_without_ready": true,
+    "retry_in_same_window_reaches_ready_and_clears_failure": true,
+    "timeout_can_retry_successfully": true,
+    "upgrade_over_45_seconds_keeps_gui_responsive_and_reaches_ready": true,
+    "ordinary_startup_timer_remains_45000_ms": true
+  },
+  "passed": true
+}

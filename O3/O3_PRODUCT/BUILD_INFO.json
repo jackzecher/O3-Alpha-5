@@ -1,0 +1,29 @@
+{
+  "ai_runtime_source": "O3_Alpha_3_Candidate_6.zip",
+  "ai_runtime_source_sha256": "3f47c9e78577463f83554bc0d4b0141c5800add54db3662cf0b6f0baf40e82c4",
+  "application_build_id": "5.3.0-alpha5.3",
+  "application_source": "Alpha 5.3 repeat-start and mail performance repair",
+  "application_source_digest_algorithm": "SHA256(sorted APP relative path + NUL + file SHA256 + newline)",
+  "application_source_sha256": "e4e9bfd958f9b3594255625bfe3e8b6f98870a1e099cfaeca477741b19a9f529",
+  "base_release_sha256": "7dddd0c35f56ceaec8a5cb1a9a4bb24d5686be8e31564624710ef3d73ae72bea",
+  "changes": [
+    "Remove duplicate whole-database scans within schema validation; retain full integrity checks.",
+    "Remove unused message bodies from the in-memory reply evidence index.",
+    "Avoid decoding all message bodies for mail filtering and sorting; preserve full search and output.",
+    "Retain Alpha 5.2 checkpoint, protected upgrade, progress and cancellation repairs.",
+    "Keep ordinary startup limits, frozen Windows launcher files and dependency policy unchanged.",
+    "Windows/NIPR validation of this exact candidate remains pending."
+  ],
+  "knowledge_schema": 4,
+  "known_limitations": [
+    "Native Windows/NIPR execution is not available on this Linux build host.",
+    "Optional legacy launcher preview remains unsupported; use native application mode.",
+    "Original executable icon and splash retained; branding changes require launcher build source."
+  ],
+  "protected_startup_source": "O3_Alpha_2.0.0.zip; identical in Candidate 6",
+  "protected_startup_source_sha256": "795cb00cc22c41fbdc632e4012d592b5deb7444536fcdc6d27d9bda2b43bbeb6",
+  "source_revision": "eacb2a9859e6addf9a9c2091f38825c59d8ddf98",
+  "status": "Repair candidate: Linux checks passed; exact Windows/NIPR acceptance pending",
+  "supervisor_protocol_build_id": "0.9.1-km12-p3-prism2",
+  "workspace_continuity": "Schema4/native roots and startup protected; verified full checkpoint before atomic catalog conversion"
+}

@@ -1,0 +1,168 @@
+{
+  "application_build_id": "5.0.0-alpha5",
+  "release_kind": "Alpha 5 implementation release",
+  "verified_at_utc": "2026-10-27T15:20:52.715909+00:00",
+  "source_revision": "dbfe0ca459da0728f893ff44fa2fab7411639739",
+  "application_tree_sha256": "909f7ff96cb0c8910cf61d031ae31fd4aa996c674d7b8ef2c95f89e48575fec7",
+  "product_manifest_sha256": "7945500748ed0c38ad1e2cd49ee7eb30155923281eab27cd1f903b7c35106b2e",
+  "ai_runtime_manifest_sha256": "72df49dc6cb60e5555800b9c635914173819b4ef21ba1336e85d15d95dc7b535",
+  "product_manifest_entries": 87,
+  "baseline_alpha4_archive_sha256": "7dddd0c35f56ceaec8a5cb1a9a4bb24d5686be8e31564624710ef3d73ae72bea",
+  "protected_launch_files_unchanged": 9,
+  "native_integrity_verifiers_passed": 2,
+  "bootstrap_protocol_build_id": "0.9.1-km12-p3-prism2",
+  "state_schema": 4,
+  "checks": [
+    {
+      "name": "central_rules_reply_evidence_global_sorting_and_actions",
+      "result": "PASS",
+      "evidence": "evidence/final_checks/result.json",
+      "evidence_sha256": "a6e6f809cbe485013902d2ef39fb72e93aeecd4571cba799b48d6c831a1288bb"
+    },
+    {
+      "name": "recurring_noise_exclusion_preview_save_restart_and_future_capture",
+      "result": "PASS",
+      "evidence": "evidence/ux_integration/report.json",
+      "evidence_sha256": "bd0de6ca6f1481d9f7a6b046d679aac5c34807b6310ccaddb7ea14323ef6c6bc"
+    },
+    {
+      "name": "property_controls_batch_actions_project_drop_undo_and_navigation",
+      "result": "PASS",
+      "evidence": "evidence/ux_actions/report.json",
+      "evidence_sha256": "f26e29e8bdf7f86847549ea5a6658992581e1ef66161effe883f91292cc250bd"
+    },
+    {
+      "name": "grouped_view_disclosure_and_delayed_inline_reader",
+      "result": "PASS",
+      "evidence": "evidence/grouped_views/result.json",
+      "evidence_sha256": "c17b65afe89123d40934f4061d74a6e2dd54e831828731a9a1229560db23eb36"
+    },
+    {
+      "name": "editor_nested_typed_rules_conflicts_and_layout_retry",
+      "result": "PASS",
+      "evidence": "evidence/editor/report.json",
+      "evidence_sha256": "08afe8da2017c37a8ca8f68cedebbb669c79c9e0ec435f2b00a296422cfbe734"
+    },
+    {
+      "name": "actual_alpha4_upgrade_and_restored_alpha4_reopen",
+      "result": "PASS",
+      "evidence": "evidence/continuity_actual_upgrade.json",
+      "evidence_sha256": "9ccdb706c7d64dbc90d0e715ad97fc9ad154dbdeaf85d5a915904298bf8a77af"
+    },
+    {
+      "name": "interrupted_conversion_atomicity_and_idempotent_retry",
+      "result": "PASS",
+      "evidence": "evidence/migration_conversion.json",
+      "evidence_sha256": "f70b15469256633716b5642466eb02c338560c9942fbc17e10d10e8c3a948c6d"
+    },
+    {
+      "name": "complete_owned_workspace_checkpoint_and_rollback",
+      "result": "PASS",
+      "evidence": "evidence/migration_checkpoint.json",
+      "evidence_sha256": "f668cae22e1df9591e98dd34ad3a7b7427b3ec39b5f80959b8c83c063248756a"
+    },
+    {
+      "name": "ordinary_backup_restore_and_strict_schema_validation",
+      "result": "PASS",
+      "evidence": "evidence/continuity_recovery_alpha5.json",
+      "evidence_sha256": "b4923b9a857c25f5d958178e6d1592c74bff72072c870ccb1713c47cae8c0fc2"
+    },
+    {
+      "name": "protected_launch_bytes_and_both_original_verifiers",
+      "result": "PASS",
+      "evidence": "evidence/continuity_protected_alpha5.json",
+      "evidence_sha256": "937e23cadcd456cd3d7a0bbc746da48f5c684449986b716cd73867e344661711"
+    },
+    {
+      "name": "exact_packaged_offline_qt_launch_captures_and_clean_shutdown",
+      "result": "PASS",
+      "evidence": "evidence/final_release/O3_AI_preview_result.json",
+      "evidence_sha256": "72a3db003fb35e22c8ebe41bad26e92982def63fd56c81ccf0aa45b322ea5f63"
+    },
+    {
+      "name": "light_dark_desktop_and_125percent_small_window_actual_visuals",
+      "result": "PASS",
+      "evidence": "evidence/rows/final/capture_checks.json",
+      "evidence_sha256": "577b9cfe858356839d4bb8a5155db2e94ac4fa054115f9587410021def03a2ae"
+    }
+  ],
+  "evidence_location": "O3_Alpha_5_Source_and_Verification.zip; paths relative to source/",
+  "scope": "Fictional source records; actual Core/KM and Qt on Linux. Final source changes received targeted regression checks. No operational workspace was used.",
+  "capture_binding": {
+    "result": "PASS_SYNTHETIC_QT",
+    "report_sha256": "72a3db003fb35e22c8ebe41bad26e92982def63fd56c81ccf0aa45b322ea5f63",
+    "runtime": {
+      "pyside6": "6.9.2",
+      "shiboken6": "6.9.2",
+      "qt": "6.9.2",
+      "rdflib": "7.6.0",
+      "pyparsing": "3.3.3"
+    },
+    "captures": [
+      {
+        "view": "mail",
+        "file": "O3_Alpha5_mail.png",
+        "sha256": "878bd60faa0a4a1f07271637e02e1e635cb8ceaff6eb3bb13784fab63c548d3e",
+        "width": 1360,
+        "height": 860
+      },
+      {
+        "view": "workspace",
+        "file": "O3_Alpha5_workspace.png",
+        "sha256": "fef922e1a0ad71b3e35bdcbfeed600b195e3fa608ca97f57debc01396d619dcb",
+        "width": 1360,
+        "height": 860
+      },
+      {
+        "view": "records",
+        "file": "O3_Alpha5_records.png",
+        "sha256": "31bb947a1c7e53f176724d3ab7f3c3bc4a474e86c8aebf6b09ce6f7af869e2a1",
+        "width": 1360,
+        "height": 860
+      },
+      {
+        "view": "reader",
+        "file": "O3_Alpha5_reader.png",
+        "sha256": "8b01c4517fb1e266585cc5af9f63e10a50238eebfd1580e0e437f5d6b3884733",
+        "width": 1360,
+        "height": 860
+      },
+      {
+        "view": "connections",
+        "file": "O3_Alpha5_connections.png",
+        "sha256": "b98b8f7d794469bfd92b1699fdd067c3a9b99f3030090fd3f9d9b4cdf4a7028e",
+        "width": 1360,
+        "height": 860
+      },
+      {
+        "view": "settings",
+        "file": "O3_Alpha5_settings.png",
+        "sha256": "eb5f55ab31b9ba1628519544959d02cbc4909316b2532b52de7689b0829586c4",
+        "width": 1080,
+        "height": 850
+      },
+      {
+        "view": "sources",
+        "file": "O3_Alpha5_sources.png",
+        "sha256": "c3b2d6a70e7058fa36086a74272a78225118964faffa680c5563c75eeb75f6f5",
+        "width": 790,
+        "height": 610
+      }
+    ],
+    "shutdown_clean": true,
+    "sqlite_integrity": "ok"
+  },
+  "recovery": "Verified full owned-workspace checkpoint before atomic legacy catalog conversion; actual released Alpha 4 reopened restored state.",
+  "performance_evidence": "evidence/final_release/performance_comparison.json",
+  "limitations": [
+    "Native Windows and NIPR execution, physical desktop drag behavior, and operational source workloads have not been tested on their target hosts.",
+    "Linux in-memory wrapper-adapter tests and unchanged launcher bytes do not establish target deployment qualification.",
+    "Some startup and large-page event-loop intervals exceed the 100 ms design target. Not all query timings improved; final raw comparisons are retained.",
+    "The source archive omits the large offline dependency payloads from Git; copy those exact files from the complete release as described in source/README.md.",
+    "No empirical claim of parity or superiority to commercial products is made from synthetic tests or screenshots."
+  ],
+  "native_windows_tested": false,
+  "native_nipr_tested": false,
+  "independent_inspection": "evidence/ux_inspection.json",
+  "outstanding_reproduced_functional_defects_in_tested_scope": []
+}

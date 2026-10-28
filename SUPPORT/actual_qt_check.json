@@ -1,0 +1,74 @@
+{
+  "scope": "synthetic Linux Qt execution; NOT Windows/NIPR qualification",
+  "application_build_id": "5.0.0-alpha5.diagnostic1",
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  },
+  "captures": [
+    {
+      "view": "mail",
+      "file": "O3_Alpha5_mail.png",
+      "sha256": "878bd60faa0a4a1f07271637e02e1e635cb8ceaff6eb3bb13784fab63c548d3e",
+      "width": 1360,
+      "height": 860
+    },
+    {
+      "view": "workspace",
+      "file": "O3_Alpha5_workspace.png",
+      "sha256": "fef922e1a0ad71b3e35bdcbfeed600b195e3fa608ca97f57debc01396d619dcb",
+      "width": 1360,
+      "height": 860
+    },
+    {
+      "view": "records",
+      "file": "O3_Alpha5_records.png",
+      "sha256": "31bb947a1c7e53f176724d3ab7f3c3bc4a474e86c8aebf6b09ce6f7af869e2a1",
+      "width": 1360,
+      "height": 860
+    },
+    {
+      "view": "reader",
+      "file": "O3_Alpha5_reader.png",
+      "sha256": "8b01c4517fb1e266585cc5af9f63e10a50238eebfd1580e0e437f5d6b3884733",
+      "width": 1360,
+      "height": 860
+    },
+    {
+      "view": "connections",
+      "file": "O3_Alpha5_connections.png",
+      "sha256": "b98b8f7d794469bfd92b1699fdd067c3a9b99f3030090fd3f9d9b4cdf4a7028e",
+      "width": 1360,
+      "height": 860
+    },
+    {
+      "view": "settings",
+      "file": "O3_Alpha5_settings.png",
+      "sha256": "eb5f55ab31b9ba1628519544959d02cbc4909316b2532b52de7689b0829586c4",
+      "width": 1080,
+      "height": 850
+    },
+    {
+      "view": "sources",
+      "file": "O3_Alpha5_sources.png",
+      "sha256": "7f8186d5750bd6740bf4eb65c757cbc41f758cc47c9c1151e1413934b40907e6",
+      "width": 790,
+      "height": 610
+    }
+  ],
+  "fixture_only": true,
+  "temporary_workspace": true,
+  "network_required": false,
+  "engine_ready": true,
+  "qt_platform": "offscreen",
+  "correspondence_rows": 15,
+  "spatial_nodes": 6,
+  "spatial_edges": 6,
+  "result": "PASS_SYNTHETIC_QT",
+  "shutdown_clean": true,
+  "sqlite_integrity": "ok",
+  "errors": []
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Released Alpha 4 synthetic source/state, real Alpha 5 conversion",
+  "checks": {
+    "mid_transaction_failure_preserves_every_table_and_revision": true,
+    "successful_retry_is_one_audited_atomic_conversion": true,
+    "repeat_conversion_is_read_only_and_idempotent": true,
+    "old_mail_views_names_cc_sorts_and_dispositions_preserved": true,
+    "mismatched_legacy_config_rejected_without_changes": true,
+    "original_alpha4_undo_token_reverses_canonical_values_and_retains_audit": true,
+    "old_undo_cannot_overwrite_postconversion_edit": true,
+    "next_launch_no_reconversion_or_preference_loss": true,
+    "complete_rollback_returns_exact_preupgrade_logical_state": true
+  },
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  }
+}

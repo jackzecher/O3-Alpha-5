@@ -1,0 +1,81 @@
+{
+  "checks": {
+    "initial_unanswered_scroll": {
+      "value": 0,
+      "maximum": 400
+    },
+    "keyboard_enter_expands": true,
+    "keyboard_escape_collapses": true,
+    "right_click_menu": [
+      "Daily automated digest",
+      "Open in full",
+      "Edit properties\u2026",
+      "Add to project\u2026",
+      "Configure this view\u2026",
+      "Undo last property change",
+      "See connections",
+      "Don\u2019t show items like this here\u2026"
+    ],
+    "right_click_same_editor": true,
+    "unsaved_sender_suggestion": {
+      "field": "from",
+      "operator": "email_matches",
+      "value": "automation@example.test"
+    },
+    "sender_and_subject_expression": {
+      "all": [
+        {
+          "field": "from",
+          "operator": "email_matches",
+          "value": "automation@example.test"
+        },
+        {
+          "field": "subject",
+          "operator": "equals",
+          "value": "Daily automated digest"
+        }
+      ]
+    },
+    "preview": {
+      "count": 13,
+      "excluded": 4,
+      "excluded_examples": 4
+    },
+    "saved_view_id": "view:user:starter-unanswered",
+    "nonmatching_sender_or_subject_survive": [
+      "Action requested",
+      "Daily automated digest"
+    ],
+    "excluded_message_remains_in_all_mail": true,
+    "header_saved_sorts": [
+      {
+        "direction": "desc",
+        "field": "source_time"
+      }
+    ],
+    "second_header_click_reverses_saved_sort": [
+      {
+        "direction": "asc",
+        "field": "source_time"
+      }
+    ],
+    "custom_navigation_id": "view:user:9b1a9e32fe84434c81cbe09e5797177e",
+    "editor_125_size": [
+      1040,
+      740
+    ],
+    "column_visibility_saved": [
+      "record",
+      "sender"
+    ],
+    "future_matching_capture_excluded_only_from_configured_view": true,
+    "restart_preserves_rule_sort_and_columns": true
+  },
+  "findings": [],
+  "scope": "Actual Linux offscreen Qt, disposable synthetic source",
+  "screen": {
+    "width": 1440,
+    "height": 1000
+  },
+  "errors": []
+}

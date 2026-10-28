@@ -1,0 +1,115 @@
+{
+  "scope": "Real synthetic Linux Qt, no native Windows qualification",
+  "actions": {
+    "mail_all": {
+      "immediate_call_ms": 0.694,
+      "ready_ms": 949.544,
+      "largest_event_loop_interval_ms": 64.261,
+      "rendered_rows": 100
+    },
+    "mail_unanswered": {
+      "immediate_call_ms": 0.714,
+      "ready_ms": 505.605,
+      "largest_event_loop_interval_ms": 30.448,
+      "rendered_rows": 100
+    },
+    "mail_waiting": {
+      "immediate_call_ms": 0.764,
+      "ready_ms": 506.013,
+      "largest_event_loop_interval_ms": 34.671,
+      "rendered_rows": 100
+    },
+    "collection_Person": {
+      "immediate_call_ms": 2.214,
+      "ready_ms": 40.12,
+      "largest_event_loop_interval_ms": 17.425,
+      "rendered_rows": 100
+    },
+    "collection_Document": {
+      "immediate_call_ms": 2.193,
+      "ready_ms": 50.824,
+      "largest_event_loop_interval_ms": 28.298,
+      "rendered_rows": 100
+    },
+    "collection_Event": {
+      "immediate_call_ms": 2.09,
+      "ready_ms": 43.662,
+      "largest_event_loop_interval_ms": 32.153,
+      "rendered_rows": 100
+    },
+    "collection_LineOfEffort": {
+      "immediate_call_ms": 2.051,
+      "ready_ms": 23.047,
+      "largest_event_loop_interval_ms": 19.218,
+      "rendered_rows": 0
+    },
+    "all_records": {
+      "immediate_call_ms": 1.328,
+      "ready_ms": 312.261,
+      "largest_event_loop_interval_ms": 18.715
+    },
+    "view:event:this_month": {
+      "immediate_call_ms": 1.883,
+      "ready_ms": 30.337,
+      "largest_event_loop_interval_ms": 17.659
+    },
+    "view:email:conversations": {
+      "immediate_call_ms": 2.184,
+      "ready_ms": 2100.667,
+      "largest_event_loop_interval_ms": 391.717
+    },
+    "view:person:by_org": {
+      "immediate_call_ms": 13.302,
+      "ready_ms": 156.844,
+      "largest_event_loop_interval_ms": 19.233
+    },
+    "view:document:detailed": {
+      "immediate_call_ms": 5.843,
+      "ready_ms": 40.81,
+      "largest_event_loop_interval_ms": 20.037
+    },
+    "view:organization:raw": {
+      "immediate_call_ms": 4.672,
+      "ready_ms": 18.082,
+      "largest_event_loop_interval_ms": 9.91
+    },
+    "workspace_home": {
+      "immediate_call_ms": 2.039,
+      "ready_ms": 18.795,
+      "largest_event_loop_interval_ms": 13.851
+    },
+    "full_reader": {
+      "immediate_call_ms": 1.062,
+      "ready_ms": 103.029,
+      "largest_event_loop_interval_ms": 32.951
+    },
+    "spatial_connections": {
+      "immediate_call_ms": 2.781,
+      "ready_ms": 171.142,
+      "largest_event_loop_interval_ms": 19.897
+    },
+    "mail_return": {
+      "immediate_call_ms": 3.01,
+      "ready_ms": 336.609,
+      "largest_event_loop_interval_ms": 22.489
+    },
+    "inline_expansion": {
+      "immediate_call_ms": 12.775,
+      "ready_ms": 216.035,
+      "largest_event_loop_interval_ms": 43.69
+    }
+  },
+  "main_thread_queries": [],
+  "startup_ready_ms": 643.584,
+  "startup_largest_event_loop_interval_ms": 94.428,
+  "broad_existing_surfaces_passed": true,
+  "delayed_worker_result_does_not_replace_new_expansion": true,
+  "window_size": [
+    1360,
+    860
+  ],
+  "text_scale": 1.0,
+  "top_level_widget_count": 16,
+  "clean_shutdown": true,
+  "passed": true
+}

@@ -1,0 +1,12 @@
+{
+  "identical_public_outputs": 17,
+  "baseline_reply_index": {
+    "records": 6000,
+    "retained_body_characters": 211554000
+  },
+  "candidate_reply_index": {
+    "records": 6000,
+    "retained_body_characters": 0
+  },
+  "passed": true
+}

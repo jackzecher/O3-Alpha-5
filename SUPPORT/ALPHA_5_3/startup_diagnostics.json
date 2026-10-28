@@ -1,0 +1,12 @@
+{
+  "scope": "Synthetic Linux Qt worker, real Core/KM; injected startup failures",
+  "checks": {
+    "fresh_standalone": true,
+    "fresh_native": true,
+    "original_km_exception_before_translation_and_no_sensitive_strings": true,
+    "account_identity_failure_with_errno": true,
+    "timeout_retained_even_if_worker_later_completes": true,
+    "diagnostic_io_failure_does_not_block_engine": true
+  },
+  "passed": true
+}

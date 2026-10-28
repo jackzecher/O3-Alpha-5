@@ -1,0 +1,13 @@
+{
+  "checks": {
+    "legacy_direct_policy_preserved_alongside_shared_verified_ancestry": true,
+    "unset_manual_disposition_is_known_absence_and_can_dismiss_undo": true,
+    "starter_preserves_identity_uncertainty_before_recipient_exclusions": true,
+    "manual_links_are_one_typed_value_authority_with_bidirectional_projection": true,
+    "atomic_batch_failure_and_conflict_safe_undo": true,
+    "tags_reuse_typed_property_commands_and_null_semantics": true,
+    "workspace_and_core_share_global_sort_with_stable_keyset_pages": true,
+    "mixed_collection_type_sort_is_global": true
+  },
+  "passed": true
+}

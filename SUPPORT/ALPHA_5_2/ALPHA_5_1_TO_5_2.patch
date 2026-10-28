@@ -1,0 +1,834 @@
+diff --git a/package/O3/O3_PRODUCT/APP/o3_core/store.py b/package/O3/O3_PRODUCT/APP/o3_core/store.py
+index 36aea46..75da77a 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_core/store.py
++++ b/package/O3/O3_PRODUCT/APP/o3_core/store.py
+@@ -430,6 +430,9 @@ class Store:
+ 
+     def audit_provenance(self) -> dict:
+         """Read-only consistency audit of current truth, retained evidence and history."""
++        check=getattr(self,'_audit_checkpoint',None) or (lambda:None)
++        progress=getattr(self,'_audit_progress',None)
++        check()
+         db=self.db
+         issues=[]
+         checked_blobs={}
+@@ -438,9 +441,11 @@ class Store:
+         if db.execute('PRAGMA quick_check').fetchone()[0]!='ok':
+             issue('sqlite_quick_check','database')
+         for r in db.execute('PRAGMA foreign_key_check'):
++            check()
+             issue('foreign_key',tuple(r))
+         root_archive=(self.root/'archive').resolve()
+         def verify_blob(rel,sha):
++            check()
+             key=(rel,sha)
+             if key in checked_blobs:
+                 return
+@@ -453,14 +458,19 @@ class Store:
+                 issue('archive_checksum_mismatch',rel)
+                 return
+             checked_blobs[key]=True
++            check()
++            if progress:progress({'files_completed':len(checked_blobs)})
+         for r in db.execute('SELECT record_id,source_sha,archive_relpath FROM record_versions'):
++            check()
+             verify_blob(r['archive_relpath'],r['source_sha'])
+         for r in db.execute('SELECT * FROM source_observations'):
++            check()
+             verify_blob(r['archive_relpath'],r['source_sha'])
+             if self.row(r['record_id']) is None:
+                 issue('observation_unknown_record',r['record_id'])
+         for r in db.execute("""SELECT f.path,f.sha256,m.record_id,m.fingerprint
+                    FROM observed_files f JOIN file_members m ON m.path=f.path"""):
++            check()
+             match=db.execute("""SELECT 1 FROM source_observations WHERE path=? AND
+                    record_id=? AND fingerprint=? AND source_sha=?""",
+                    (r['path'],r['record_id'],r['fingerprint'],r['sha256'])).fetchone()
+@@ -468,6 +478,7 @@ class Store:
+                 issue('current_observation_missing',r['record_id']+'@'+r['path'])
+         records=db.execute('SELECT * FROM records').fetchall()
+         for r in records:
++            check()
+             h=db.execute("""SELECT * FROM record_history WHERE record_id=?
+                              ORDER BY event_id DESC LIMIT 1""",(r['record_id'],)).fetchone()
+             if not h or any(h[k]!=r[k] for k in
+@@ -496,6 +507,7 @@ class Store:
+                 producer='Organization' if r['record_type']=='Organization' else 'LOE'
+                 support=False
+                 for d in db.execute("SELECT result_json FROM derived_evidence WHERE producer IN ('Organization','DocumentIssuer')" if producer=='Organization' else "SELECT result_json FROM derived_evidence WHERE producer='LOE'"):
++                    check()
+                     if any(x.get('record_id')==r['record_id'] for x in json.loads(d[0]).get('claims',[])):
+                         support=True;break
+                 if not support:
+@@ -503,9 +515,11 @@ class Store:
+         # Latest assertion per owner + edge must exactly match the current edge.
+         history={}
+         for r in db.execute('SELECT * FROM relationship_history ORDER BY event_id'):
++            check()
+             history[(r['owner'],r['source_id'],r['predicate'],r['target_id'])]=r
+         current={}
+         for r in db.execute('SELECT * FROM relationships'):
++            check()
+             key=(r['owner'],r['source_id'],r['predicate'],r['target_id'])
+             current[key]=r
+             h=history.get(key)
+@@ -519,19 +533,23 @@ class Store:
+                 if not owner_record or not owner_record['active']:
+                     issue('relationship_evidence_inactive',r['owner'])
+         for key,h in history.items():
++            check()
+             if key not in current and h['change_type']!='retracted':
+                 issue('relationship_retraction_missing','|'.join(key))
+         d_history={}
+         for r in db.execute('SELECT * FROM derived_history ORDER BY event_id'):
++            check()
+             d_history[(r['producer'],r['source_id'])]=r
+         derived=db.execute('SELECT * FROM derived_evidence').fetchall()
+         current_derived=set()
+         for r in derived:
++            check()
+             key=(r['producer'],r['source_id']);current_derived.add(key)
+             h=d_history.get(key)
+             if not h or h['change_type']=='withdrawn' or h['result_json']!=r['result_json'] or h['fingerprint']!=r['fingerprint']:
+                 issue('derived_history_mismatch',key)
+         for key,h in d_history.items():
++            check()
+             if key not in current_derived and h['change_type']!='withdrawn':
+                 issue('derived_withdrawal_missing',key)
+         return {
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+index 73dc650..79e2f7a 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/__init__.py
+@@ -1,2 +1,2 @@
+ """Native O3 Alpha 5; Core/KM remains the shared knowledge authority."""
+-__version__ = "5.1.0-alpha5.1"
++__version__ = "5.2.0-alpha5.2"
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/app.py b/package/O3/O3_PRODUCT/APP/o3_gui/app.py
+index bcfa738..48a6c2f 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/app.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/app.py
+@@ -12,7 +12,7 @@ from PySide6.QtCore import Qt,QThread,Signal,QTimer,QByteArray,QRect
+ from PySide6.QtGui import QShortcut,QKeySequence,QAction,QFont,QTextCursor
+ from PySide6.QtWidgets import (QApplication,QMainWindow,QWidget,QFrame,QVBoxLayout,QHBoxLayout,
+     QListWidget,QListWidgetItem,QLineEdit,QStackedWidget,QScrollArea,QMenu,QTextBrowser,QDialog,
+-    QPlainTextEdit,QTabWidget,QMessageBox,QFileDialog,QComboBox,QLabel,QSizePolicy,QTreeWidgetItemIterator)
++    QPlainTextEdit,QTabWidget,QMessageBox,QFileDialog,QComboBox,QLabel,QSizePolicy,QTreeWidgetItemIterator,QProgressBar)
+ from o3_core.engine import default_state
+ from . import __version__
+ from .ui import text,btn,wrap_btn,icon,rule,section,RecordDelegate
+@@ -52,7 +52,7 @@ class O3Window(QMainWindow):
+         self.initialized=False;self.closing=False;self.allow_close=False;self.last_error=None;self.storage_maintenance=False
+         self.inline_pending={};self.inline_serial=0
+         self.summary_data={};self.collection_data={};self.record_kinds={};self.home_data={};self.current_detail=None;self.selected_id=None;self.reader_record=None
+-        self.pending_maintenance=None;self.scan_busy=False;self.active_dialog=None;self.restoring=False
++        self.pending_maintenance=None;self.upgrade_dialog=None;self.scan_busy=False;self.active_dialog=None;self.restoring=False
+         prefs=config.get('alpha3') if isinstance(config.get('alpha3'),dict) else {}
+         self.appearance=appearance_from_config(config);self.scale=self.appearance['text_scale']
+         self.preview_theme=None;self.preview_appearance_values=None;self.reader_body=''
+@@ -62,6 +62,7 @@ class O3Window(QMainWindow):
+         self.search_timer=QTimer(self);self.search_timer.setSingleShot(True);self.search_timer.setInterval(250);self.search_timer.timeout.connect(self.find_records)
+         self.preference_timer=QTimer(self);self.preference_timer.setSingleShot(True);self.preference_timer.setInterval(350);self.preference_timer.timeout.connect(self.persist_preferences)
+         self.startup_timer=QTimer(self);self.startup_timer.setSingleShot(True);self.startup_timer.setInterval(45000);self.startup_timer.timeout.connect(lambda:self.on_failed('initialize','Workspace initialization did not finish within 45 seconds.'))
++        self.startup_sample_timer=QTimer(self);self.startup_sample_timer.setInterval(5000);self.startup_sample_timer.timeout.connect(self.sample_startup)
+         self.tick=QTimer(self);self.tick.setInterval(60000);self.tick.timeout.connect(self.periodic_scan)
+         self.setWindowTitle('O3 · '+__version__);self.setWindowIcon(application_icon());self.resize(1360,860);self.setMinimumSize(760,640)
+         self.build_ui();self.apply_appearance(self.appearance)
+@@ -84,10 +85,16 @@ class O3Window(QMainWindow):
+         self.record_actions.explain_requested.connect(self.record_actions.explain_property)
+         self.record_actions.undo_available.connect(self.mail_workspace.undo_button.setVisible)
+         self.thread=QThread(self);self.worker=EngineWorker(self.state);self.worker.moveToThread(self.thread)
+-        self.thread.started.connect(self.worker.initialize);self.submit.connect(self.worker.run);self.shutdown.connect(self.worker.close_engine)
+-        self.worker.ready.connect(self.on_ready);self.worker.result.connect(self.on_result);self.worker.failed.connect(self.on_failed);self.worker.maintenance_required.connect(self.on_maintenance)
++        self.thread.started.connect(self.worker.initialize);self.submit.connect(self.worker.run);self.shutdown.connect(self.worker.close_engine);self.shutdown.connect(self.worker.request_stop,Qt.ConnectionType.DirectConnection)
++        self.worker.ready.connect(self.on_ready);self.worker.result.connect(self.on_result);self.worker.failed.connect(self.on_failed);self.worker.maintenance_required.connect(self.on_maintenance);self.worker.upgrade_progress.connect(self.on_upgrade_progress)
+         self.worker.closed.connect(self.thread.quit);self.thread.finished.connect(self.done_closing)
+-        self.thread.start();self.startup_timer.start()
++        self.thread.start();self.startup_timer.start();self.startup_sample_timer.start()
++
++    def sample_startup(self):
++        if self.initialized or self.closing or (not self.startup_timer.isActive() and not self.storage_maintenance):
++            self.startup_sample_timer.stop();return
++        diagnostic=getattr(self.worker,'startup_diagnostics',None)
++        if diagnostic is not None:diagnostic.sample()
+ 
+     def build_ui(self):
+         root=QWidget();outer=QHBoxLayout(root);outer.setContentsMargins(0,0,0,0);outer.setSpacing(0)
+@@ -268,6 +275,9 @@ class O3Window(QMainWindow):
+ 
+     def on_ready(self,summary):
+         if self.closing:return
++        self.startup_sample_timer.stop()
++        self.finish_upgrade_dialog()
++        self.pending_maintenance=None
+         self.initialized=True;self.storage_maintenance=False;self.startup_timer.stop();self.main.setEnabled(True)
+         self.install_summary(summary);self.tick.start();self.status.hide()
+         if not self.nav_ready:
+@@ -340,6 +350,9 @@ class O3Window(QMainWindow):
+         self.last_error=(op,error);self.scan_busy=False;self.status.setText(op.replace('_',' ').capitalize()+' failed · '+error);self.status.show();self.update_sources()
+         if op=='scan':self.source_failure=error;self.update_notices();self.submit.emit('overview',{})  # Re-read KM's recorded failed-scan coverage.
+         if op=='initialize':self.startup_timer.stop();self.main.setEnabled(True);self.startup_finished.emit(False)
++        if op=='upgrade_starters':
++            self.storage_maintenance=False;self.startup_sample_timer.stop();self.finish_upgrade_dialog()
++            self.show_information('Workspace update stopped',error+'\nOpen Your folders and choose Update saved data to retry.',True)
+         if op in ('restore','migrate'):
+             self.storage_maintenance=True;self.show_information('Maintenance stopped',error+'\nThe writer remains stopped. Preserve the backup and consult the recovery guide before reopening.',True)
+ 
+@@ -1141,9 +1154,65 @@ class O3Window(QMainWindow):
+ 
+     def on_maintenance(self,data):
+         self.initialized=False;self.pending_maintenance=data;self.km.maintenance=True;self.startup_timer.stop();self.tick.stop();self.main.setEnabled(True);self.status.setText('Protected upgrade required · no writer opened');self.status.show()
+-        self.startup_finished.emit(False);QTimer.singleShot(0,self.open_sources)
++        self.startup_finished.emit(False)
++        if data.get('mode')=='starter_conversion_required':QTimer.singleShot(0,self.begin_starter_upgrade)
++        else:QTimer.singleShot(0,self.open_sources)
++    def begin_starter_upgrade(self):
++        if self.closing or self.storage_maintenance or not self.pending_maintenance:return
++        if self.pending_maintenance.get('mode')!='starter_conversion_required':return
++        self.last_error=None;self.storage_maintenance=True;self.startup_sample_timer.start()
++        dialog=QDialog(self);dialog.setWindowTitle('Updating your workspace')
++        dialog.setWindowModality(Qt.WindowModality.WindowModal)
++        layout=QVBoxLayout(dialog)
++        layout.addWidget(text('Your saved workspace is being updated.'))
++        layout.addWidget(text('A recovery copy is checked before changes are saved.'))
++        self.upgrade_label=text('Preparing recovery copy…');layout.addWidget(self.upgrade_label)
++        self.upgrade_bar=QProgressBar(dialog);self.upgrade_bar.setRange(0,0);layout.addWidget(self.upgrade_bar)
++        layout.addWidget(btn('Close O3',self.close,kind='link'))
++        dialog.rejected.connect(self.close)
++        self.upgrade_dialog=dialog;dialog.resize(480,190);dialog.show()
++        self.submit.emit('upgrade_starters',{})
++
++    def finish_upgrade_dialog(self):
++        dialog=self.upgrade_dialog
++        self.upgrade_dialog=None
++        if dialog is not None:dialog.accept();dialog.deleteLater()
++
++    def on_upgrade_progress(self,data):
++        if self.closing or self.upgrade_dialog is None:return
++        labels={
++            'checkpoint_source_archive_verification':'Checking saved source locations',
++            'checkpoint_provenance_verification':'Checking saved evidence and history',
++            'checkpoint_source_boundaries':'Checking recovery location',
++            'checkpoint_database_snapshot':'Copying saved workspace',
++            'checkpoint_inventory':'Collecting recovery files',
++            'checkpoint_write':'Writing recovery copy',
++            'checkpoint_verify':'Checking recovery copy',
++            'checkpoint_verify_manifest':'Checking recovery file inventory',
++            'checkpoint_verify_extract':'Checking recovery file contents',
++            'checkpoint_verify_database_open':'Opening recovery database',
++            'checkpoint_verify_database_schema':'Checking recovery database',
++            'checkpoint_verify_database_identity':'Checking workspace identity',
++            'checkpoint_verify_archive_boundaries':'Checking recovery source locations',
++            'checkpoint_verify_provenance':'Checking recovered evidence and history',
++            'checkpoint_verify_ownership':'Checking workspace ownership',
++            'checkpoint_verify_cleanup':'Finishing recovery checks',
++            'checkpoint_verify_complete':'Recovery copy verified',
++            'starter_definition_conversion':'Updating saved views'}
++        label=labels.get(data.get('stage'),'Updating your workspace')
++        counts=data.get('counts') or {};done=counts.get('files_completed');total=counts.get('files_total')
++        if type(done) is int and type(total) is int and total>0:
++            self.upgrade_bar.setRange(0,total);self.upgrade_bar.setValue(done)
++            label+=f' · {done:,} of {total:,} files'
++        else:
++            self.upgrade_bar.setRange(0,0)
++            if type(done) is int:label+=f' · {done:,} files checked'
++        self.upgrade_label.setText(label);self.status.setText(label);self.status.show()
++
+     def begin_migration(self):
+         if not self.pending_maintenance or self.storage_maintenance:return
++        if self.pending_maintenance.get('mode')=='starter_conversion_required':
++            self.begin_starter_upgrade();return
+         source=self.config.get('source_root') or QFileDialog.getExistingDirectory(self,'Select the existing O3Data root')
+         if not source:return
+         backup,_=QFileDialog.getSaveFileName(self,'Create required pre-upgrade backup','','O3 backup (*.zip)')
+@@ -1182,6 +1251,7 @@ class O3Window(QMainWindow):
+         if self.closing:return
+         if self.initialized and not self.storage_maintenance and not self.persist_preferences():
+             if not confirm(self,'Local changes are not saved','The Workspace settings could not be written. Local drafts and presentation changes remain in memory. Close and discard those unsaved changes? Saved knowledge transactions remain committed.'):return
++        self.finish_upgrade_dialog()
+         self.closing=True;self.tick.stop();self.preference_timer.stop();self.search_timer.stop();self.startup_timer.stop();self.main.setEnabled(False);self.status.setText('Closing workspace…');self.status.show();self.shutdown.emit()
+     def done_closing(self):
+         # QThread.finished precedes native thread-local cleanup. Join before
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py b/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
+index 13c6f71..1978caa 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/km_session.py
+@@ -19,10 +19,11 @@ from o3_core.engine import Engine, Settings
+ from o3_km import (KMService, initialize_workspace_v4, migrate_v3_to_v4, initialize_workspace, migrate_v2_to_v3,
+                    migrate_v3_to_configurable_workspace, restore_backup, verify_backup)
+ from o3_km.migration import (validate_core_schema, validate_schema3,
+-                             LEGACY_KM10_CATALOG_FINGERPRINT)
++                             LEGACY_KM10_CATALOG_FINGERPRINT, ALPHA4_CATALOG_FINGERPRINT)
+ from o3_km.catalog import CATALOG_FINGERPRINT
+ from o3_km.workspace_types import validate_v4,is_type_id
+ from o3_km.service import VERSION
++from o3_km.upgrade_control import interruptible_sqlite
+ from o3_gui.logic import (summarize, validate_source, read_config, title_for,
+                            subtitle_for, assert_separate, archived_preview, archive_inspection, SOURCE_FOLDERS)
+ from o3_gui.display_preferences import project_list_fields
+@@ -73,6 +74,7 @@ def probe_state(state: Path) -> dict:
+                 result['mode'] = 'migration_required'
+             elif version==4:
+                 validate_v4(db, allow_alpha4=True)
++                result['catalog'] = db.execute("SELECT value FROM engine_meta WHERE key='km_schema_contract'").fetchone()[0]
+             else:
+                 fingerprint = db.execute("SELECT value FROM engine_meta WHERE key='km_schema_contract'").fetchone()
+                 if fingerprint and fingerprint[0] == LEGACY_KM10_CATALOG_FINGERPRINT:
+@@ -107,9 +109,12 @@ def display_row(record: dict) -> dict:
+ 
+ class KMSession:
+     """Created and used on the engine worker only. Every mutation is KM-owned."""
+-    def __init__(self, state: Path, *, actor: str | None = None, startup_diagnostics=None):
++    def __init__(self, state: Path, *, actor: str | None = None, startup_diagnostics=None,
++                 startup_progress=None, upgrade_control=None):
+         self.state = Path(state)
+         self.startup_diagnostics = startup_diagnostics
++        self.startup_progress = startup_progress
++        self.upgrade_control = upgrade_control
+         if startup_diagnostics: startup_diagnostics.phase('account_identity')
+         self.actor = actor or local_actor()
+         self.engine = None
+@@ -121,7 +126,7 @@ class KMSession:
+         if threading.get_ident() != self.owner:
+             raise SessionError('WRONG_THREAD', 'KM must run on its owning engine worker')
+ 
+-    def open(self) -> dict:
++    def open(self, *, defer_starter_conversion=False) -> dict:
+         self._owned()
+         if self.engine is not None:
+             raise SessionError('STATE_ALREADY_OPEN', 'Session already owns a writer')
+@@ -130,6 +135,9 @@ class KMSession:
+         self.mode = check['mode']
+         if self.mode.endswith('required'):
+             return {'maintenance_required': True, 'mode': self.mode, 'schema': check['schema']}
++        if defer_starter_conversion and check.get('catalog') == ALPHA4_CATALOG_FINGERPRINT:
++            self.mode = 'starter_conversion_required'
++            return {'maintenance_required': True, 'mode': self.mode, 'schema': check['schema']}
+         if self.mode == 'new':
+             if self.startup_diagnostics: self.startup_diagnostics.phase('new_workspace_initialization')
+             initialize_workspace_v4(self.state, exclusive_writer_stopped=True)
+@@ -141,13 +149,17 @@ class KMSession:
+             service = KMService(engine, actor=self.actor, allow_alpha4_catalog=True)
+             if self.startup_diagnostics:
+                 service._startup_error = self.startup_diagnostics.failure
+-                service._startup_phase = self.startup_diagnostics.phase
+                 self.startup_diagnostics.phase('starter_conversion_and_checkpoint')
++            service._startup_phase = lambda stage:self._report_upgrade(stage)
++            service._startup_progress = self._report_upgrade
++            service._startup_check = self.upgrade_control.check if self.upgrade_control else None
+             legacy = read_config(self.state).get("alpha3", {}).get("mail_views", [])
+-            converted = service.call({"contract": VERSION, "operation": "view.starters.ensure",
+-                "expected_workspace_revision": service.revision(),
+-                "params": {"legacy_mail_views": legacy}})
++            with interruptible_sqlite(service.db,service._startup_check):
++                converted = service.call({"contract": VERSION, "operation": "view.starters.ensure",
++                    "expected_workspace_revision": service.revision(),
++                    "params": {"legacy_mail_views": legacy}})
+             if not converted.get("ok"):
++                if self.upgrade_control:self.upgrade_control.check()
+                 raise SessionError(converted["error"]["code"], converted["error"]["message"])
+         except Exception:
+             engine.close()
+@@ -159,6 +171,14 @@ class KMSession:
+         finally:
+             if hasattr(service, '_startup_error'): del service._startup_error
+             if hasattr(service, '_startup_phase'): del service._startup_phase
++            if hasattr(service, '_startup_progress'): del service._startup_progress
++            if hasattr(service, '_startup_check'): del service._startup_check
++
++    def _report_upgrade(self, stage, counts=None):
++        if self.startup_progress:
++            self.startup_progress(stage,counts)
++        elif self.startup_diagnostics:
++            self.startup_diagnostics.progress(stage,counts)
+ 
+     def close(self):
+         self._owned()
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+index 8144b98..8d3ce32 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/startup_diagnostics.py
+@@ -6,6 +6,7 @@ from pathlib import Path
+ import tempfile
+ import threading
+ import time
++import sys
+ 
+ FILENAME = 'O3_ENGINE_STARTUP_DIAGNOSTIC.json'
+ APP = Path(__file__).resolve().parents[1]
+@@ -13,7 +14,7 @@ CODES = frozenset(('ACTOR_UNAVAILABLE STATE_PATH_UNSAFE STATE_SCHEMA_UNSUPPORTED
+     'STATE_IDENTITY_MISSING STATE_INTEGRITY_FAILED STATE_ALREADY_OPEN STATE_LOCKED '
+     'STATE_NOT_READY SCHEMA_INCOMPATIBLE LEGACY_CONFIG_CHANGED INTEGRITY_FAILED '
+     'BACKUP_REQUIRED BACKUP_VERIFICATION_FAILED MIGRATION_BLOCKED INVALID_VALUE '
+-    'INVALID_TYPE KM_FAILURE REVISION_CONFLICT').split())
++    'INVALID_TYPE KM_FAILURE REVISION_CONFLICT UPGRADE_CANCELLED UPGRADE_TIMEOUT').split())
+ 
+ 
+ def safe_exception(exc):
+@@ -49,8 +50,10 @@ class StartupDiagnostics:
+         state = Path(state)
+         self.path = (state.parent/'logs' if state.name == 'state' and (state.parent/'workspace-owner.json').is_file() else state.parent/(state.name+'-startup-logs')) / FILENAME
+         self.lock = threading.RLock()
++        self.worker_thread = threading.get_ident()
++        self.last_progress_save = 0.0
+         self.started = time.monotonic()
+-        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.1',
++        self.data = {'format': 'o3-engine-startup/1', 'diagnostic_build': 'alpha5.2',
+             'started_utc': datetime.now(timezone.utc).isoformat(), 'status': 'running',
+             'stage': 'session_construction', 'events': [], 'errors': [],
+             'privacy': 'No exception messages, absolute paths, account names, credentials, source records or frame locals.'}
+@@ -60,9 +63,56 @@ class StartupDiagnostics:
+         with self.lock:
+             self.data['stage'] = stage
+             self.data['events'].append({'stage': stage, 'elapsed_seconds': round(time.monotonic()-self.started, 3)})
+-            self.data['events'] = self.data['events'][-16:]
++            self.data['events'] = self.data['events'][-32:]
++            self.data.pop('progress', None)
+             self._save()
+ 
++    def progress(self, stage, counts=None):
++        """Record numeric work completed, never filenames or source values."""
++        with self.lock:
++            changed = self.data['stage'] != stage
++            if changed:
++                self.data['stage'] = stage
++                self.data['events'].append({'stage':stage,'elapsed_seconds':round(time.monotonic()-self.started,3)})
++                self.data['events'] = self.data['events'][-32:]
++            self.data['progress'] = {key:value for key,value in (counts or {}).items()
++                if key in ('files_completed','files_total','bytes_completed','bytes_total')
++                and type(value) is int and value >= 0}
++            now = time.monotonic()
++            if changed or now-self.last_progress_save >= 1:
++                self.last_progress_save = now
++                self._save()
++
++    def sample(self):
++        """Sample only code locations on the engine worker; never frame locals."""
++        if not self.lock.acquire(blocking=False):return
++        try:
++            frames=[]
++            frame=None
++            try:
++                frame=sys._current_frames().get(self.worker_thread)
++                while frame is not None:
++                    file=Path(frame.f_code.co_filename)
++                    try: label=file.resolve().relative_to(APP).as_posix()
++                    except (ValueError,OSError):
++                        label='stdlib/'+file.name if file.name in (
++                            'tempfile.py','shutil.py','pathlib.py','contextlib.py','threading.py') else None
++                        if file.name=='__init__.py' and file.parent.name=='zipfile':label='stdlib/zipfile/__init__.py'
++                    if label:frames.append({'file':label,'line':frame.f_lineno})
++                    frame=frame.f_back
++            except Exception:
++                pass
++            finally:
++                del frame
++            sample={'elapsed_seconds':round(time.monotonic()-self.started,3),
++                    'stage':self.data['stage'],'worker_frames':frames[:16]}
++            if self.data.get('progress'):sample['progress']=dict(self.data['progress'])
++            self.data.setdefault('samples',[]).append(sample)
++            self.data['samples']=self.data['samples'][-10:]
++            self._save()
++        finally:
++            self.lock.release()
++
+     def failure(self, exc):
+         with self.lock:
+             try: detail = safe_exception(exc)
+@@ -74,6 +124,7 @@ class StartupDiagnostics:
+ 
+     def finish(self, status):
+         with self.lock:
++            if status == 'timeout': self.sample()
+             if self.data.get('status') != 'timeout': self.data['status'] = status
+             if status == 'ready' and self.data['status'] == 'timeout': self.data['completed_after_timeout'] = True
+             self._save()
+diff --git a/package/O3/O3_PRODUCT/APP/o3_gui/worker.py b/package/O3/O3_PRODUCT/APP/o3_gui/worker.py
+index 62a7f6e..b711dd1 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_gui/worker.py
++++ b/package/O3/O3_PRODUCT/APP/o3_gui/worker.py
+@@ -1,9 +1,11 @@
+ """One Qt worker owns one Core Engine and KMService; no UI-thread database work."""
+ from __future__ import annotations
+ from pathlib import Path
++import time
+ from PySide6.QtCore import QObject, Signal, Slot
+ from o3_gui.km_session import KMSession
+ from o3_km import verify_backup
++from o3_km.upgrade_control import UpgradeControl
+ from o3_gui.startup_diagnostics import StartupDiagnostics
+ 
+ 
+@@ -13,12 +15,28 @@ class EngineWorker(QObject):
+     result = Signal(str, object)
+     failed = Signal(str, str)
+     closed = Signal()
++    upgrade_progress = Signal(object)
+ 
+     def __init__(self, state: Path):
+         super().__init__()
+         self.state = Path(state)
+         self.session = None
+         self.startup_diagnostics = None
++        self.upgrade_control = UpgradeControl()
++        self._last_progress = (None,0.0)
++
++    @Slot()
++    def request_stop(self):
++        # Direct connection: only a thread-safe Event crosses the thread boundary.
++        self.upgrade_control.stop()
++
++    def report_upgrade_progress(self,stage,counts=None):
++        now=time.monotonic()
++        previous,when=self._last_progress
++        if stage==previous and now-when<.25:return
++        self._last_progress=(stage,now)
++        if self.startup_diagnostics:self.startup_diagnostics.progress(stage,counts)
++        self.upgrade_progress.emit({'stage':stage,'counts':dict(counts or {})})
+ 
+     @property
+     def engine(self):
+@@ -29,8 +47,9 @@ class EngineWorker(QObject):
+         try:
+             # Created here, never on the Qt main thread.
+             self.startup_diagnostics = StartupDiagnostics(self.state)
+-            self.session = KMSession(self.state, startup_diagnostics=self.startup_diagnostics)
+-            data = self.session.open()
++            self.session = KMSession(self.state, startup_diagnostics=self.startup_diagnostics,
++                startup_progress=self.report_upgrade_progress, upgrade_control=self.upgrade_control)
++            data = self.session.open(defer_starter_conversion=True)
+             self.startup_diagnostics.finish('maintenance_required' if data.get('maintenance_required') else 'ready')
+             if data.get('maintenance_required'): self.maintenance_required.emit(data)
+             else: self.ready.emit(data)
+@@ -45,6 +64,19 @@ class EngineWorker(QObject):
+         args = payload if isinstance(payload, dict) else {}
+         try:
+             if self.session is None: raise RuntimeError('STATE_NOT_READY: session is not initialized')
++            if op == 'upgrade_starters':
++                if self.session.mode != 'starter_conversion_required':
++                    raise RuntimeError('STATE_NOT_READY: no starter upgrade is pending')
++                self.upgrade_control.begin()
++                try:
++                    self.startup_diagnostics.finish('running')
++                    data=self.session.open()
++                    if data.get('maintenance_required'):
++                        raise RuntimeError('STATE_NOT_READY: workspace changed during upgrade')
++                    self.startup_diagnostics.finish('ready')
++                    self.ready.emit(data)
++                finally:self.upgrade_control.end()
++                return
+             if op == 'km':
+                 try: response = self.session.call(args['request'])
+                 except Exception as exc:
+@@ -77,12 +109,19 @@ class EngineWorker(QObject):
+                            approved=args.get('approved') is True, confirmed=args.get('confirmed') is True)
+             elif op == 'restore':
+                 data = self.session.restore(Path(args['backup']), Path(args['source']), confirmed=args.get('confirmed') is True)
+-            elif op == 'reopen': data = self.session.open()
++            elif op == 'reopen': data = self.session.open(defer_starter_conversion=True)
+             else: raise ValueError('Unknown worker operation')
+             if op in ('detail', 'content', 'preview', 'reading', 'inline', 'home', 'neighborhood') and 'request_id' in args:
+                 data = {**data, 'request_id': args['request_id']}
+             self.result.emit(op, data)
+         except Exception as exc:
++            if op == 'upgrade_starters':
++                self.startup_diagnostics.failure(exc)
++                cancelled=self.upgrade_control.stopped.is_set()
++                self.startup_diagnostics.finish('cancelled' if cancelled else 'failed')
++                self.session.close()
++                if cancelled:return
++                self.session.mode='starter_conversion_required'
+             if 'request_id' in args and op in ('list', 'detail', 'content', 'preview', 'reading', 'inline', 'home', 'neighborhood'):
+                 self.result.emit(op, {'request_id': args['request_id'], 'id': args.get('id'),
+                                      'read_error': str(exc), 'error_code': getattr(exc, 'code', 'READ_FAILED')})
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/migration.py b/package/O3/O3_PRODUCT/APP/o3_km/migration.py
+index f9ae987..4594b6d 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/migration.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/migration.py
+@@ -16,6 +16,7 @@ import tempfile
+ import uuid
+ import zipfile
+ from contextlib import closing
++from .upgrade_control import interruptible_sqlite
+ from .catalog import CATALOG_FINGERPRINT, DEFAULT_SETTINGS, PROPERTIES, PRESETS, TEMPLATES,template_expression,addresses,patterns
+ 
+ LEGACY_KM10_CATALOG_FINGERPRINT='3cf0d4643846f76bea24030187641fbdd5d7307de1b4c03976e00f1a9b009900'
+@@ -196,7 +197,8 @@ def validate_workspace_schema(db, *, version, allow_alpha4=False):
+ def validate_schema3(db, *, allow_alpha4=False):
+     validate_workspace_schema(db,version=3,allow_alpha4=allow_alpha4)
+ 
+-def _validate_archive(state,db):
++def _checked_archive_references(state,db,*,_check=None):
++    """Check every distinct reference's path before any evidence is consumed."""
+     if (state/'archive').is_symlink():raise RuntimeError('INTEGRITY_FAILED: archive directory link')
+     archive_root=(state/'archive').resolve()
+     # One ICS capture may support thousands of event records. Verify each
+@@ -205,6 +207,7 @@ def _validate_archive(state,db):
+     references=db.execute('''SELECT archive_relpath,source_sha FROM record_versions
+                             UNION SELECT archive_relpath,source_sha FROM source_observations''')
+     for rel,sha in references:
++        if _check:_check()
+         try:_zip_name(rel)
+         except RuntimeError:raise RuntimeError('INTEGRITY_FAILED: unsafe archive path') from None
+         if not rel.startswith('archive/'):
+@@ -214,10 +217,24 @@ def _validate_archive(state,db):
+                for i in range(1,len(PurePosixPath(rel).parts)+1)):
+             raise RuntimeError('INTEGRITY_FAILED: archive symlink')
+         path=candidate.resolve()
+-        if not path.is_relative_to(archive_root) or not path.is_file() or _file_hash(path)!=sha:
++        if not path.is_relative_to(archive_root) or not path.is_file():
++            raise RuntimeError('INTEGRITY_FAILED: source archive verification')
++        yield path,sha
++
++def _validate_archive(state,db):
++    # Standalone callers still require a complete content check here.
++    for path,sha in _checked_archive_references(state,db):
++        if _file_hash(path)!=sha:
+             raise RuntimeError('INTEGRITY_FAILED: source archive verification')
+ 
+-def _verify_core_provenance_readonly(state: Path, db: sqlite3.Connection):
++def _validate_archive_boundaries(state,db,*,_check=None):
++    # Only used immediately before the full Core provenance audit. That audit
++    # reads each distinct (path, expected SHA) and checks its actual bytes, as
++    # well as the history/reference relationships. Do not duplicate that read.
++    for _ in _checked_archive_references(state,db,_check=_check):
++        pass
++
++def _verify_core_provenance_readonly(state: Path, db: sqlite3.Connection, *, _check=None, _progress=None):
+     """Reuse the original Core audit against an existing read-only snapshot.
+ 
+     Construct no Store or Engine (both manage application state), and perform
+@@ -227,6 +244,12 @@ def _verify_core_provenance_readonly(state: Path, db: sqlite3.Connection):
+     view = object.__new__(Store)
+     view.root = Path(state).resolve()
+     view.db = db
++    view._audit_checkpoint = _check
++    def progress(counts):
++        if _progress:
++            try:_progress(counts)
++            except Exception:pass
++    view._audit_progress = progress
+     db.row_factory = sqlite3.Row
+     if not Store.audit_provenance(view)['ok']:
+         raise RuntimeError('INTEGRITY_FAILED: Core provenance/history audit failed')
+@@ -747,11 +770,14 @@ def prepare_alpha5_conversion(service):
+     The native ownership marker lives one directory above state and is included.
+     """
+     from .workspace_types import validate_v4
++    check=getattr(service,'_startup_check',None)
+     def phase(name):
++        if check:check()
+         callback=getattr(service,'_startup_phase',None)
+         if callback is not None:
+             try:callback(name)
+             except Exception:pass  # Diagnostic I/O must not change conversion.
++    if check:check()
+     db=service.db
+     if db.in_transaction:
+         raise RuntimeError('STATE_LOCKED: checkpoint must precede the conversion transaction')
+@@ -764,9 +790,10 @@ def prepare_alpha5_conversion(service):
+     validate_v4(db,allow_alpha4=True)
+     state=Path(service.engine.store.root).resolve()
+     phase('checkpoint_source_archive_verification')
+-    _validate_archive(state,db)
++    _validate_archive_boundaries(state,db,_check=check)
+     phase('checkpoint_provenance_verification')
+-    _verify_core_provenance_readonly(state,db)
++    _verify_core_provenance_readonly(state,db,_check=check,
++        _progress=lambda counts:getattr(service,'_startup_progress',lambda *a:None)('checkpoint_provenance_verification',counts))
+     root,state_rel,owner_id=_checkpoint_layout(state)
+     phase('checkpoint_source_boundaries')
+     roots=_source_roots(db)
+@@ -794,12 +821,13 @@ def prepare_alpha5_conversion(service):
+         with tempfile.TemporaryDirectory(prefix='o3-alpha5-snapshot-') as tmp:
+             phase('checkpoint_database_snapshot')
+             snapshot=Path(tmp)/'o3.sqlite'
+-            with closing(sqlite3.connect(snapshot)) as out:
+-                db.backup(out)
++            with closing(sqlite3.connect(snapshot)) as out, interruptible_sqlite(out,check):
++                db.backup(out,pages=128,progress=(lambda *a:check()) if check else None)
+                 validate_v4(out,allow_alpha4=True)
+             entries={db_name:snapshot}
+             phase('checkpoint_inventory')
+             for file in root.rglob('*'):
++                if check:check()
+                 if file.is_symlink():raise RuntimeError('BACKUP_REQUIRED: linked Workspace entry')
+                 if not file.is_file():continue
+                 if file.stat().st_nlink>1:raise RuntimeError('BACKUP_REQUIRED: shared Workspace file')
+@@ -811,15 +839,22 @@ def prepare_alpha5_conversion(service):
+                 entries[name]=file
+             phase('checkpoint_write')
+             with zipfile.ZipFile(pending,'x',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
+-                for name,file in sorted(entries.items()):
++                for index,(name,file) in enumerate(sorted(entries.items()),1):
++                    if check:check()
+                     digest=hashlib.sha256()
+                     with file.open('rb') as source,archive.open(name,'w',force_zip64=True) as output:
+                         for chunk in iter(lambda:source.read(1024*1024),b''):
++                            if check:check()
+                             digest.update(chunk);output.write(chunk)
+                     manifest['sha256'][name]=digest.hexdigest()
++                    callback=getattr(service,'_startup_progress',None)
++                    if callback:
++                        try:callback('checkpoint_write',{'files_completed':index,'files_total':len(entries)})
++                        except Exception:pass
+                 archive.writestr('checkpoint-manifest.json',_json(manifest))
+             phase('checkpoint_verify')
+-            verify_alpha5_checkpoint(pending)
++            verify_alpha5_checkpoint(pending,_progress=getattr(service,'_startup_progress',None),_check=check)
++            if check:check()
+             os.replace(pending,destination)
+     finally:pending.unlink(missing_ok=True)
+     phase('starter_definition_conversion')
+@@ -831,9 +866,15 @@ def prepare_alpha5_conversion(service):
+             'files':len(manifest['sha256'])}
+ 
+ 
+-def verify_alpha5_checkpoint(path, *, _extract_to=None):
++def verify_alpha5_checkpoint(path, *, _extract_to=None, _progress=None, _check=None):
+     """Verify every byte and the inherited schema before offering rollback."""
+     from .workspace_types import validate_v4
++    def report(stage, counts=None):
++        if _check:_check()
++        if _progress is not None:
++            try:_progress(stage, counts)
++            except Exception:pass  # Diagnostic failures must not affect verification.
++    report('checkpoint_verify_manifest')
+     with zipfile.ZipFile(path) as archive:
+         names=archive.namelist()
+         if (len(set(names))!=len(names) or len({n.casefold() for n in names})!=len(names) or
+@@ -852,6 +893,9 @@ def verify_alpha5_checkpoint(path, *, _extract_to=None):
+         with tempfile.TemporaryDirectory(prefix='o3-checkpoint-verify-') as tmp:
+             extracted=Path(_extract_to) if _extract_to is not None else Path(tmp)
+             extracted.mkdir(parents=True,exist_ok=True)
++            counts={'files_completed':0,'files_total':len(manifest['sha256']),
++                    'bytes_completed':0,'bytes_total':sum(archive.getinfo(n).file_size for n in manifest['sha256'])}
++            report('checkpoint_verify_extract',counts)
+             for name,sha in manifest['sha256'].items():
+                 _checkpoint_name(name)
+                 info=archive.getinfo(name)
+@@ -863,24 +907,37 @@ def verify_alpha5_checkpoint(path, *, _extract_to=None):
+                 with archive.open(name) as source,target.open('xb') as output:
+                     for chunk in iter(lambda:source.read(1024*1024),b''):
+                         digest.update(chunk);output.write(chunk)
++                        counts['bytes_completed']+=len(chunk)
++                        report('checkpoint_verify_extract',counts)
+                 if digest.hexdigest()!=sha:
+                     raise RuntimeError('BACKUP_VERIFICATION_FAILED: checkpoint checksum')
++                counts['files_completed']+=1
++                report('checkpoint_verify_extract',counts)
+             state=extracted if manifest['state_relative']=='.' else extracted/'state'
+             if not (state/'o3.sqlite').is_file():
+                 raise RuntimeError('BACKUP_VERIFICATION_FAILED: checkpoint database missing')
+-            with closing(sqlite3.connect((state/'o3.sqlite').as_uri()+'?mode=ro',uri=True)) as db:
++            report('checkpoint_verify_database_open')
++            with closing(sqlite3.connect((state/'o3.sqlite').as_uri()+'?mode=ro',uri=True)) as db, interruptible_sqlite(db,_check):
++                report('checkpoint_verify_database_schema')
+                 validate_v4(db,allow_alpha4=True)
++                report('checkpoint_verify_database_identity')
+                 if (_meta(db,'km_schema_contract')!=manifest['catalog'] or
+                     _meta(db,'km_workspace_id')!=manifest.get('km_workspace_id') or
+                     int(_meta(db,'km_workspace_revision','-1'))!=manifest.get('workspace_revision') or
+                     int(_meta(db,'km_core_epoch','-1'))!=manifest.get('core_epoch')):
+                     raise RuntimeError('BACKUP_VERIFICATION_FAILED: checkpoint identity mismatch')
+-                _validate_archive(state,db)
+-                _verify_core_provenance_readonly(state,db)
++                report('checkpoint_verify_archive_boundaries')
++                _validate_archive_boundaries(state,db,_check=_check)
++                report('checkpoint_verify_provenance')
++                _verify_core_provenance_readonly(state,db,_check=_check,
++                    _progress=lambda counts:report('checkpoint_verify_provenance',counts))
++            report('checkpoint_verify_ownership')
+             if manifest['state_relative']=='state':
+                 _,_,identity=_checkpoint_layout(state)
+                 if identity is None or identity!=manifest.get('ownership_workspace_id'):
+                     raise RuntimeError('BACKUP_VERIFICATION_FAILED: checkpoint ownership mismatch')
++            report('checkpoint_verify_cleanup')
++    report('checkpoint_verify_complete')
+     return {**manifest,'verified':True}
+ 
+ 
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/starters.py b/package/O3/O3_PRODUCT/APP/o3_km/starters.py
+index 809b002..4c4cf2a 100644
+--- a/package/O3/O3_PRODUCT/APP/o3_km/starters.py
++++ b/package/O3/O3_PRODUCT/APP/o3_km/starters.py
+@@ -98,7 +98,10 @@ def ensure(service, params, expected):
+                'starter_view_ids': STARTER_IDS, 'checkpoint': checkpoint,
+                'converted_disposition_count': len(old_dispositions)}
+ 
++    check=getattr(service,'_startup_check',None)
++    if check:check()
+     def convert():
++        if check:check()
+         for prop, spec in definitions:
+             service._put_def(prop, 'property', 'Email', 'custom', spec, 'enabled')
+         for spec in specifications:
+diff --git a/package/O3/O3_PRODUCT/APP/o3_km/upgrade_control.py b/package/O3/O3_PRODUCT/APP/o3_km/upgrade_control.py
+new file mode 100644
+index 0000000..cbdc9a2
+--- /dev/null
++++ b/package/O3/O3_PRODUCT/APP/o3_km/upgrade_control.py
+@@ -0,0 +1,63 @@
++"""Cooperative control for one owned upgrade, independent of the Qt event queue."""
++from contextlib import contextmanager
++import sqlite3
++import threading
++import time
++
++
++class UpgradeStopped(RuntimeError):
++    def __init__(self, code):
++        self.code = code
++        super().__init__(code + ': saved workspace upgrade stopped safely')
++
++
++class UpgradeControl:
++    # Recovery limit, not a promised launch time. Ordinary startup keeps its
++    # original watchdog. Only an explicit protected upgrade gets this budget.
++    MAX_SECONDS = 300
++
++    def __init__(self):
++        self.stopped = threading.Event()
++        self.deadline = None
++
++    def begin(self):
++        self.check()
++        self.deadline = time.monotonic() + self.MAX_SECONDS
++
++    def stop(self):
++        self.stopped.set()
++
++    def check(self):
++        if self.stopped.is_set():
++            raise UpgradeStopped('UPGRADE_CANCELLED')
++        if self.deadline is not None and time.monotonic() >= self.deadline:
++            raise UpgradeStopped('UPGRADE_TIMEOUT')
++
++    def end(self):
++        self.deadline = None
++
++
++@contextmanager
++def interruptible_sqlite(db, check=None):
++    """Cancel long SQLite checks on their owning thread; restore the handler."""
++    if check is None:
++        yield db
++        return
++    stopped = []
++    def poll():
++        try:
++            check()
++            return 0
++        except Exception as exc:
++            stopped.append(exc)
++            return 1
++    check()
++    db.set_progress_handler(poll, 10000)
++    try:
++        yield db
++    except sqlite3.Error:
++        if stopped:
++            raise stopped[0] from None
++        raise
++    finally:
++        db.set_progress_handler(None, 0)

@@ -1,0 +1,6 @@
+Historical Alpha 5.2 source: commit 321c0689709d59e7f77008140e17254679a38cad
+
+The complete history is included in ../ALPHA_5_3/O3_Alpha_5_3_Source.bundle.
+Clone that bundle and check out the commit above to inspect the original 5.2
+source. This directory retains historical reports; current release evidence
+and source instructions are in ../ALPHA_5_3.

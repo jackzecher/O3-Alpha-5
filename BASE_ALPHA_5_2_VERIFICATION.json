@@ -1,0 +1,38 @@
+{
+  "application_build_id": "5.2.0-alpha5.2",
+  "source_revision": "321c0689709d59e7f77008140e17254679a38cad",
+  "application_source_sha256": "f414467f7627aeb5eaa44c2f7096d4dafe290232026831a871bb767066427d23",
+  "status": "REPAIR_CANDIDATE_LINUX_VERIFIED_WINDOWS_NIPR_PENDING",
+  "target_evidence": "Exact Alpha 5.1 checkpoint passed in 81.01 seconds; duplicate archive content pass took 66.98 seconds; Core audit took 6.05 seconds.",
+  "repairs": [
+    "Eliminate redundant migration content read while retaining complete Core content/provenance audit and path checks.",
+    "Recognize exact old catalog and emit protected maintenance before opening writer.",
+    "Actual progress and cooperative cancel/recoverable timeout; unchanged ordinary startup timeout."
+  ],
+  "checks": {
+    "archive_tamper_and_conflicting_hashes": "PASS",
+    "full_owned_checkpoint_and_rollback": "PASS",
+    "atomic_conversion_retry_idempotence_and_saved_views": "PASS",
+    "real_Qt_upgrade_over_45_seconds": "PASS_CONTROLLED_DELAY",
+    "close_cancel_and_writer_shutdown": "PASS",
+    "timeout_and_same_window_retry": "PASS",
+    "sanitized_diagnostics_and_blocked_worker_sample": "PASS",
+    "frozen_native_wrapper_upgrade_and_cancel": "PASS_LINUX_PLATFORM_ADAPTED_IN_MEMORY",
+    "fresh_and_existing_current_catalog": "PASS_LINUX",
+    "UI_keyboard_theme_scale_restart_and_clean_shutdown": "PASS_LINUX",
+    "actual_AI_runtime_integrity_and_Qt_capture": "PASS_LINUX",
+    "all_nine_protected_files_identical_to_original_Alpha_2": "PASS",
+    "both_native_integrity_verifiers": "PASS",
+    "actual_Windows_NIPR_O3_exe_acceptance": "NOT_RUN"
+  },
+  "ordinary_startup_timeout_seconds": 45,
+  "upgrade_cooperative_limit_seconds": 300,
+  "limitations": [
+    "Windows/NIPR execution of this exact release remains unconfirmed.",
+    "Linux timings do not predict managed-Windows timings.",
+    "A blocking operating-system I/O call cannot be forcibly interrupted by cooperative cancellation.",
+    "No specific OS/endpoint-security cause of the Alpha 5.1 read latency is established."
+  ],
+  "support": "SUPPORT/ALPHA_5_2",
+  "source_bundle": "SUPPORT/ALPHA_5_2/O3_Alpha_5_2_Source.bundle"
+}

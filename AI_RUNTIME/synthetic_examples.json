@@ -1,0 +1,741 @@
+{
+  "synthetic": true,
+  "description": "Entirely invented names, messages and evidence. No operational source content.",
+  "records": [
+    {
+      "id": "mail-001",
+      "kind": "Email",
+      "title": "Harbor review \u00b7 presentation requested",
+      "person": "Maya Chen",
+      "date": "Today \u00b7 08:42",
+      "body": "Alex,\n\nCould you upload the updated readiness presentation before our Thursday review? Please include the open dependencies and identify which figures are still provisional.\n\nThe planning note is attached for context. We have not yet agreed who owns the final submission. If this should go to someone else, please let me know.\n\nThanks,\nMaya",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 3,
+      "rationale": "Synthetic candidate date: 3 days ahead of the fixed fixture clock. The fixture contains a presentation request and a Thursday date. Sent coverage is unavailable, so a reply state cannot be established. Request \u2260 accepted obligation.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-001.json",
+        "captured": "26 October 2026 \u00b7 08:42 EDT \u00b7 illustrative message observation",
+        "excerpt": "Alex,\n\nCould you upload the updated readiness presentation before our Thursday review? Please include the open dependencies and identify which figures are still provisional.\n\nThe planning note is attached for context. We have not yet agreed who owns the final submission. If this should go to someone else, please let me know.\n\nThanks,\nMaya",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "person-001",
+          "label": "Sent by",
+          "origin": "Explicit sender address in supplied message"
+        },
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Deterministic explicit match to registered Harbor Readiness LOE"
+        },
+        {
+          "target": "doc-001",
+          "label": "User-linked document",
+          "origin": "User-owned Workspace typed reference; no automatic source predicate is claimed"
+        },
+        {
+          "target": "event-001",
+          "label": "User-associated review",
+          "origin": "User-owned association; not a source-proven calendar link"
+        }
+      ],
+      "history": [
+        "26 Oct 2026, 08:42 EDT \u00b7 Fixture: supplied message observed.",
+        "26 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Today \u00b7 08:42"
+    },
+    {
+      "id": "person-001",
+      "kind": "Person",
+      "title": "Maya Chen",
+      "person": "Planning lead",
+      "date": "Directory capture",
+      "body": "Maya Chen\nPlanning lead \u00b7 Coastal Programs\nmaya.chen@example.test\n\nThis profile identifies the supplied contact. It does not prove current role, availability or authority to assign work.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 0,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Contacts/Profiles/person-001.json",
+        "captured": "25 October 2026 \u00b7 14:00 EDT \u00b7 illustrative profile observation",
+        "excerpt": "Maya Chen\nPlanning lead \u00b7 Coastal Programs\nmaya.chen@example.test\n\nThis profile identifies the supplied contact. It does not prove current role, availability or authority to assign work.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "org-001",
+          "label": "Affiliated with",
+          "origin": "Explicit organization field in supplied profile"
+        },
+        {
+          "target": "mail-001",
+          "label": "Sender of",
+          "origin": "Inverse navigation of explicit sender relationship"
+        },
+        {
+          "target": "event-001",
+          "label": "Organizer of",
+          "origin": "Explicit organizer address in stored event"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 14:00 EDT \u00b7 Fixture: supplied profile observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit affiliation retained; current role not independently verified."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "loe-001",
+      "kind": "Line of effort",
+      "title": "Harbor Readiness",
+      "person": "User-authored effort",
+      "date": "Updated yesterday",
+      "body": "Purpose: coordinate readiness evidence for the harbor review.\n\nWorking definition: maintain a coherent picture of dependencies, assumptions and confirmed decisions.\n\nThis effort is user-created in the synthetic scenario. Its authoring authority is distinct from imported correspondence. Editing a registered LOE must remain permitted for authorized created/adopted records.",
+      "status": "User-authored LOE",
+      "attention": false,
+      "days_until": 0,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / Workspace audit / user-created LOE / loe-001",
+        "captured": "25 October 2026 \u00b7 09:15 EDT \u00b7 illustrative user authoring time",
+        "excerpt": "Purpose: coordinate readiness evidence for the harbor review.\n\nWorking definition: maintain a coherent picture of dependencies, assumptions and confirmed decisions.\n\nThis effort is user-created in the synthetic scenario. Its authoring authority is distinct from imported correspondence. Editing a registered LOE must remain permitted for authorized created/adopted records.",
+        "state": "User-authored \u00b7 no upstream source claimed"
+      },
+      "relations": [
+        {
+          "target": "mail-001",
+          "label": "Referenced by",
+          "origin": "Explicit known-LOE mention"
+        },
+        {
+          "target": "doc-001",
+          "label": "Supported by",
+          "origin": "User-owned association"
+        },
+        {
+          "target": "org-001",
+          "label": "Working organization",
+          "origin": "User-owned association"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:15 EDT \u00b7 Fixture: user created Harbor Readiness as an authored LOE.",
+        "25 Oct 2026, 09:20 EDT \u00b7 Fixture: user associated the planning note. This is a human interpretation, not a source-derived fact."
+      ],
+      "authority": "User-created effort with permitted authoring authority. Imported messages and user-owned classifications remain separate.",
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "doc-001",
+      "kind": "Document",
+      "title": "Harbor planning note \u00b7 assumptions and open dependencies",
+      "person": "Operations team",
+      "date": "Oct 24",
+      "body": "PLANNING NOTE / REVISION 4\n\nPurpose\nThis note assembles the evidence currently available for the readiness review. It is not a certification of readiness.\n\n1. Delivery dependencies\nThe equipment arrival date is provisional. A draft schedule indicates Tuesday delivery, but the source capture does not contain a confirmation. Treat this date as planning context.\n\n2. Ownership\nThe presentation owner remains unresolved. Maya requested an updated deck; no acceptance appears in the available captured material. Sent-mail coverage is unavailable.\n\n3. Evidence quality\nThe utilization figures were supplied two days before the current planning note. Two annexes were not present in the delivered document corpus. Older figures remain inspectable with their capture times.\n\n4. Next review\nUse the stored calendar occurrence for the scheduled review time. The record does not establish attendance acceptance, recurrence expansion or conflict-free availability.\n\n5. Long-form difficult case\nThe planning note deliberately contains a long passage to evaluate reading comfort, scrolling, selection, copy, larger text and evidence access. Investigative context should survive a move to a related person or source and a return to this document. Changes in display must never change the underlying source or imply that uncertain assumptions have become facts.\n\nOpen questions\nWho owns the submission? Which dependency estimates have been validated? Does the upstream schedule contain a later revision?\n\nThe answer to these questions is not present in this synthetic capture.",
+      "status": "Source-backed \u00b7 retained capture",
+      "attention": true,
+      "days_until": 2,
+      "rationale": "Investigation recipe: stale document with missing annexes and a review within 3 days. This calls for scrutiny, not a conclusion that the document is wrong.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Documents/doc-001.json",
+        "captured": "24 October 2026 \u00b7 16:10 EDT \u00b7 illustrative source observation",
+        "excerpt": "PLANNING NOTE / REVISION 4\n\nPurpose\nThis note assembles the evidence currently available for the readiness review. It is not a certification of readiness.\n\n1. Delivery dependencies\nThe equipment arrival date is provisional. A draft schedule indicates Tuesday delivery, but the source capture does not contain a confirmation. Treat this date as planning context.\n\n2. Ownership\nThe presentation owner remains unresolved. Maya requested an updated deck;",
+        "state": "Stale local capture \u00b7 2 annexes absent"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Associated effort",
+          "origin": "User-owned classification"
+        },
+        {
+          "target": "person-001",
+          "label": "Reviewer (user association)",
+          "origin": "User-owned Workspace typed reference; not a parser-derived relationship"
+        }
+      ],
+      "history": [
+        "24 Oct 2026, 16:10 EDT \u00b7 Fixture: converted document capture observed.",
+        "24 Oct 2026 \u00b7 Fixture: missing annexes recorded; no complete-corpus claim."
+      ],
+      "capture_label": "Oct 24"
+    },
+    {
+      "id": "event-001",
+      "kind": "Event",
+      "title": "Harbor readiness review",
+      "person": "Maya Chen",
+      "date": "Thu \u00b7 10:00",
+      "body": "Stored calendar occurrence\nThursday 29 October 2026 \u00b7 10:00\u201310:45 EDT\nLocation: Review room B\n\nAgenda: readiness evidence, provisional assumptions, unresolved ownership.\n\nOnly this supplied occurrence is represented. Recurrence expansion and attendee acceptance are not established.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 3,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Calendars/event-001.ics",
+        "captured": "26 October 2026 \u00b7 08:41 EDT \u00b7 illustrative ICS observation",
+        "excerpt": "Stored calendar occurrence\nThursday 29 October 2026 \u00b7 10:00\u201310:45 EDT\nLocation: Review room B\n\nAgenda: readiness evidence, provisional assumptions, unresolved ownership.\n\nOnly this supplied occurrence is represented. Recurrence expansion and attendee acceptance are not established.",
+        "state": "Stored event only \u00b7 attendance unknown"
+      },
+      "relations": [
+        {
+          "target": "person-001",
+          "label": "Organized by",
+          "origin": "Explicit organizer address"
+        },
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "26 Oct 2026, 08:41 EDT \u00b7 Fixture: stored ICS occurrence observed.",
+        "26 Oct 2026 \u00b7 Fixture: organizer identity linked from explicit supplied address. No recurrence expansion or acceptance claimed."
+      ],
+      "capture_label": "Today \u00b7 08:41"
+    },
+    {
+      "id": "org-001",
+      "kind": "Organization",
+      "title": "Coastal Programs",
+      "person": "Directory organization",
+      "date": "Directory capture",
+      "body": "Supplied organization identity. A user may maintain an effective organization overlay without rewriting this raw organization record.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 0,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Contacts/Profiles/person-001.json / supplied organization field",
+        "captured": "25 October 2026 \u00b7 14:00 EDT \u00b7 illustrative profile observation",
+        "excerpt": "Supplied organization identity. A user may maintain an effective organization overlay without rewriting this raw organization record.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "person-001",
+          "label": "Has affiliated contact",
+          "origin": "Explicit affiliation in supplied profile"
+        },
+        {
+          "target": "loe-001",
+          "label": "Associated effort",
+          "origin": "User-owned association"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 14:00 EDT \u00b7 Fixture: supplied profile observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit affiliation retained; current role not independently verified."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-002",
+      "kind": "Email",
+      "title": "Field notes \u00b7 two figures need confirmation",
+      "person": "Jordan Ellis",
+      "date": "Today",
+      "body": "Field notes \u00b7 two figures need confirmation\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 1,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-002.json",
+        "captured": "26 October 2026 \u00b7 09:12 EDT \u00b7 illustrative message observation",
+        "excerpt": "Field notes \u00b7 two figures need confirmation\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "26 Oct 2026, 09:12 EDT \u00b7 Fixture: supplied message observed.",
+        "26 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Today \u00b7 09:12"
+    },
+    {
+      "id": "mail-003",
+      "kind": "Email",
+      "title": "Review agenda \u00b7 draft for comment",
+      "person": "Maya Chen",
+      "date": "Today",
+      "body": "Review agenda \u00b7 draft for comment\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 3,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-003.json",
+        "captured": "26 October 2026 \u00b7 09:13 EDT \u00b7 illustrative message observation",
+        "excerpt": "Review agenda \u00b7 draft for comment\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "26 Oct 2026, 09:13 EDT \u00b7 Fixture: supplied message observed.",
+        "26 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Today \u00b7 09:13"
+    },
+    {
+      "id": "mail-004",
+      "kind": "Email",
+      "title": "Dependency register \u00b7 owner proposed",
+      "person": "Sam Patel",
+      "date": "Today",
+      "body": "Dependency register \u00b7 owner proposed\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 5,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-004.json",
+        "captured": "26 October 2026 \u00b7 09:14 EDT \u00b7 illustrative message observation",
+        "excerpt": "Dependency register \u00b7 owner proposed\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "26 Oct 2026, 09:14 EDT \u00b7 Fixture: supplied message observed.",
+        "26 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Today \u00b7 09:14"
+    },
+    {
+      "id": "mail-005",
+      "kind": "Email",
+      "title": "Presentation outline \u00b7 version received",
+      "person": "Alex Rivera",
+      "date": "Yesterday",
+      "body": "Presentation outline \u00b7 version received\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 2,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-005.json",
+        "captured": "25 October 2026 \u00b7 09:15 EDT \u00b7 illustrative message observation",
+        "excerpt": "Presentation outline \u00b7 version received\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:15 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-006",
+      "kind": "Email",
+      "title": "Supplier check-in \u00b7 date not confirmed",
+      "person": "Elena Brooks",
+      "date": "Yesterday",
+      "body": "Supplier check-in \u00b7 date not confirmed\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 4,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-006.json",
+        "captured": "25 October 2026 \u00b7 09:16 EDT \u00b7 illustrative message observation",
+        "excerpt": "Supplier check-in \u00b7 date not confirmed\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:16 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-007",
+      "kind": "Email",
+      "title": "Readiness figures \u00b7 source attached",
+      "person": "Noah Reyes",
+      "date": "Yesterday",
+      "body": "Readiness figures \u00b7 source attached\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 0,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-007.json",
+        "captured": "25 October 2026 \u00b7 09:17 EDT \u00b7 illustrative message observation",
+        "excerpt": "Readiness figures \u00b7 source attached\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:17 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-008",
+      "kind": "Email",
+      "title": "Site visit \u00b7 observations captured",
+      "person": "Jordan Ellis",
+      "date": "Yesterday",
+      "body": "Site visit \u00b7 observations captured\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 6,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-008.json",
+        "captured": "25 October 2026 \u00b7 09:18 EDT \u00b7 illustrative message observation",
+        "excerpt": "Site visit \u00b7 observations captured\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:18 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-009",
+      "kind": "Email",
+      "title": "Distribution list \u00b7 contact correction",
+      "person": "Elena Brooks",
+      "date": "Yesterday",
+      "body": "Distribution list \u00b7 contact correction\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 7,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-009.json",
+        "captured": "25 October 2026 \u00b7 09:19 EDT \u00b7 illustrative message observation",
+        "excerpt": "Distribution list \u00b7 contact correction\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:19 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-010",
+      "kind": "Email",
+      "title": "Decision note \u00b7 review requested",
+      "person": "Sam Patel",
+      "date": "Yesterday",
+      "body": "Decision note \u00b7 review requested\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 2,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-010.json",
+        "captured": "25 October 2026 \u00b7 09:20 EDT \u00b7 illustrative message observation",
+        "excerpt": "Decision note \u00b7 review requested\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:20 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-011",
+      "kind": "Email",
+      "title": "Annex references \u00b7 attachment unavailable",
+      "person": "Maya Chen",
+      "date": "Yesterday",
+      "body": "Annex references \u00b7 attachment unavailable\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 8,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-011.json",
+        "captured": "25 October 2026 \u00b7 09:21 EDT \u00b7 illustrative message observation",
+        "excerpt": "Annex references \u00b7 attachment unavailable\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:21 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-012",
+      "kind": "Email",
+      "title": "Coordination round-up \u00b7 for awareness",
+      "person": "Noah Reyes",
+      "date": "Yesterday",
+      "body": "Coordination round-up \u00b7 for awareness\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 9,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-012.json",
+        "captured": "25 October 2026 \u00b7 09:22 EDT \u00b7 illustrative message observation",
+        "excerpt": "Coordination round-up \u00b7 for awareness\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:22 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-013",
+      "kind": "Email",
+      "title": "Workshop follow-up \u00b7 comments collected",
+      "person": "Alex Rivera",
+      "date": "Yesterday",
+      "body": "Workshop follow-up \u00b7 comments collected\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 4,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-013.json",
+        "captured": "25 October 2026 \u00b7 09:23 EDT \u00b7 illustrative message observation",
+        "excerpt": "Workshop follow-up \u00b7 comments collected\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:23 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-014",
+      "kind": "Email",
+      "title": "Harbor delivery assumption \u00b7 revised estimate awaiting independent confirmation and owner acceptance",
+      "person": "Sam Patel",
+      "date": "Yesterday",
+      "body": "Harbor delivery assumption \u00b7 revised estimate awaiting independent confirmation and owner acceptance\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 2,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-014.json",
+        "captured": "25 October 2026 \u00b7 09:24 EDT \u00b7 illustrative message observation",
+        "excerpt": "Harbor delivery assumption \u00b7 revised estimate awaiting independent confirmation and owner acceptance\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:24 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "mail-015",
+      "kind": "Email",
+      "title": "Archive receipt \u00b7 retained for context",
+      "person": "Elena Brooks",
+      "date": "Yesterday",
+      "body": "Archive receipt \u00b7 retained for context\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 10,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Mail/Inbox/mail-015.json",
+        "captured": "25 October 2026 \u00b7 09:25 EDT \u00b7 illustrative message observation",
+        "excerpt": "Archive receipt \u00b7 retained for context\n\nThis synthetic correspondence supplies planning context. The quoted estimate remains provisional until the relevant evidence is available. A captured message is not proof that its proposed action was accepted or completed.\n\nUse the related effort to inspect supporting records and return to this result without losing the current search.",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Mentions effort",
+          "origin": "Explicit match to registered LOE"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 09:25 EDT \u00b7 Fixture: supplied message observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit relationship support captured; Sent coverage unavailable."
+      ],
+      "capture_label": "Yesterday"
+    },
+    {
+      "id": "doc-002",
+      "kind": "Document",
+      "title": "Readiness evidence index",
+      "person": "Jordan Ellis",
+      "date": "Oct 23",
+      "body": "A supplied index of supporting records. Some referenced materials are not included in the current capture. A missing file is not a negative finding.",
+      "status": "Source-backed",
+      "attention": true,
+      "days_until": 6,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Documents/doc-002.json",
+        "captured": "23 October 2026 \u00b7 15:30 EDT \u00b7 illustrative source observation",
+        "excerpt": "A supplied index of supporting records. Some referenced materials are not included in the current capture. A missing file is not a negative finding.",
+        "state": "Partial corpus \u00b7 referenced files missing"
+      },
+      "relations": [
+        {
+          "target": "loe-001",
+          "label": "Associated effort",
+          "origin": "User-owned association"
+        }
+      ],
+      "history": [
+        "23 Oct 2026, 15:30 EDT \u00b7 Fixture: converted document capture observed.",
+        "23 Oct 2026 \u00b7 Fixture: missing annexes recorded; no complete-corpus claim."
+      ],
+      "capture_label": "Oct 23"
+    },
+    {
+      "id": "event-002",
+      "kind": "Event",
+      "title": "Evidence review office hours",
+      "person": "Jordan Ellis",
+      "date": "Fri \u00b7 14:00",
+      "body": "Stored occurrence for a working review. Availability and recurrence are not inferred.",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 4,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Calendars/event-002.ics",
+        "captured": "26 October 2026 \u00b7 08:41 EDT \u00b7 illustrative ICS observation",
+        "excerpt": "Stored occurrence for a working review. Availability and recurrence are not inferred.",
+        "state": "Stored event only \u00b7 remote freshness unknown"
+      },
+      "relations": [],
+      "history": [
+        "26 Oct 2026, 08:41 EDT \u00b7 Fixture: stored ICS occurrence observed.",
+        "26 Oct 2026 \u00b7 Fixture: organizer identity linked from explicit supplied address. No recurrence expansion or acceptance claimed."
+      ],
+      "capture_label": "Today \u00b7 08:41"
+    },
+    {
+      "id": "person-002",
+      "kind": "Person",
+      "title": "Jordan Ellis",
+      "person": "Evidence coordinator",
+      "date": "Directory capture",
+      "body": "Jordan Ellis\nEvidence coordinator\njordan.ellis@example.test",
+      "status": "Source-backed",
+      "attention": false,
+      "days_until": 0,
+      "rationale": "Synthetic configured review condition matched. Confirm significance before acting.",
+      "evidence": {
+        "path": "SYNTHETIC / O3Data/Contacts/Profiles/person-002.json",
+        "captured": "25 October 2026 \u00b7 14:00 EDT \u00b7 illustrative profile observation",
+        "excerpt": "Jordan Ellis\nEvidence coordinator\njordan.ellis@example.test",
+        "state": "Captured \u00b7 upstream freshness unknown"
+      },
+      "relations": [
+        {
+          "target": "org-001",
+          "label": "Affiliated with",
+          "origin": "Explicit organization field"
+        }
+      ],
+      "history": [
+        "25 Oct 2026, 14:00 EDT \u00b7 Fixture: supplied profile observed.",
+        "25 Oct 2026 \u00b7 Fixture: explicit affiliation retained; current role not independently verified."
+      ],
+      "capture_label": "Yesterday"
+    }
+  ]
+}

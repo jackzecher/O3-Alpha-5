@@ -1,0 +1,30 @@
+         104771 function calls (104542 primitive calls) in 5.214 seconds
+
+   Ordered by: cumulative time
+   List reduced from 558 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    5.214    5.214 km_session.py:129(open)
+      211    5.134    0.024    5.134    0.024 {method 'execute' of 'sqlite3.Connection' objects}
+        2    0.000    0.000    5.061    2.530 workspace_types.py:73(validate_v4)
+        2    0.000    0.000    5.060    2.530 migration.py:173(validate_workspace_schema)
+        1    0.000    0.000    4.769    4.769 km_session.py:55(probe_state)
+        1    0.000    0.000    0.343    0.343 service.py:52(__init__)
+        1    0.000    0.000    0.061    0.061 engine.py:83(__init__)
+        1    0.000    0.000    0.060    0.060 ontology.py:79(__init__)
+        1    0.000    0.000    0.049    0.049 graph.py:1527(parse)
+        1    0.000    0.000    0.039    0.039 km_session.py:203(summary)
+        1    0.001    0.001    0.038    0.038 logic.py:189(summarize)
+        1    0.009    0.009    0.036    0.036 store.py:390(active_relations)
+        1    0.000    0.000    0.035    0.035 notation3.py:2014(parse)
+        1    0.000    0.000    0.034    0.034 notation3.py:491(loadStream)
+        1    0.000    0.000    0.034    0.034 notation3.py:494(loadBuf)
+        1    0.000    0.000    0.034    0.034 notation3.py:501(feed)
+       81    0.000    0.000    0.033    0.000 notation3.py:529(directiveOrStatement)
+       77    0.000    0.000    0.033    0.000 notation3.py:785(statement)
+       77    0.001    0.000    0.032    0.000 notation3.py:1121(property_list)
+      5/4    0.000    0.000    0.021    0.005 <frozen importlib._bootstrap>:1349(_find_and_load)
+      5/4    0.000    0.000    0.021    0.005 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+        5    0.000    0.000    0.021    0.004 <frozen importlib._bootstrap>:911(_load_unlocked)
+
+

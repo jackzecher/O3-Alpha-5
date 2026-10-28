@@ -1,0 +1,11 @@
+{
+  "scope": "Synthetic Alpha 4 fixture, deliberately blocked verifier; no target-host claim",
+  "checks": {
+    "blocked_worker_code_location_at_timeout": true,
+    "report_excludes_source_paths_and_frame_values": true,
+    "timeout_is_not_relabelled_success_after_unblocking": true,
+    "all_verifier_substages_and_monotonic_byte_counts": true,
+    "logging_failure_does_not_change_verification_result": true
+  },
+  "passed": true
+}

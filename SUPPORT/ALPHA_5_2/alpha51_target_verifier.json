@@ -1,0 +1,32 @@
+{
+  "scope": "User-supplied exact Alpha 5.1 verifier on Windows/NIPR; sanitized timing evidence only",
+  "build_confirmed": "ALPHA_5_1_CODE_VERIFIED",
+  "verified": true,
+  "total_seconds": 81.01,
+  "stages_seconds": {
+    "connect": 0.0,
+    "validate_v4": 0.95,
+    "_validate_archive": 66.98,
+    "_verify_core_provenance_readonly": 6.05,
+    "_checkpoint_layout": 0.02,
+    "cleanup": 1.19
+  },
+  "repeated_code_locations": [
+    "o3_km/migration.py:87",
+    "o3_km/migration.py:88",
+    "o3_km/migration.py:217",
+    "o3_km/migration.py:878"
+  ],
+  "prior_checks": {
+    "zip_crc_seconds": 0.97,
+    "extraction_seconds": 5.76,
+    "sqlite_open_seconds": 0.02,
+    "sqlite_integrity_and_foreign_keys_seconds": 0.48,
+    "cleanup_seconds": 0.97
+  },
+  "limitations": [
+    "Stage timings are user-reported and are not asserted to sum to total duration.",
+    "No target-host Alpha 5.2 result is claimed.",
+    "OS or endpoint-security cause of read cost is not established."
+  ]
+}

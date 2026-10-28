@@ -1,0 +1,29 @@
+{
+  "build_id": "0.9.1-km12-p3-prism2",
+  "classification": "RUNTIME_CONTRACT_NOT_RUNTIME_APPROVAL",
+  "dependency_distribution_approval": "NOT GRANTED",
+  "development_reference_authoritative": false,
+  "format_version": 1,
+  "organizational_runtime_approval": "NOT GRANTED",
+  "production_runtime": false,
+  "required_dependency_version_fields": [
+    "rdflib_version",
+    "pyparsing_version",
+    "pyside6_version",
+    "qt_version",
+    "shiboken6_version"
+  ],
+  "required_manifest_fields": [
+    "format_version",
+    "build_id",
+    "profile",
+    "python_version",
+    "python_bits",
+    "dependencies",
+    "files"
+  ],
+  "runtime_authority": "Only the profile-bound RUNTIME_MANIFEST.json, approved with the target Windows runtime",
+  "runtime_manifest": "distribution/RUNTIME_MANIFEST.json",
+  "runtime_path": "distribution/runtime/python.exe",
+  "status": "APPROVED_BUILD_MATCHED_RUNTIME_NOT_SUPPLIED"
+}

@@ -1,0 +1,30 @@
+         36055589 function calls (35475455 primitive calls) in 50.892 seconds
+
+   Ordered by: cumulative time
+   List reduced from 788 to 22 due to restriction <22>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   50.892   50.892 km_session.py:129(open)
+        5    0.000    0.000   49.760    9.952 service.py:1688(call)
+        5    0.000    0.000   49.760    9.952 service.py:1712(_call)
+        5    0.000    0.000   49.759    9.952 service.py:1464(_dispatch)
+        1    0.006    0.006   49.755   49.755 starters.py:51(ensure)
+        1    0.189    0.189   49.216   49.216 migration.py:764(prepare_alpha5_conversion)
+        1    0.145    0.145   17.192   17.192 migration.py:869(verify_alpha5_checkpoint)
+    12230    0.061    0.000   12.254    0.001 __init__.py:1221(write)
+    12230   10.983    0.001   10.983    0.001 {method 'compress' of 'zlib.Compress' objects}
+        2    0.026    0.013    9.093    4.547 migration.py:237(_verify_core_provenance_readonly)
+        2    0.432    0.216    9.067    4.534 store.py:431(audit_provenance)
+    40000    0.131    0.000    6.385    0.000 store.py:447(verify_blob)
+    71800    6.363    0.000    6.363    0.000 {method 'read' of '_io.BufferedReader' objects}
+        2    0.010    0.005    6.079    3.040 migration.py:230(_validate_archive_boundaries)
+    19004    0.138    0.000    6.069    0.000 migration.py:200(_checked_archive_references)
+191087/77052    0.366    0.000    4.525    0.000 {built-in method builtins.any}
+    94401    4.303    0.000    4.303    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+    24547    4.249    0.000    4.249    0.000 {method 'update' of '_hashlib.HASH' objects}
+    21742    0.039    0.000    3.529    0.000 migration.py:846(<lambda>)
+    21742    0.011    0.000    3.522    0.000 migration.py:908(<lambda>)
+    21743    0.041    0.000    3.515    0.000 __init__.py:983(read)
+    12230    0.174    0.000    3.466    0.000 __init__.py:1065(_read1)
+
+

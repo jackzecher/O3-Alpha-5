@@ -1,0 +1,34 @@
+{
+  "open_seconds": 0.739,
+  "exceeds_45_second_limit": false,
+  "archive_hash_calls": 3,
+  "archive_hash_bytes": 20518906,
+  "phases": [
+    {
+      "phase": "_validate_archive",
+      "seconds": 0.01
+    },
+    {
+      "phase": "_verify_core_provenance_readonly",
+      "seconds": 0.095
+    },
+    {
+      "phase": "_source_roots",
+      "seconds": 0.0
+    },
+    {
+      "phase": "_validate_archive",
+      "seconds": 0.008
+    },
+    {
+      "phase": "_verify_core_provenance_readonly",
+      "seconds": 0.076
+    },
+    {
+      "phase": "verify_alpha5_checkpoint",
+      "seconds": 0.184
+    }
+  ],
+  "checkpoint_verified": true,
+  "saved_config_unchanged": true
+}

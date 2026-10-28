@@ -1,0 +1,73 @@
+{
+  "case": "fresh",
+  "result": "PASS_LINUX_WRAPPER_INTEGRATION",
+  "scope": "Synthetic Qt offscreen adaptation; not Windows/NIPR acceptance",
+  "excluded": [
+    "native executable",
+    "Windows platform",
+    "runtime identity acceptance",
+    "NIPR host policy"
+  ],
+  "shipped_startup_modified": false,
+  "runtime": {
+    "pyside6": "6.9.2",
+    "shiboken6": "6.9.2",
+    "qt": "6.9.2",
+    "rdflib": "7.6.0",
+    "pyparsing": "3.3.3"
+  },
+  "record_count_preserved": 0,
+  "sqlite_integrity": "ok",
+  "schema": 4,
+  "ownership_initialized": true,
+  "lock_released": true,
+  "callbacks": [
+    {
+      "callback": "WORKSPACE_VALIDATED",
+      "details": {
+        "workspace_owned": true,
+        "state_schema_expected": 4,
+        "config_loaded": true,
+        "source_configured": false,
+        "paused": false,
+        "automatic_discovery": false
+      }
+    },
+    {
+      "callback": "ENGINE_READY",
+      "details": {
+        "initialized": true
+      }
+    },
+    {
+      "callback": "NATIVE_WINDOW_OBSERVED",
+      "details": {
+        "platform_name": "offscreen",
+        "window_exposed": true,
+        "paint_observed": true,
+        "event_loop_observed": true
+      }
+    },
+    {
+      "callback": "WORKSPACE_READY",
+      "details": {
+        "ready": true
+      }
+    },
+    {
+      "window_title": "O3 \u00b7 5.0.0-alpha5.diagnostic1 \u00b7 Managed workspace",
+      "initialized": true,
+      "has_mail_workspace": true
+    },
+    {
+      "callback": "ORDERLY_SHUTDOWN",
+      "details": {
+        "worker_closed": true,
+        "thread_stopped": true,
+        "window_closed": true,
+        "lock_released": true,
+        "app_exit_code": 0
+      }
+    }
+  ]
+}

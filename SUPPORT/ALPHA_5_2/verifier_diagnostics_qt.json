@@ -1,0 +1,10 @@
+{
+  "scope": "Real Linux Qt with deliberately blocked checkpoint verifier",
+  "five_second_timer_captures_worker_code_location": true,
+  "normal_45_second_startup_limit_unchanged": true,
+  "not_ready_during_block": true,
+  "ready_after_release": true,
+  "sampler_stops_on_readiness": true,
+  "clean_shutdown_and_lock_release": true,
+  "passed": true
+}

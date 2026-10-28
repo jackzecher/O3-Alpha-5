@@ -1,0 +1,17 @@
+O3 Alpha 4 native startup and branding
+
+Alpha 4 restores the original O3.exe, bootstrap, runtime profile and supervised
+workspace entry points byte-for-byte from the protected Alpha 2 / Candidate 6
+payload. The newer application uses its current icon and appearance. The native
+executable retains its original resources and remains the sole startup splash
+and launch-failure diagnostic owner. No competing Qt splash is started by the
+native entry point.
+
+The welcome-screen design and Appearance preview remain available in the GUI.
+Their preference does not control the protected native launcher's splash.
+Executable icon/splash restyling requires the original launcher build source
+and separate Windows validation; it is outside this startup restoration.
+
+Editable icon masters and derived PNG/ICO assets in this folder are retained
+unchanged. AI_RUNTIME runs the actual application in a disposable synthetic
+Linux workspace; it does not replace Windows startup or qualify NIPR operation.
